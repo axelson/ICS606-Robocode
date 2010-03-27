@@ -1,8 +1,10 @@
-import robocode.Robot;
+package com.jaxelson;
+
+import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 
 
-public class JasonStarterBot extends Robot {
+public class JasonStarterBot extends AdvancedRobot {
 	public void run() {
         while (true) {
             ahead(100);
