@@ -40,4 +40,10 @@ public class JasonStarterBot extends AdvancedRobot {
     	System.out.println("Distance remaining: "+ this.getDistanceRemaining());
     }
     
+    public void onPaint(Graphics2D g) {
+        // Set the paint color to red
+        g.setColor(java.awt.Color.RED);
+        // Paint a filled rectangle at (50,50) at size 100x150 pixels
+        g.fillRect(50, 50, 100, 150);
+    }
 }
