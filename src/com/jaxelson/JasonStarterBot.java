@@ -18,6 +18,10 @@ public class JasonStarterBot extends AdvancedRobot {
         fire(1);
     }
     
+    /**
+     * Prints information about a robot scanned by the radar
+     * @param e the ScannedRobotEvent that was seen by the radar
+     */
     public void printRobot(ScannedRobotEvent e) {
     	System.out.println("Name: "+ e.getName());
     	System.out.println("Bearing: "+ e.getBearing());
