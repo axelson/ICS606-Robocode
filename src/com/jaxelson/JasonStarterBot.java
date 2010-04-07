@@ -31,4 +31,13 @@ public class JasonStarterBot extends AdvancedRobot {
     	System.out.println("Priority: "+ e.getPriority());
     }
     
+    /**
+     * Prints information about myself
+     */
+    public void printMyInfo() {
+    	System.out.println("Heading: "+ this.getHeading());
+    	System.out.println("Heading (radians): "+ this.getHeadingRadians());
+    	System.out.println("Distance remaining: "+ this.getDistanceRemaining());
+    }
+    
 }
