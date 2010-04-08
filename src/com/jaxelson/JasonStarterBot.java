@@ -1,20 +1,26 @@
 package com.jaxelson;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
+import robocode.WinEvent;
 import robocode.util.Utils;
 
 
 public class JasonStarterBot extends AdvancedRobot {
 	private Integer debug = 1;
 	private Integer state = 0;
+	EnemyBot target;
+	
 	
 	public void run() {
 		setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
 //		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
+		setBulletColor(Color.red);
         while (true) {
         	
 //        	System.out.println("Looping!");
@@ -22,21 +28,31 @@ public class JasonStarterBot extends AdvancedRobot {
         		printMyInfo();
         	}
         	switch(state) {
-        	case 0:	// Do a loop
+        	case 0:	// Clockwise
         		System.out.println("State 0");
+        		Rectangle2D fieldRect = new Rectangle2D.Double(18, 18, getBattleFieldWidth()-36,
+        			    getBattleFieldHeight()-36);
         		setMaxVelocity(5);
         		setAhead(600);
         		setTurnRight(360);
         		state++;
         		break;
-        	case 1:
+        	case 1: // Counter-clockwise
+        		if(getTurnRemainingRadians() <= 0) {
+        			state++;
+        		}
+        	case 2:
         		System.out.println("State 1");
         		setFire(1.0);
         		if(getDistanceRemaining() <= 0) {
         			state++;
         		}
         		break;
-        	case 2:
+        	case 3:
+//        		System.out.println("Target: "+ target.toString());
+        		System.out.println("My bot time:"+ getTime());
+        		System.out.println("Last seen time: "+ target.timeSinceSeen(this.getTime()));
+        		System.out.println();
         		//setTurnGunRightRadians(3);
         	}
             
@@ -57,6 +73,9 @@ public class JasonStarterBot extends AdvancedRobot {
     }
  
     public void onScannedRobot(ScannedRobotEvent e) {
+    	target = new EnemyBot(e);
+//  	System.out.println("Scanned bot: "+ target.toString());
+//    	target.printBot();
     	if(debug >= 2) {
     		System.out.println("Found robot: "+ e.getName());
     		printRobot(e);
@@ -67,7 +86,9 @@ public class JasonStarterBot extends AdvancedRobot {
     		// Subtract current radar heading to get turn required
     		- getRadarHeadingRadians();
 
-    	setTurnRadarRightRadians(2.0 * Utils.normalRelativeAngle(radarTurn));
+    	if(state >= 1) {
+    		setTurnRadarRightRadians(2.0 * Utils.normalRelativeAngle(radarTurn));
+    	}
     	
     	double gunTurn = getHeadingRadians() + e.getBearingRadians() - getGunHeadingRadians();
     	if(state >= 1) {
