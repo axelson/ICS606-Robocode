@@ -2,7 +2,8 @@ package com.jaxelson;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
@@ -28,22 +29,37 @@ public class JasonStarterBot extends AdvancedRobot {
         		printMyInfo();
         	}
         	switch(state) {
-        	case 0:	// Clockwise
+        	case 0:	// Face Left
         		System.out.println("State 0");
-        		Rectangle2D fieldRect = new Rectangle2D.Double(18, 18, getBattleFieldWidth()-36,
-        			    getBattleFieldHeight()-36);
-        		setMaxVelocity(5);
-        		setAhead(600);
-        		setTurnRight(360);
-        		state++;
+        		
+        		
+        		System.out.println("Starting at: "+ getHeadingRadians());
+        		System.out.println("           : "+ getHeading());
+        		
+//        		double desiredAngle = Math.PI/2;
+//        		double currentAngle = getHeadingRadians();
+//        		double turnDistanceRad = currentAngle - desiredAngle;
+//        		setTurnLeftRadians(turnDistanceRad);
+        		
+        		BotUtility.turnTo(Math.PI/2, this);
+        		
+        		if(Utils.isNear(getHeadingRadians(), Math.PI/2)) {
+        			setAhead(1000);
+        			state++;
+        		}
         		break;
-        	case 1: // Counter-clockwise
-        		if(getTurnRemainingRadians() <= 0) {
+        	case 1: // Move forward
+        		System.out.println("State 1");
+        		if(getDistanceToRightWall() <= 300) {
+        			setMaxVelocity(1);
+        		}
+        		if(getDistanceToRightWall() <= 200) {
+        			stop();
         			state++;
         		}
         	case 2:
-        		System.out.println("State 1");
-        		setFire(1.0);
+        		System.out.println("State 2");
+//        		setFire(1.0);
         		if(getDistanceRemaining() <= 0) {
         			state++;
         		}
@@ -78,7 +94,7 @@ public class JasonStarterBot extends AdvancedRobot {
 //    	target.printBot();
     	if(debug >= 2) {
     		System.out.println("Found robot: "+ e.getName());
-    		printRobot(e);
+    		target.printBot();
     	}
     	double radarTurn =
     		// Absolute bearing to target
@@ -94,30 +110,15 @@ public class JasonStarterBot extends AdvancedRobot {
     	if(state >= 1) {
     		setTurnGunRightRadians(Utils.normalRelativeAngle(gunTurn));
     	}
-    	setFire(1.0);
+    	if(state >= 3) {
+    		setFire(1.0);
+    	}
     }
     
     public void onWin(WinEvent e) {
     	System.out.println("I win!");
     	setAhead(200);
     	setTurnRightRadians(Math.PI);
-    }
-    
-    /**
-     * Prints information about a robot scanned by the radar
-     * @param e the ScannedRobotEvent that was seen by the radar
-     */
-    public void printRobot(ScannedRobotEvent e) {
-    	System.out.println("Name: "+ e.getName());
-    	System.out.println("Bearing: "+ e.getBearing());
-    	System.out.println("Bearing (radians): "+ e.getBearingRadians());
-    	System.out.println("Distance: "+ e.getDistance());
-    	System.out.println("Energy: "+ e.getEnergy());
-    	System.out.println("Heading: "+ e.getHeading());
-    	System.out.println("Heading (radians)"+ e.getHeadingRadians());
-    	System.out.println("Velocity: "+ e.getVelocity());
-    	System.out.println("Time: "+ e.getTime());
-    	System.out.println("Priority: "+ e.getPriority());
     }
     
     /**
@@ -133,6 +134,24 @@ public class JasonStarterBot extends AdvancedRobot {
         // Set the paint color to red
         g.setColor(java.awt.Color.RED);
         // Paint a filled rectangle at (50,50) at size 100x150 pixels
-        g.fillRect(50, 50, 100, 150);
+//        g.fillRect(50, 50, 100, 150);
+//        g.drawOval(new Double(getX()).intValue(), new Double(getY()).intValue(), 30, 30);
+//        g.drawOval(BotUtility.getCenterX(this).intValue(), BotUtility.getCenterY(this).intValue(), 100, 100);
+        
+        drawCenteredCircle(g, 400);
+        
+    }
+    
+    public void drawCenteredCircle(Graphics2D g, Integer diameter) {
+    	double x = getX() - diameter/2;
+        double y = getY() - diameter/2;
+		Shape circle = new Ellipse2D.Double(x, y, diameter, diameter);
+        g.draw(circle);
+    }
+    
+    public Double getDistanceToRightWall() {
+    	double botRightEdge = getX();
+    	double rightWallLocation = getBattleFieldWidth();
+    	return rightWallLocation - botRightEdge;
     }
 }

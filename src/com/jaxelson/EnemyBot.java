@@ -33,7 +33,7 @@ public class EnemyBot {
 	
 	/**
 	 * Returns time since this robot was last seen
-	 * @param currentTime
+	 * @param currentTime This is only required until I can figure out a workaround
 	 * @return the time since this robot was last seen
 	 */
 	public long timeSinceSeen(long currentTime) {
