@@ -76,6 +76,12 @@ public class JasonStarterBot extends AdvancedRobot {
     	setFire(1.0);
     }
     
+    public void onWin(WinEvent e) {
+    	System.out.println("I win!");
+    	setAhead(200);
+    	setTurnRightRadians(Math.PI);
+    }
+    
     /**
      * Prints information about a robot scanned by the radar
      * @param e the ScannedRobotEvent that was seen by the radar
