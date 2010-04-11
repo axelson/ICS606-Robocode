@@ -16,7 +16,7 @@ public class TrackState
      * @param robot The ExtendedRobot object used to provide data and execute
      *              commands
      */
-    public TrackState(ExtendedRobot robot) {
+    public TrackState(ExtendedBot robot) {
         super(robot);
     }
 

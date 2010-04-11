@@ -1,16 +1,29 @@
 package navigation;
 
 import java.util.ArrayList;
-import robocode.*;
+
+import robocode.BulletHitBulletEvent;
+import robocode.BulletHitEvent;
+import robocode.BulletMissedEvent;
+import robocode.CustomEvent;
+import robocode.DeathEvent;
+import robocode.HitByBulletEvent;
+import robocode.HitRobotEvent;
+import robocode.HitWallEvent;
+import robocode.RobotDeathEvent;
+import robocode.ScannedRobotEvent;
+import robocode.SkippedTurnEvent;
+import robocode.WinEvent;
+
+import com.jaxelson.ExtendedBotUH;
 
 /**
  * Extension to the standard AdvancedRobot class to facilitate the
  * distribution of events.
  * @author David McCoy
  */
-public class ExtendedRobot
-        extends AdvancedRobot
-        implements EventRegistry {
+public class ExtendedBot extends ExtendedBotUH
+	implements EventRegistry {
 
     // CONSTRUCTORS
 
@@ -18,7 +31,7 @@ public class ExtendedRobot
      * Creates a new ExtendedRobot object.<br>
      * This constructor initializes the array of listener collections.
      */
-    public ExtendedRobot() {
+    public ExtendedBot() {
         // Initialize Listeners table
         listeners[ON_BULLET_HIT] = bulletHitListeners;
         listeners[ON_BULLET_HIT_BULLET] =
@@ -57,6 +70,11 @@ public class ExtendedRobot
                 commandListeners.add(listener);
             }
         }
+    }
+    
+    public void testConnection() {
+    	System.out.println("connection successfull!");
+    	fire(3);
     }
 
     /**

@@ -7,7 +7,7 @@ import java.awt.geom.Ellipse2D;
 import robocode.AdvancedRobot;
 import robocode.util.Utils;
 
-public class ExtendedBot extends AdvancedRobot {
+public class ExtendedBotUH extends AdvancedRobot {
 
     public void drawCenteredCircle(Graphics2D g, Integer radius) {
     	double x = getX() - radius;

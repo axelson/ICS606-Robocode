@@ -9,7 +9,7 @@ import robocode.*;
  * This is designed for one-on-one encounters only, but could be
  * extended with a little effort to include melee battles.
  */
-public class NavigationStateExample extends ExtendedRobot {
+public class NavigationStateExample extends ExtendedBot {
 
 	/**
 	 * run: NavigationStateExample's default behavior

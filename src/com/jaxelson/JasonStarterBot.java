@@ -3,6 +3,7 @@ package com.jaxelson;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import navigation.ExtendedBot;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
 import robocode.util.Utils;
@@ -21,7 +22,8 @@ public class JasonStarterBot extends ExtendedBot {
 		setBulletColor(Color.red);
         while (true) {
         	
-//        	System.out.println("Looping!");
+        	System.out.println("Looping!");
+        	testConnection();
         	if(debug >= 1) {
         		printMyInfo();
         	}

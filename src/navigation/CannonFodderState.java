@@ -16,7 +16,7 @@ public class CannonFodderState
      * @param robot The ExtendedRobot object used to provide data and execute
      *              commands
      */
-    public CannonFodderState(ExtendedRobot robot) {
+    public CannonFodderState(ExtendedBot robot) {
         super(robot);
     }
 

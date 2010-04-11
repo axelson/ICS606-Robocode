@@ -18,7 +18,7 @@ public class StateManager
      * @param robot The ExtendedRobot object used to provide data and execute
      *              commands
      */
-    public StateManager(ExtendedRobot robot) {
+    public StateManager(ExtendedBot robot) {
         this.robot = robot;
         states = new ArrayList();
     }
@@ -169,7 +169,7 @@ public class StateManager
     /**
      * The ExtendedRobot object used to provide data and execute commands.
      */
-    protected ExtendedRobot robot;
+    protected ExtendedBot robot;
     /**
      * The State currently in use.
      */

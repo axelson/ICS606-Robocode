@@ -1,6 +1,6 @@
 package navigation;
 
-import droid.data_types.NavigationStateStatistics;
+//import droid.data_types.NavigationStateStatistics;
 
 /**
  * Defines methods required for a State object.
@@ -19,7 +19,7 @@ public abstract class State
      * @param robot The ExtendedRobot object used to provide data and execute
      *              commands
      */
-    public State(ExtendedRobot robot) {
+    public State(ExtendedBot robot) {
         this.robot = robot;
     }
 
@@ -83,6 +83,6 @@ public abstract class State
     /**
      * The ExtendedRobot object used to provide data and execute commands.
      */
-    protected ExtendedRobot robot;
+    protected ExtendedBot robot;
 
 }
