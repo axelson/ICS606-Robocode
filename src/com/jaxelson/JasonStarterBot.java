@@ -38,7 +38,7 @@ public class JasonStarterBot extends ExtendedBot {
 //        		double turnDistanceRad = currentAngle - desiredAngle;
 //        		setTurnLeftRadians(turnDistanceRad);
         		
-        		BotUtility.turnTo(Math.PI/2, this);
+        		turnTo(Math.PI/2);
         		
         		if(Utils.isNear(getHeadingRadians(), Math.PI/2)) {
         			setAhead(1000);

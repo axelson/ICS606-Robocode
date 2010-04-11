@@ -22,6 +22,11 @@ public class ExtendedBot extends AdvancedRobot {
     	return rightWallLocation - botRightEdge;
     }
     
+    public Double getDistanceToLeftWall() {
+    	double botLeftEdge = getX();
+    	double leftWallLocation = getBattleFieldWidth();
+    	return leftWallLocation - botLeftEdge;
+    }
     /**
      * Turns to the desired angle
      * @param desiredAngle the desired angle in radians

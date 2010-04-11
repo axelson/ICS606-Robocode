@@ -1,7 +1,6 @@
 package com.jaxelson;
 
 import robocode.ScannedRobotEvent;
-import robocode.StatusEvent;
 
 public class EnemyBot {
 	private String name;
