@@ -5,13 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
 import robocode.util.Utils;
 
 
-public class JasonStarterBot extends AdvancedRobot {
+public class JasonStarterBot extends ExtendedBot {
 	private Integer debug = 1;
 	private Integer state = 0;
 	EnemyBot target;
