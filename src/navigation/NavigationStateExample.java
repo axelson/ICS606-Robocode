@@ -1,7 +1,6 @@
 package navigation;
 
-import navigation.*;
-import robocode.*;
+import robocode.ScannedRobotEvent;
 
 /**
  * NavigationStateExample - An of switching navigation states based on
@@ -18,8 +17,9 @@ public class NavigationStateExample extends ExtendedBot {
         try {
             // Set up and enable the state manager
             StateManager navigation = new StateManager(this);
-            navigation.addState(new CannonFodderState(this));
-            navigation.addState(new TrackState(this));
+//            navigation.addState(new CannonFodderState(this));
+//            navigation.addState(new TrackState(this));
+            navigation.addState(new MoveLeftRightState(this));
             addCommandListener(navigation);
             enable();
 
@@ -29,7 +29,7 @@ public class NavigationStateExample extends ExtendedBot {
             // Main bot execution loop
 		    while(true) {
                 // Spin gun
-                setTurnGunRightRadians(Math.PI);
+                //setTurnGunRightRadians(Math.PI);
                 // Allow StateManager to do it's thing
 		    	executeTurn();
                 // Finish the turn

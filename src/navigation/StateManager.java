@@ -1,7 +1,6 @@
 package navigation;
 
 import java.util.ArrayList;
-import robocode.*;
 
 /**
  * Contains basic functionality for managing states.

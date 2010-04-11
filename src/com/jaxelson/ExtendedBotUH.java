@@ -41,6 +41,29 @@ public class ExtendedBotUH extends AdvancedRobot {
 		return Math.abs(turnDistanceRad);
 	}
 	
+	/**
+	 * Turns radar to the desired angle
+	 * @param desiredAngle
+	 * @return radians needed to turn
+	 */
+	public Double turnRadarTo(double desiredAngle) {
+		double currentAngle = this.getRadarHeadingRadians();
+		double turnDistanceRad = currentAngle - desiredAngle;
+		turnDistanceRad = Utils.normalRelativeAngle(turnDistanceRad);
+		this.setTurnRadarLeftRadians(turnDistanceRad);
+		
+		return Math.abs(turnDistanceRad);
+	}
+	
+	public Double turnGunTo(double desiredAngle) {
+		double currentAngle = this.getGunHeadingRadians();
+		double turnDistanceRad = currentAngle - desiredAngle;
+		turnDistanceRad = Utils.normalRelativeAngle(turnDistanceRad);
+		this.setTurnGunLeftRadians(turnDistanceRad);
+		
+		return Math.abs(turnDistanceRad);
+	}
+	
 	public Double getCenterX() {
 		return new Double(this.getX());
 	}
