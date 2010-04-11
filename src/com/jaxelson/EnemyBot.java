@@ -1,6 +1,7 @@
 package com.jaxelson;
 
 import robocode.ScannedRobotEvent;
+import robocode.StatusEvent;
 
 public class EnemyBot {
 	private String name;
@@ -37,6 +38,8 @@ public class EnemyBot {
 	 * @return the time since this robot was last seen
 	 */
 	public long timeSinceSeen(long currentTime) {
+		//Doesn't compile
+		//System.out.println(StatusEvent.getStatus().getTime());
 		return currentTime - this.getTime();
 	}
 
