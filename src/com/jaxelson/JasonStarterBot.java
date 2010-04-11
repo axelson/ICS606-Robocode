@@ -125,6 +125,7 @@ public class JasonStarterBot extends ExtendedBot {
      */
     public void printMyInfo() {
     	System.out.println("Heading: "+ this.getHeading());
+    	System.out.println("testGetX: "+ this.testGetX());
     	System.out.println("Heading (radians): "+ this.getHeadingRadians());
     	System.out.println("Distance remaining: "+ this.getDistanceRemaining());
     }
@@ -137,14 +138,14 @@ public class JasonStarterBot extends ExtendedBot {
 //        g.drawOval(new Double(getX()).intValue(), new Double(getY()).intValue(), 30, 30);
 //        g.drawOval(BotUtility.getCenterX(this).intValue(), BotUtility.getCenterY(this).intValue(), 100, 100);
         
-        drawCenteredCircle(g, 400);
+        drawCenteredCircle(g, 200);
         
     }
     
-    public void drawCenteredCircle(Graphics2D g, Integer diameter) {
-    	double x = getX() - diameter/2;
-        double y = getY() - diameter/2;
-		Shape circle = new Ellipse2D.Double(x, y, diameter, diameter);
+    public void drawCenteredCircle(Graphics2D g, Integer radius) {
+    	double x = getX() - radius;
+        double y = getY() - radius;
+		Shape circle = new Ellipse2D.Double(x, y, radius*2, radius*2);
         g.draw(circle);
     }
     
