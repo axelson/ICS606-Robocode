@@ -1,7 +1,5 @@
 package com.jaxelson;
 
-import robocode.AdvancedRobot;
-import robocode.util.Utils;
 
 public class BotUtility {	
 	/**
@@ -19,23 +17,6 @@ public class BotUtility {
 			damage += ((shotPower - 1) * 2);
 		}
 		return damage;
-	}
-	
-	public static Double turnTo(double desiredAngle, AdvancedRobot robot) {
-		double currentAngle = robot.getHeadingRadians();
-		double turnDistanceRad = currentAngle - desiredAngle;
-		turnDistanceRad = Utils.normalRelativeAngle(turnDistanceRad);
-		robot.setTurnLeftRadians(turnDistanceRad);
-		
-		return Math.abs(turnDistanceRad);
-	}
-	
-	public static Double getCenterX(AdvancedRobot robot) {
-		return new Double(robot.getX());
-	}
-	
-	public static Double getCenterY(AdvancedRobot robot) {
-		return new Double(robot.getY());
 	}
 }
 
