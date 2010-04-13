@@ -5,6 +5,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import robocode.AdvancedRobot;
+import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 public class ExtendedBotUH extends AdvancedRobot {
@@ -69,5 +70,25 @@ public class ExtendedBotUH extends AdvancedRobot {
 	
 	public Double getCenterY() {
 		return new Double(this.getY());
+	}
+	
+	public void narrowRadarLock(ScannedRobotEvent event) {
+		narrowRadarLock(event, 1.9);
+	}
+	
+	/**
+	 * Executes a narrow radar lock<br>
+	 * http://robowiki.net/wiki/Radar#Narrow_lock
+	 * @param event scanned robot event (may be replaced by an enemy in the future)
+	 * @param factor narrow lock factor (how "narrow" lock is), typical values 1.0, 1.9, 2.0
+	 */
+	public void narrowRadarLock(ScannedRobotEvent event, Double factor) {
+		double radarTurn =
+			// Absolute bearing to target
+			this.getHeadingRadians() + event.getBearingRadians()
+			// Subtract current radar heading to get turn required
+			- this.getRadarHeadingRadians();
+
+		this.setTurnRadarRightRadians(factor * Utils.normalRelativeAngle(radarTurn));
 	}
 }

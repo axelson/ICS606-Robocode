@@ -145,13 +145,7 @@ public class MoveLeftRightState
         targetAcquired = true;
         new EnemyBot(event).printBot();
         
-        double radarTurn =
-    		// Absolute bearing to target
-    		robot.getHeadingRadians() + event.getBearingRadians()
-    		// Subtract current radar heading to get turn required
-    		- robot.getRadarHeadingRadians();
-
-        robot.setTurnRadarRightRadians(2.0 * Utils.normalRelativeAngle(radarTurn));
+        robot.narrowRadarLock(event);
         
         double gunTurn = robot.getHeadingRadians() + event.getBearingRadians() - robot.getGunHeadingRadians();
         robot.setTurnGunRightRadians(Utils.normalRelativeAngle(gunTurn));
