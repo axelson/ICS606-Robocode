@@ -55,6 +55,11 @@ public class ExtendedBotUH extends AdvancedRobot {
 		return Math.abs(turnDistanceRad);
 	}
 	
+	/**
+	 * Turns the gun to face in the desired absolute angle
+	 * @param desiredAngle for gun to face in radians
+	 * @return distance gun needs to turn in radians
+	 */
 	public Double turnGunTo(double desiredAngle) {
 		double currentAngle = this.getGunHeadingRadians();
 		double turnDistanceRad = currentAngle - desiredAngle;
@@ -62,6 +67,17 @@ public class ExtendedBotUH extends AdvancedRobot {
 		this.setTurnGunLeftRadians(turnDistanceRad);
 		
 		return Math.abs(turnDistanceRad);
+	}
+	
+	/**
+	 * Turns the gun to face the given target (not doing any prediction for now)
+	 * @param target to face gun at
+	 * @return distance gun needs to travel
+	 */
+	public Double turnGunTo(EnemyBot target) {
+		double targetBearing = target.getBearingRadians();
+		double desiredAngle = targetBearing + this.getHeadingRadians();
+		return turnGunTo(desiredAngle);
 	}
 	
 	public Double getCenterX() {
