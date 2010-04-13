@@ -4,6 +4,7 @@ import com.jaxelson.EnemyBot;
 
 import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
+import robocode.util.Utils;
 
 /**
  * Simple tracking state.
@@ -98,7 +99,7 @@ public class MoveLeftRightState
     	case 1:
     		System.out.println("Case 1");
 //    		System.out.println("\n\nTurning gun to: "+ targetBearing);
-    		robot.turnGunTo(targetBearing);
+//    		robot.turnGunTo(targetBearing);
     		robot.setAhead(robot.getDistanceToRightWall());
 //    		robot.turnGunTo(Math.PI*3/2);
     		System.out.println("Distance to wall: "+ robot.getDistanceToRightWall());
@@ -143,6 +144,19 @@ public class MoveLeftRightState
         targetBearing = event.getBearingRadians();
         targetAcquired = true;
         new EnemyBot(event).printBot();
+        
+        double radarTurn =
+    		// Absolute bearing to target
+    		robot.getHeadingRadians() + event.getBearingRadians()
+    		// Subtract current radar heading to get turn required
+    		- robot.getRadarHeadingRadians();
+
+        robot.setTurnRadarRightRadians(2.0 * Utils.normalRelativeAngle(radarTurn));
+        
+        double gunTurn = robot.getHeadingRadians() + event.getBearingRadians() - robot.getGunHeadingRadians();
+        robot.setTurnGunRightRadians(Utils.normalRelativeAngle(gunTurn));
+        robot.setFire(1.0);
+    	
     }
 
     // PRIVATE METHODS

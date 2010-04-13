@@ -45,7 +45,7 @@ public class NavigationStateExample extends ExtendedBot {
 	 * onScannedRobot: What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent event) {
-		fire(1);
+		//fire(1);
         super.onScannedRobot(event);
 	}
 
