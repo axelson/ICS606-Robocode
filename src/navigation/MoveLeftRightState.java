@@ -86,19 +86,36 @@ public class MoveLeftRightState
     public void execute() {
 //        robot.setTurnRightRadians(targetBearing);
 //        robot.setAhead(100);
-        robot.turnTo(Math.PI/2);
     	switch(state) {
     	case 0:
+    		System.out.println("Case 0");
 //    		robot.turnGunTo(targetBearing);
 //  		robot.turnGunTo(Math.PI);
     		robot.setTurnRadarRightRadians(Math.PI*2);
-    		if(targetAcquired) state++;
+            robot.turnTo(Math.PI/2);
+    		if(robot.getTurnRemaining() == 0) state++;
     		break;
     	case 1:
-    		System.out.println("\n\nTurning gun to: "+ targetBearing);
+    		System.out.println("Case 1");
+//    		System.out.println("\n\nTurning gun to: "+ targetBearing);
     		robot.turnGunTo(targetBearing);
+    		robot.setAhead(robot.getDistanceToRightWall());
 //    		robot.turnGunTo(Math.PI*3/2);
-    		state++;
+    		System.out.println("Distance to wall: "+ robot.getDistanceToRightWall());
+    		if(robot.getDistanceToRightWall() == 0) {
+    			state++;
+    		}
+    		break;
+    	case 2:
+    		System.out.println("Case 2");
+    		robot.turnTo(Math.PI*3/2);
+    		if(robot.getTurnRemaining() == 0) state++;
+    		break;
+    	case 3:
+    		System.out.println("Case 3");
+    		robot.setAhead(robot.getDistanceToLeftWall());
+    		System.out.println("distance to left wall: "+ robot.getDistanceToLeftWall());
+    		if(robot.getDistanceToLeftWall() == 0) state = 0;
     		break;
     	default:
 //    		System.out.println("Default");
