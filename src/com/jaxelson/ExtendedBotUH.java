@@ -17,15 +17,14 @@ public class ExtendedBotUH extends AdvancedRobot {
     }
     
     public Double getDistanceToRightWall() {
-    	double botRightEdge = getX();
+    	double botRightEdge = getX() + 18;		// Bot is 36 pixels wide
     	double rightWallLocation = getBattleFieldWidth();
     	return rightWallLocation - botRightEdge;
     }
     
     public Double getDistanceToLeftWall() {
-    	double botLeftEdge = getX();
-    	double leftWallLocation = getBattleFieldWidth();
-    	return leftWallLocation - botLeftEdge;
+    	double botLeftEdge = getX() - 18;		// Bot is 36 pixels wide
+    	return botLeftEdge;
     }
     /**
      * Turns to the desired angle
