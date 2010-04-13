@@ -1,10 +1,9 @@
 package navigation;
 
-import com.jaxelson.EnemyBot;
-
 import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
-import robocode.util.Utils;
+
+import com.jaxelson.EnemyBot;
 
 /**
  * Simple tracking state.
@@ -143,12 +142,12 @@ public class MoveLeftRightState
     public void onScannedRobot(ScannedRobotEvent event) {
         targetBearing = event.getBearingRadians();
         targetAcquired = true;
-        new EnemyBot(event).printBot();
+        EnemyBot target = new EnemyBot(event);
+        target.printBot();
         
         robot.narrowRadarLock(event);
         
-        double gunTurn = robot.getHeadingRadians() + event.getBearingRadians() - robot.getGunHeadingRadians();
-        robot.setTurnGunRightRadians(Utils.normalRelativeAngle(gunTurn));
+        robot.turnGunTo(target);
         robot.setFire(1.0);
     	
     }
