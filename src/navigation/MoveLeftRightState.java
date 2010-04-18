@@ -61,7 +61,7 @@ public class MoveLeftRightState
      */
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
-        robot.removeEventListener(ON_HIT_BY_BULLET, this);
+        robot.removeEventListener(ON_SCANNED_ROBOT, this);
         energy = 0;
         updateStatistics();
     }

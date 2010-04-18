@@ -99,7 +99,8 @@ public class WaveSurfing
      */
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
-        robot.removeEventListener(ON_HIT_BY_BULLET, this);
+        robot.removeEventListener(ON_SCANNED_ROBOT, this);
+        robot.removeEventListener(ON_PAINT, this);
         energy = 0;
         updateStatistics();
     }
