@@ -24,10 +24,10 @@ public class BotUtility {
 		return damage;
 	}
 	
-	public static void drawCircle(Graphics2D g, Point2D location, Integer radius) {
-    	final double x = location.getX();
-        final double y = location.getY();
-		final int diameter = radius*2;
+	public static void drawCircle(Graphics2D g, Point2D location, Double radius) {
+    	final double x = location.getX() - radius;
+        final double y = location.getY() - radius;
+		final double diameter = radius*2;
 		Shape circle = new Ellipse2D.Double(x, y, diameter, diameter);
         g.draw(circle);
     }

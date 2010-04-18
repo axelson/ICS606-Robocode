@@ -137,7 +137,7 @@ public class JasonStarterBot extends ExtendedBot {
 //        g.drawOval(new Double(getX()).intValue(), new Double(getY()).intValue(), 30, 30);
 //        g.drawOval(BotUtility.getCenterX(this).intValue(), BotUtility.getCenterY(this).intValue(), 100, 100);
         
-        drawCircleAroundBot(g, 200);
+        drawCircleAroundBot(g, 200d);
         
     }
 }

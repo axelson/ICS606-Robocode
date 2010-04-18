@@ -11,9 +11,9 @@ public class ExtendedBotUH extends TeamRobot {
 	public static final double HALF_PI = (Math.PI / 2);
 	public static final int botWidth = 36;
 	
-	public void drawCircleAroundBot(Graphics2D g, Integer radius) {
-    	double x = getX() - radius;
-        double y = getY() - radius;
+	public void drawCircleAroundBot(Graphics2D g, Double radius) {
+    	double x = getX();
+        double y = getY();
 		BotUtility.drawCircle(g, new ExtendedPoint2D(x, y), radius);
     }
 	
