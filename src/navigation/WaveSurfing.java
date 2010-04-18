@@ -1,8 +1,6 @@
 package navigation;
 
 import java.awt.Graphics2D;
-import java.awt.Robot;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -11,8 +9,9 @@ import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
-import com.jaxelson.EnemyBot;
 import com.jaxelson.BotUtility;
+import com.jaxelson.EnemyBot;
+import com.jaxelson.ExtendedPoint2D;
 
 /**
  * Wave Surfer based on http://robowiki.net/wiki/Wave_Surfing_Tutorial
@@ -30,8 +29,8 @@ public class WaveSurfing
 
 	public static int BINS = 47;
 	public static double _surfStats[] = new double[BINS];
-	public Point2D.Double _myLocation;     // our bot's location
-	public Point2D.Double _enemyLocation;  // enemy bot's location
+	public ExtendedPoint2D _myLocation;     // our bot's location
+	public ExtendedPoint2D _enemyLocation;  // enemy bot's location
 
 	public ArrayList<EnemyWave> _enemyWaves;
 	public ArrayList<Integer> _surfDirections;
@@ -156,7 +155,7 @@ public class WaveSurfing
      // If the _enemyWaves collection is empty, we must have missed the
         // detection of this wave somehow.
         if (!_enemyWaves.isEmpty()) {
-            Point2D.Double hitBulletLocation = new Point2D.Double(
+        	ExtendedPoint2D hitBulletLocation = new ExtendedPoint2D(
                 event.getBullet().getX(), event.getBullet().getY());
             EnemyWave hitWave = null;
 
@@ -166,7 +165,7 @@ public class WaveSurfing
 
                 if (Math.abs(ew.distanceTraveled -
                     _myLocation.distance(ew.fireLocation)) < 50
-                    && Math.abs(bulletVelocity(event.getBullet().getPower()) 
+                    && Math.abs(BotUtility.bulletVelocity(event.getBullet().getPower()) 
                         - ew.bulletVelocity) < 0.001) {
                     hitWave = ew;
                     break;
@@ -213,7 +212,7 @@ public class WaveSurfing
         robot.setFire(1.0);
         
         
-        _myLocation = new Point2D.Double(robot.getX(), robot.getY());
+        _myLocation = new ExtendedPoint2D(robot.getX(), robot.getY());
 
         double lateralVelocity = robot.getVelocity()*Math.sin(event.getBearingRadians());
         double absBearing = event.getBearingRadians() + robot.getHeadingRadians();
@@ -232,11 +231,11 @@ public class WaveSurfing
         	
             EnemyWave ew = new EnemyWave();
             ew.fireTime = robot.getTime() - 1;
-            ew.bulletVelocity = bulletVelocity(bulletPower);
-            ew.distanceTraveled = bulletVelocity(bulletPower);
+            ew.bulletVelocity = BotUtility.bulletVelocity(bulletPower);
+            ew.distanceTraveled = BotUtility.bulletVelocity(bulletPower);
             ew.direction = ((Integer)_surfDirections.get(2)).intValue();
             ew.directAngle = ((Double)_surfAbsBearings.get(2)).doubleValue();
-            ew.fireLocation = (Point2D.Double)_enemyLocation.clone(); // last tick
+            ew.fireLocation = (ExtendedPoint2D)_enemyLocation.clone(); // last tick
 
             _enemyWaves.add(ew);
         }
@@ -245,7 +244,7 @@ public class WaveSurfing
 
         // update after EnemyWave detection, because that needs the previous
         // enemy location as the source of the wave
-        _enemyLocation = project(_myLocation, absBearing, event.getDistance());
+        _enemyLocation = BotUtility.project(_myLocation, absBearing, event.getDistance());
 
         updateWaves();
 //        System.out.println("Now surfing");
@@ -269,7 +268,6 @@ public class WaveSurfing
     // Ordinarily I would use accessor methods exclusively to access instance
     // variables, but in the interest of speed I have allowed direct access.
 
-    private int state = 0;
     private boolean targetAcquired = false;
     
     /**
@@ -296,7 +294,7 @@ public class WaveSurfing
     
     
     class EnemyWave {
-    	Point2D.Double fireLocation;
+    	ExtendedPoint2D fireLocation;
     	long fireTime;
     	double bulletVelocity, directAngle, distanceTraveled;
     	int direction;
@@ -309,39 +307,11 @@ public class WaveSurfing
     	}
     }
 
-    /*
-     * Wave surfing Helper Functions
-     */
-
-
-
-    public double wallSmoothing(Point2D.Double botLocation, double angle, int orientation) {
-        while (!_fieldRect.contains(project(botLocation, angle, WALL_STICK))) {
+    public double wallSmoothing(ExtendedPoint2D botLocation, double angle, int orientation) {
+        while (!_fieldRect.contains(BotUtility.project(botLocation, angle, WALL_STICK))) {
             angle += orientation*0.05;
         }
         return angle;
-    }
-
-    public static Point2D.Double project(Point2D.Double sourceLocation,
-    		double angle, double length) {
-    	return new Point2D.Double(sourceLocation.x + Math.sin(angle) * length,
-    			sourceLocation.y + Math.cos(angle) * length);
-    }
-
-    public static double absoluteBearing(Point2D.Double source, Point2D.Double target) {
-        return Math.atan2(target.x - source.x, target.y - source.y);
-    }
-
-    public static double limit(double min, double value, double max) {
-        return Math.max(min, Math.min(value, max));
-    }
-
-    public static double bulletVelocity(double power) {
-        return (20.0 - (3.0*power));
-    }
-
-    public static double maxEscapeAngle(double velocity) {
-        return Math.asin(8.0/velocity);
     }
 
     public static void setBackAsFront(AdvancedRobot robot, double goAngle) {
@@ -403,12 +373,12 @@ public class WaveSurfing
 	 * @param targetLocation point we were hit
 	 * @return index of our stat array for that factor
 	 */
-	public static int getFactorIndex(EnemyWave ew, Point2D.Double targetLocation) {
-		double offsetAngle = (absoluteBearing(ew.fireLocation, targetLocation) - ew.directAngle);
+	public static int getFactorIndex(EnemyWave ew, ExtendedPoint2D targetLocation) {
+		double offsetAngle = (BotUtility.absoluteBearing(ew.fireLocation, targetLocation) - ew.directAngle);
         double factor = Utils.normalRelativeAngle(offsetAngle)
-            / maxEscapeAngle(ew.bulletVelocity) * ew.direction;
+            / BotUtility.maxEscapeAngle(ew.bulletVelocity) * ew.direction;
 
-        return (int)limit(0,
+        return (int)BotUtility.limit(0,
             (factor * ((BINS - 1) / 2)) + ((BINS - 1) / 2),
             BINS - 1);
     }
@@ -422,7 +392,7 @@ public class WaveSurfing
 	 * @param targetLocation
 	 *            point where we were hit
 	 */
-    public void logHit(EnemyWave ew, Point2D.Double targetLocation) {
+    public void logHit(EnemyWave ew, ExtendedPoint2D targetLocation) {
         int index = getFactorIndex(ew, targetLocation);
 
         for (int x = 0; x < BINS; x++) {
@@ -433,8 +403,8 @@ public class WaveSurfing
         }
     }
     
-    public Point2D.Double predictPosition(EnemyWave surfWave, int direction) {
-        Point2D.Double predictedPosition = (Point2D.Double)_myLocation.clone();
+    public ExtendedPoint2D predictPosition(EnemyWave surfWave, int direction) {
+        ExtendedPoint2D predictedPosition = (ExtendedPoint2D)_myLocation.clone();
         double predictedVelocity = robot.getVelocity();
         double predictedHeading = robot.getHeadingRadians();
         double maxTurning, moveAngle, moveDir;
@@ -444,7 +414,7 @@ public class WaveSurfing
 
         do {    // the rest of these code comments are rozu's
             moveAngle =
-                wallSmoothing(predictedPosition, absoluteBearing(surfWave.fireLocation,
+                wallSmoothing(predictedPosition, BotUtility.absoluteBearing(surfWave.fireLocation,
                 predictedPosition) + (direction * (Math.PI/2)), direction)
                 - predictedHeading;
             moveDir = 1;
@@ -459,17 +429,17 @@ public class WaveSurfing
             // maxTurning is built in like this, you can't turn more then this in one tick
             maxTurning = Math.PI/720d*(40d - 3d*Math.abs(predictedVelocity));
             predictedHeading = Utils.normalRelativeAngle(predictedHeading
-                + limit(-maxTurning, moveAngle, maxTurning));
+                + BotUtility.limit(-maxTurning, moveAngle, maxTurning));
 
             // this one is nice ;). if predictedVelocity and moveDir have
             // different signs you want to breack down
             // otherwise you want to accelerate (look at the factor "2")
             predictedVelocity +=
                 (predictedVelocity * moveDir < 0 ? 2*moveDir : moveDir);
-            predictedVelocity = limit(-8, predictedVelocity, 8);
+            predictedVelocity = BotUtility.limit(-8, predictedVelocity, 8);
 
             // calculate the new predicted position
-            predictedPosition = project(predictedPosition, predictedHeading,
+            predictedPosition = BotUtility.project(predictedPosition, predictedHeading,
                 predictedVelocity);
 
             counter++;
@@ -499,7 +469,7 @@ public class WaveSurfing
         double dangerLeft = checkDanger(surfWave, -1);
         double dangerRight = checkDanger(surfWave, 1);
 
-        double goAngle = absoluteBearing(surfWave.fireLocation, _myLocation);
+        double goAngle = BotUtility.absoluteBearing(surfWave.fireLocation, _myLocation);
         if (dangerLeft < dangerRight) {
             goAngle = wallSmoothing(_myLocation, goAngle - (Math.PI/2), -1);
         } else {

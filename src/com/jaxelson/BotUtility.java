@@ -3,8 +3,6 @@ package com.jaxelson;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-
 
 public class BotUtility {	
 	/**
@@ -24,7 +22,7 @@ public class BotUtility {
 		return damage;
 	}
 	
-	public static void drawCircle(Graphics2D g, Point2D location, Double radius) {
+	public static void drawCircle(Graphics2D g, ExtendedPoint2D location, Double radius) {
     	final double x = location.getX() - radius;
         final double y = location.getY() - radius;
 		final double diameter = radius*2;
@@ -33,5 +31,34 @@ public class BotUtility {
     }
 
 	public static final int botWidth = 36;
+
+	/**
+	 * Projects from a location a distance at an angle
+	 * @param sourceLocation location to start projection at
+	 * @param angle the angle to project at
+	 * @param length the length to project out to
+	 * @return the point projected out to
+	 */
+	public static ExtendedPoint2D project(ExtendedPoint2D sourceLocation,
+			double angle, double length) {
+		return new ExtendedPoint2D(sourceLocation.x + Math.sin(angle) * length,
+				sourceLocation.y + Math.cos(angle) * length);
+	}
+
+	public static double bulletVelocity(double power) {
+	    return (20.0 - (3.0*power));
+	}
+
+	public static double maxEscapeAngle(double velocity) {
+	    return Math.asin(8.0/velocity);
+	}
+
+	public static double limit(double min, double value, double max) {
+	    return Math.max(min, Math.min(value, max));
+	}
+
+	public static double absoluteBearing(ExtendedPoint2D source, ExtendedPoint2D target) {
+	    return Math.atan2(target.x - source.x, target.y - source.y);
+	}
 }
 
