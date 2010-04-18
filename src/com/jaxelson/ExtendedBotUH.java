@@ -4,12 +4,14 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
+import robocode.TeamRobot;
 import robocode.util.Utils;
 
-public class ExtendedBotUH extends AdvancedRobot {
-
+public class ExtendedBotUH extends TeamRobot {
+	public static final double DOUBLE_PI = (Math.PI * 2);
+	public static final double HALF_PI = (Math.PI / 2);
+	
     public void drawCenteredCircle(Graphics2D g, Integer radius) {
     	double x = getX() - radius;
         double y = getY() - radius;
@@ -79,15 +81,7 @@ public class ExtendedBotUH extends AdvancedRobot {
 		double desiredAngle = targetBearing + this.getHeadingRadians();
 		return turnGunTo(desiredAngle);
 	}
-	
-	public Double getCenterX() {
-		return new Double(this.getX());
-	}
-	
-	public Double getCenterY() {
-		return new Double(this.getY());
-	}
-	
+
 	public void narrowRadarLock(ScannedRobotEvent event) {
 		narrowRadarLock(event, 1.9);
 	}
@@ -107,4 +101,79 @@ public class ExtendedBotUH extends AdvancedRobot {
 
 		this.setTurnRadarRightRadians(factor * Utils.normalRelativeAngle(radarTurn));
 	}
+	
+	
+	public void turnGunToXY(double x, double y, double power)
+	{
+		double angle = calculateBearingToXYRadians(getX(),getY(),getHeadingRadians(),x,y);
+		if(angle > 0) {
+			setTurnRightRadians(angle/3);
+			setTurnGunRightRadians(2*angle/3);
+		} else {
+			setTurnLeftRadians(-1*angle/3);
+			setTurnGunLeftRadians(-2*angle/3);
+		}
+	}
+	
+	public void quickestScan(double velocity, Boolean left)
+	{
+		double magVelocity = Math.abs(velocity);
+		double turnRate = 10-0.75*magVelocity;
+		double totalRates = turnRate+20+45;
+		if(left)
+		{
+			setTurnLeftRadians(turnRate/totalRates*DOUBLE_PI);
+			setTurnGunLeftRadians(20f/totalRates*DOUBLE_PI);
+			setTurnRadarLeftRadians(45f/totalRates*DOUBLE_PI);
+		}
+		else
+		{
+			setTurnRightRadians(turnRate/totalRates*DOUBLE_PI);
+			setTurnGunRightRadians(20f/totalRates*DOUBLE_PI);
+			setTurnRadarRightRadians(45f/totalRates*DOUBLE_PI);
+		}
+	}
+	
+	public void quickScan(Boolean left)
+	{
+		int totalRates = 20+45;
+		if(left)
+		{
+			setTurnGunLeftRadians(20f/totalRates*DOUBLE_PI);
+			setTurnRadarLeftRadians(45f/totalRates*DOUBLE_PI);
+		}
+		else
+		{
+			setTurnGunRightRadians(20f/totalRates*DOUBLE_PI);
+			setTurnRadarRightRadians(45f/totalRates*DOUBLE_PI);
+		}	
+	}
+	
+	//--- Math helper functions---//
+	public double calculateBearingToXYRadians(double sourceX, double sourceY,
+	    double sourceHeading, double targetX, double targetY) {
+	        return normalizeRelativeAngleRadians(
+	           Math.atan2((targetX - sourceX), (targetY - sourceY)) -
+	               sourceHeading);
+	    }
+
+	public double normalizeAbsoluteAngleRadians(double angle) {
+	   if (angle < 0) {
+	        return (DOUBLE_PI + (angle % DOUBLE_PI));
+	    } else {
+	        return (angle % DOUBLE_PI);
+	    }
+	}
+
+	public static double normalizeRelativeAngleRadians(double angle) {
+	    double trimmedAngle = (angle % DOUBLE_PI);
+	    if (trimmedAngle > Math.PI) {
+	        return -(Math.PI - (trimmedAngle % Math.PI));
+	    } else if (trimmedAngle < -Math.PI) {
+	        return (Math.PI + (trimmedAngle % Math.PI));
+	    } else {
+	        return trimmedAngle;
+	    }
+	}
+	
 }
