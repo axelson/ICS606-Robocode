@@ -1,7 +1,17 @@
 package com.jaxelson;
 
 import java.awt.Graphics2D;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
+import robocode.RobocodeFileOutputStream;
 import robocode.ScannedRobotEvent;
 import robocode.TeamRobot;
 import robocode.util.Utils;
@@ -174,4 +184,55 @@ public class ExtendedBotUH extends TeamRobot {
 	    }
 	}
 	
+	public Object readCompressedObject(String filename)
+	{
+		try
+		{
+			ZipInputStream zipin = new ZipInputStream(new
+			FileInputStream(getDataFile(filename + ".zip")));
+			zipin.getNextEntry();
+			ObjectInputStream in = new ObjectInputStream(zipin);
+			Object obj = in.readObject();
+			in.close();
+			return obj;
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("File not found!");
+		}
+		catch (IOException e)
+		{
+			System.out.println("I/O Exception");
+		}
+		catch (ClassNotFoundException e)
+		{
+			System.out.println("Class not found! :-(");
+			e.printStackTrace();
+		}
+		return null;    //could not get the object
+	}
+	
+	/**
+	 * Write an object to disk
+	 * @param obj to write to disk
+	 * @param filename to write object to
+	 */
+	public void writeObject(Serializable obj, String filename)
+	{
+		try
+		{
+			ZipOutputStream zipout = new ZipOutputStream(
+	                    new RobocodeFileOutputStream(getDataFile(filename + ".zip")));
+			zipout.putNextEntry(new ZipEntry(filename));
+			ObjectOutputStream out = new ObjectOutputStream(zipout);
+			out.writeObject(obj);
+			out.flush();
+			zipout.closeEntry();
+			out.close();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Error writing Object:" + e);
+		}
+	}
 }
