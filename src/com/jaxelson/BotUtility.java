@@ -3,6 +3,18 @@ package com.jaxelson;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+
+import robocode.AdvancedRobot;
+import robocode.RobocodeFileOutputStream;
 
 public class BotUtility {	
 	/**
@@ -59,6 +71,60 @@ public class BotUtility {
 
 	public static double absoluteBearing(ExtendedPoint2D source, ExtendedPoint2D target) {
 	    return Math.atan2(target.x - source.x, target.y - source.y);
+	}
+	
+	
+	public Object readCompressedObject(String filename, AdvancedRobot robot)
+	{
+		try
+		{
+			ZipInputStream zipin = new ZipInputStream(new
+			FileInputStream(robot.getDataFile(filename + ".zip")));
+			zipin.getNextEntry();
+			ObjectInputStream in = new ObjectInputStream(zipin);
+			Object obj = in.readObject();
+			in.close();
+			return obj;
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("File not found!");
+		}
+		catch (IOException e)
+		{
+			System.out.println("I/O Exception");
+		}
+		catch (ClassNotFoundException e)
+		{
+			System.out.println("Class not found! :-(");
+			e.printStackTrace();
+		}
+		return null;    //could not get the object
+	}
+	
+	/**
+	 * Write an object to disk
+	 * @param obj to write to disk
+	 * @param filename to write object to
+	 */
+	public static void writeObject(Serializable obj, String filename, AdvancedRobot robot)
+	{
+		System.out.println("Writing to disk!");
+		try
+		{
+			ZipOutputStream zipout = new ZipOutputStream(
+	                    new RobocodeFileOutputStream(robot.getDataFile(filename + ".zip")));
+			zipout.putNextEntry(new ZipEntry(filename));
+			ObjectOutputStream out = new ObjectOutputStream(zipout);
+			out.writeObject(obj);
+			out.flush();
+			zipout.closeEntry();
+			out.close();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Error writing Object:" + e);
+		}
 	}
 }
 

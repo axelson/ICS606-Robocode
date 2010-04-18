@@ -2,6 +2,10 @@ package navigation;
 
 import java.io.Serializable;
 
+import robocode.AdvancedRobot;
+
+import com.jaxelson.BotUtility;
+
 /**
  * Container class for statistic data about a state's performance.
  * @author David McCoy
@@ -29,7 +33,7 @@ public class Statistics
      */
      public static final long MINIMUM_ENCOUNTERS = 3;
 
-    // PUBLIC METHODS
+     // PUBLIC METHODS
 
     /**
      * Returns the damage ratio received from the opponent represented
@@ -66,7 +70,8 @@ public class Statistics
      *               was running
      * @param time A long containing the amount of time the state was running
      */
-    public void update(int others, double damage, double time) {
+    public void update(int others, double damage, double time, AdvancedRobot robot) {
+    	System.out.println("updating");
         if (time > 50) {
             encounters++;
             if (others == 0) {
@@ -76,6 +81,8 @@ public class Statistics
             }
             damageRatio = ((damageRatio + (damage / time)) / 2);
         }
+//        writetodisk
+        BotUtility.writeObject(this, "NewFile", robot);
     }
 
     // INSTANCE VARIABLES

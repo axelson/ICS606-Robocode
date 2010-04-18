@@ -111,7 +111,8 @@ public class TrackState
     private void updateStatistics() {
         statistics.update(robot.getOthers(),
                           damageTaken,
-                          (robot.getTime() - startTime));
+                          (robot.getTime() - startTime),
+                          robot);
     }
 
     // INSTANCE VARIABLES
