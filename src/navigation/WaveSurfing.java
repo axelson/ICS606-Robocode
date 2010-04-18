@@ -83,7 +83,7 @@ public class WaveSurfing
      * @return A String containing the name of this State object
      */
     public String getName() {
-        return "MoveLeftRightState";
+        return "WaveSurfing";
     }
 
     /**
