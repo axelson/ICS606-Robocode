@@ -31,5 +31,7 @@ public class BotUtility {
 		Shape circle = new Ellipse2D.Double(x, y, diameter, diameter);
         g.draw(circle);
     }
+
+	public static final int botWidth = 36;
 }
 

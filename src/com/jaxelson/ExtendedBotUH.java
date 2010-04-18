@@ -9,7 +9,7 @@ import robocode.util.Utils;
 public class ExtendedBotUH extends TeamRobot {
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
-	public static final int botWidth = 36;
+	
 	
 	public void drawCircleAroundBot(Graphics2D g, Double radius) {
     	double x = getX();
@@ -18,13 +18,13 @@ public class ExtendedBotUH extends TeamRobot {
     }
 	
     public Double getDistanceToRightWall() {
-    	double botRightEdge = getX() + botWidth/2;
+    	double botRightEdge = getX() + BotUtility.botWidth/2;
     	double rightWallLocation = getBattleFieldWidth();
     	return rightWallLocation - botRightEdge;
     }
     
     public Double getDistanceToLeftWall() {
-    	double botLeftEdge = getX() - botWidth/2;
+    	double botLeftEdge = getX() - BotUtility.botWidth/2;
     	return botLeftEdge;
     }
     /**

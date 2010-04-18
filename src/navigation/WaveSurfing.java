@@ -1,6 +1,7 @@
 package navigation;
 
 import java.awt.Graphics2D;
+import java.awt.Robot;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import com.jaxelson.BotUtility;
 public class WaveSurfing
         extends State {
 
+	ExtendedBot robot;
 	/*
 	 * Wave surfing helper variables
 	 */
@@ -43,9 +45,10 @@ public class WaveSurfing
 	    * the amount of space we try to always have on either end of the tank
 	    * (extending straight out the front or back) before touching a wall.
 	    */
-	// TODO: fix magic numbers
-	    public static Rectangle2D.Double _fieldRect
-	        = new java.awt.geom.Rectangle2D.Double(18, 18, 764, 564);
+	    public Rectangle2D.Double _fieldRect
+	        = new java.awt.geom.Rectangle2D.Double(BotUtility.botWidth/2, BotUtility.botWidth/2,
+	        		robot.getBattleFieldWidth() - BotUtility.botWidth,
+	        		robot.getBattleFieldHeight() - BotUtility.botWidth);
 	    public static double WALL_STICK = 160;
 
 
