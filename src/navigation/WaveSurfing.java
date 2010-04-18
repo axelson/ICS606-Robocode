@@ -22,7 +22,6 @@ import com.jaxelson.ExtendedPoint2D;
 public class WaveSurfing
         extends State {
 
-	ExtendedBot robot;
 	/*
 	 * Wave surfing helper variables
 	 */
