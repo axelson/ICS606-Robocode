@@ -72,6 +72,7 @@ public class WaveSurfing
     public Statistics getStatistics() {
         if (statistics == null) {
             statistics = new Statistics();
+            BotUtility.writeObject(statistics, "filename", robot);
         }        
         return statistics;
     }
@@ -402,6 +403,8 @@ public class WaveSurfing
             // the next one, add 1 / 5; and so on...
             _surfStats[x] += 1.0 / (Math.pow(index - x, 2) + 1);
         }
+        System.out.println("Going to update stats");
+        updateStatistics();
     }
     
     public ExtendedPoint2D predictPosition(EnemyWave surfWave, int direction) {
