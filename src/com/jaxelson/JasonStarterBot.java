@@ -88,7 +88,7 @@ public class JasonStarterBot extends ExtendedBot {
     }
  
     public void onScannedRobot(ScannedRobotEvent e) {
-    	target = new EnemyBot(e);
+    	target = new EnemyBot(e, this);
 //  	System.out.println("Scanned bot: "+ target.toString());
 //    	target.printBot();
     	if(debug >= 2) {

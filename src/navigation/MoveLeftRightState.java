@@ -142,7 +142,7 @@ public class MoveLeftRightState
     public void onScannedRobot(ScannedRobotEvent event) {
         targetBearing = event.getBearingRadians();
         targetAcquired = true;
-        EnemyBot target = new EnemyBot(event);
+        EnemyBot target = new EnemyBot(event, robot);
         target.printBot();
         
         robot.narrowRadarLock(event);

@@ -1,6 +1,8 @@
 package com.jaxelson;
 
+import navigation.ExtendedBot;
 import robocode.ScannedRobotEvent;
+import com.jaxelson.ExtendedPoint2D;
 
 public class EnemyBot {
 	private String name;
@@ -13,13 +15,20 @@ public class EnemyBot {
 	private double velocity;
 	private long time;
 	private int priority;
+	
+	private ExtendedPoint2D location;
+	private ExtendedBot robot;
 
-	public EnemyBot(ScannedRobotEvent e) {
+	public EnemyBot(ScannedRobotEvent e, ExtendedBot theRobot) {
+		this.setRobot(theRobot);
     	this.update(e);
 	}
 
 	public void update(ScannedRobotEvent e) {
-    	this.setName(e.getName());
+		double angle = Math.toRadians((robot.getHeading() + e.getBearing())% 360);
+		ExtendedPoint2D tempPoint = new ExtendedPoint2D((int)(robot.getX() + Math.sin(angle) * e.getDistance()),
+				(int)(robot.getY() + Math.cos(angle) * e.getDistance()));
+		this.setName(e.getName());
     	this.setBearing(e.getBearing());
     	this.setBearingRadians(e.getBearingRadians());
     	this.setDistance(e.getDistance());
@@ -29,6 +38,9 @@ public class EnemyBot {
     	this.setVelocity(e.getVelocity());
     	this.setTime(e.getTime());
     	this.setPriority(e.getPriority());
+    	this.setLocation(tempPoint);
+    	
+   
 	}
 	
 	/**
@@ -53,6 +65,7 @@ public class EnemyBot {
 		System.out.println("Velocity: "+ this.getVelocity());
 		System.out.println("Time: "+ this.getTime());
 		System.out.println("Priority: "+ this.getPriority());
+		System.out.println("Location: " + this.getLocation());
 	}
 
 	public String toString() {
@@ -68,6 +81,7 @@ public class EnemyBot {
 		string.append(" Velocity: "+ this.getVelocity());
 		string.append(" Time: "+ this.getTime());
 		string.append(" Priority: "+ this.getPriority());
+		string.append(" Location: " + this.getLocation());
 		
 		return string.toString();
 	}
@@ -153,4 +167,27 @@ public class EnemyBot {
 	public int getPriority() {
 		return priority;
 	}
+	
+	public void setLocation(ExtendedPoint2D location) {
+		this.location = location;
+	}
+	
+	public ExtendedPoint2D getLocation() {
+		return location;
+	}
+
+	/**
+	 * @return the robot
+	 */
+	public ExtendedBot getRobot() {
+		return robot;
+	}
+
+	/**
+	 * @param robot the robot to set
+	 */
+	public void setRobot(ExtendedBot robot) {
+		this.robot = robot;
+	}
+
 }
