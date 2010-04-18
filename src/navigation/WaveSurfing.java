@@ -1,5 +1,6 @@
 package navigation;
 
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 import com.jaxelson.EnemyBot;
+import com.jaxelson.BotUtility;
 
 /**
  * Wave Surfer based on http://robowiki.net/wiki/Wave_Surfing_Tutorial
@@ -112,6 +114,7 @@ public class WaveSurfing
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
+        robot.addEventListener(ON_PAINT, this);
         
         /** A collection of waves, to surf and gather stats on */
         _enemyWaves = new ArrayList<EnemyWave>();
@@ -144,7 +147,7 @@ public class WaveSurfing
      *              robot being hit by a bullet
      */
     public void onHitByBullet(HitByBulletEvent event) {
-    	System.out.println("I've been hit!");
+//    	System.out.println("I've been hit!");
         damageTaken += BotMath.calculateDamage(event.getPower());
         
      // If the _enemyWaves collection is empty, we must have missed the
@@ -176,6 +179,19 @@ public class WaveSurfing
         }
     }
 
+    
+    public void onPaint(Graphics2D g) {
+    	System.out.println("Now Painting");
+        // Set the paint color to red
+        g.setColor(java.awt.Color.RED);
+        
+        // Draw waves
+        for(EnemyWave wave: _enemyWaves) {
+        	wave.drawWave(g);
+        }
+        
+    }
+    
     /**
      * This method will be called when your robot sees another robot.<br>
      * NOTE: This class provides a blank instantiation of this method.
@@ -186,7 +202,7 @@ public class WaveSurfing
         targetBearing = event.getBearingRadians();
         targetAcquired = true;
         EnemyBot target = new EnemyBot(event);
-        target.printBot();
+//        target.printBot();
         
         robot.narrowRadarLock(event);
         
@@ -229,7 +245,7 @@ public class WaveSurfing
         _enemyLocation = project(_myLocation, absBearing, event.getDistance());
 
         updateWaves();
-        System.out.println("Now surfing");
+//        System.out.println("Now surfing");
         doSurfing();
     	
     }
@@ -283,6 +299,10 @@ public class WaveSurfing
     	int direction;
 
     	public EnemyWave() {
+    	}
+    	
+    	public void drawWave(Graphics2D g) {
+    		BotUtility.drawCircle(g, fireLocation, 2);
     	}
     }
     

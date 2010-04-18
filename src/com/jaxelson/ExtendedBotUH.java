@@ -1,8 +1,6 @@
 package com.jaxelson;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
 
 import robocode.ScannedRobotEvent;
 import robocode.TeamRobot;
@@ -11,22 +9,22 @@ import robocode.util.Utils;
 public class ExtendedBotUH extends TeamRobot {
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
+	public static final int botWidth = 36;
 	
-    public void drawCenteredCircle(Graphics2D g, Integer radius) {
+	public void drawCircleAroundBot(Graphics2D g, Integer radius) {
     	double x = getX() - radius;
         double y = getY() - radius;
-		Shape circle = new Ellipse2D.Double(x, y, radius*2, radius*2);
-        g.draw(circle);
+		BotUtility.drawCircle(g, new ExtendedPoint2D(x, y), radius);
     }
-    
+	
     public Double getDistanceToRightWall() {
-    	double botRightEdge = getX() + 18;		// Bot is 36 pixels wide
+    	double botRightEdge = getX() + botWidth/2;
     	double rightWallLocation = getBattleFieldWidth();
     	return rightWallLocation - botRightEdge;
     }
     
     public Double getDistanceToLeftWall() {
-    	double botLeftEdge = getX() - 18;		// Bot is 36 pixels wide
+    	double botLeftEdge = getX() - botWidth/2;
     	return botLeftEdge;
     }
     /**

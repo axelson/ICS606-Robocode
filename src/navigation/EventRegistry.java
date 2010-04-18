@@ -10,7 +10,7 @@ public interface EventRegistry {
     /**
      * Total number of events available
      */
-    public static final int EVENT_COUNT = 12;
+    public static final int EVENT_COUNT = 13;
     /**
      * Used to subscribe to onBulletHit events.
      */
@@ -59,5 +59,9 @@ public interface EventRegistry {
      * Used to subscribe to onWin events.
      */
     public static final int ON_WIN = 11;
+    /**
+     * Used to subscribe to onPaint events.
+     */
+    public static final int ON_PAINT = 11;
 
 }

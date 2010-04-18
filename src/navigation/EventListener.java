@@ -1,5 +1,7 @@
 package navigation;
 
+import java.awt.Graphics2D;
+
 import robocode.*;
 
 /**
@@ -125,6 +127,15 @@ public abstract class EventListener
      *              win
      */
     public void onWin(WinEvent event) {
+    }
+    
+    /**
+     * This method will be called if your robot can pain.<br>
+     * NOTE: This class provides a blank instantiation of this method.
+     * @param event A WinEvent object containing the details of your robot's
+     *              win
+     */
+    public void onPaint(Graphics2D g) {
     }
 
 }

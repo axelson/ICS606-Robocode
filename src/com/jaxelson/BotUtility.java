@@ -1,5 +1,10 @@
 package com.jaxelson;
 
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+
 
 public class BotUtility {	
 	/**
@@ -18,5 +23,13 @@ public class BotUtility {
 		}
 		return damage;
 	}
+	
+	public static void drawCircle(Graphics2D g, Point2D location, Integer radius) {
+    	final double x = location.getX();
+        final double y = location.getY();
+		final int diameter = radius*2;
+		Shape circle = new Ellipse2D.Double(x, y, diameter, diameter);
+        g.draw(circle);
+    }
 }
 

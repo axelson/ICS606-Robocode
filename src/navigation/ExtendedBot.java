@@ -1,5 +1,6 @@
 package navigation;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import robocode.BulletHitBulletEvent;
@@ -46,6 +47,7 @@ public class ExtendedBot extends ExtendedBotUH
         listeners[ON_SCANNED_ROBOT] = scannedRobotListeners;
         listeners[ON_SKIPPED_TURN] = skippedTurnListeners;
         listeners[ON_WIN] = winListeners;
+        listeners[ON_PAINT] = paintListeners;
     }
 
     // PUBLIC METHODS
@@ -381,6 +383,23 @@ public class ExtendedBot extends ExtendedBotUH
             }
         }
     }
+    
+    /**
+     * This method when you can paint.
+     * @param event A ScannedRobotEvent object containing the details of your
+     *              robot's sighting of another robot
+     */
+    public void onPaint(Graphics2D g) {
+        synchronized (scannedRobotListeners) {
+            int listenerCount = paintListeners.size();
+            EventListener listener;
+            for (int listenerIndex = 0;listenerIndex < listenerCount;
+                    listenerIndex++) {
+                listener = paintListeners.get(listenerIndex);
+                listener.onPaint(g);
+            }
+        }
+    }
 
     // Instance Variables
 
@@ -452,5 +471,10 @@ public class ExtendedBot extends ExtendedBotUH
      * events.
      */
     protected ArrayList<EventListener> winListeners = new ArrayList<EventListener>();
+    /**
+     * Collection of EventListener objects registered to receive paint
+     * events.
+     */
+    protected ArrayList<EventListener> paintListeners = new ArrayList<EventListener>();
 
 }
