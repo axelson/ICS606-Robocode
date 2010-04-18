@@ -302,11 +302,9 @@ public class WaveSurfing
     	}
     	
     	public void drawWave(Graphics2D g) {
-    		BotUtility.drawCircle(g, fireLocation, 2);
+    		BotUtility.drawCircle(g, fireLocation, distanceTraveled);
     	}
     }
-    
-
 
     /*
      * Wave surfing Helper Functions
