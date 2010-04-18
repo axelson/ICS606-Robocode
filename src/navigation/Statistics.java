@@ -12,6 +12,10 @@ public class Statistics
     // CONSTANTS
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5588061429495690566L;
+	/**
      * The damage ratio to be returned if data is not available
      */
     public static final double DEFAULT_DAMAGE_RATIO = 0;

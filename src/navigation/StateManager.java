@@ -19,7 +19,7 @@ public class StateManager
      */
     public StateManager(ExtendedBot robot) {
         this.robot = robot;
-        states = new ArrayList();
+        states = new ArrayList<State>();
     }
 
     // PUBLIC METHODS
@@ -176,6 +176,6 @@ public class StateManager
     /**
      * Collection of available states.
      */
-    protected ArrayList states;
+    protected ArrayList<State> states;
 
 }

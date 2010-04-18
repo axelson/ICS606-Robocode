@@ -100,8 +100,7 @@ public class ExtendedBot extends ExtendedBotUH
             CommandListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (CommandListener)
-                                   commandListeners.get(listenerIndex);
+                listener = commandListeners.get(listenerIndex);
                 listener.disable();
             }
         }
@@ -117,8 +116,7 @@ public class ExtendedBot extends ExtendedBotUH
             CommandListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (CommandListener)
-                                   commandListeners.get(listenerIndex);
+                listener = commandListeners.get(listenerIndex);
                 listener.enable();
             }
         }
@@ -134,7 +132,7 @@ public class ExtendedBot extends ExtendedBotUH
             CommandListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (CommandListener)commandListeners.get(listenerIndex);
+                listener = commandListeners.get(listenerIndex);
                 listener.execute();
             }
         }
@@ -149,7 +147,7 @@ public class ExtendedBot extends ExtendedBotUH
      */
     public void addEventListener(int event, EventListener listener) {
         if (listener != null) {
-            ArrayList listenerCollection = listeners[event];
+            ArrayList<EventListener> listenerCollection = listeners[event];
             synchronized (listenerCollection) {
                 listenerCollection.add(listener);
             }
@@ -167,7 +165,7 @@ public class ExtendedBot extends ExtendedBotUH
      */
     public void removeEventListener(int event, EventListener listener) {
         if (listener != null) {
-            ArrayList listenerCollection = listeners[event];
+            ArrayList<EventListener> listenerCollection = listeners[event];
             synchronized (listenerCollection) {
                 listenerCollection.remove(listener);
             }
@@ -186,7 +184,7 @@ public class ExtendedBot extends ExtendedBotUH
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
                 listener =
-                        (EventListener)bulletHitListeners.get(listenerIndex);
+                        bulletHitListeners.get(listenerIndex);
                 listener.onBulletHit(event);
             }
         }
@@ -203,8 +201,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)
-                                   bulletHitBulletListeners.get(listenerIndex);
+                listener = bulletHitBulletListeners.get(listenerIndex);
                 listener.onBulletHitBullet(event);
             }
         }
@@ -222,8 +219,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)
-                                   bulletMissedListeners.get(listenerIndex);
+                listener = bulletMissedListeners.get(listenerIndex);
                 listener.onBulletMissed(event);
             }
         }
@@ -239,8 +235,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)
-                                   customEventListeners.get(listenerIndex);
+                listener = customEventListeners.get(listenerIndex);
                 listener.onCustomEvent(event);
             }
         }
@@ -257,7 +252,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)deathListeners.get(listenerIndex);
+                listener = deathListeners.get(listenerIndex);
                 listener.onDeath(event);
             }
         }
@@ -274,8 +269,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)
-                                   hitByBulletListeners.get(listenerIndex);
+                listener = hitByBulletListeners.get(listenerIndex);
                 listener.onHitByBullet(event);
             }
         }
@@ -292,7 +286,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)hitRobotListeners.get(listenerIndex);
+                listener = hitRobotListeners.get(listenerIndex);
                 listener.onHitRobot(event);
             }
         }
@@ -309,7 +303,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)hitWallListeners.get(listenerIndex);
+                listener = hitWallListeners.get(listenerIndex);
                 listener.onHitWall(event);
             }
         }
@@ -326,8 +320,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)
-                                   robotDeathListeners.get(listenerIndex);
+                listener = robotDeathListeners.get(listenerIndex);
                 listener.onRobotDeath(event);
             }
         }
@@ -344,8 +337,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)
-                                   scannedRobotListeners.get(listenerIndex);
+                listener = scannedRobotListeners.get(listenerIndex);
                 listener.onScannedRobot(event);
             }
         }
@@ -367,8 +359,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)
-                                   skippedTurnListeners.get(listenerIndex);
+                listener = skippedTurnListeners.get(listenerIndex);
                 listener.onSkippedTurn(event);
             }
         }
@@ -385,7 +376,7 @@ public class ExtendedBot extends ExtendedBotUH
             EventListener listener;
             for (int listenerIndex = 0;listenerIndex < listenerCount;
                     listenerIndex++) {
-                listener = (EventListener)winListeners.get(listenerIndex);
+                listener = winListeners.get(listenerIndex);
                 listener.onWin(event);
             }
         }
@@ -396,70 +387,70 @@ public class ExtendedBot extends ExtendedBotUH
     /**
      * Collection of CommandListener objects registered to receive commands.
      */
-    protected ArrayList commandListeners = new ArrayList();
+    protected ArrayList<CommandListener> commandListeners = new ArrayList<CommandListener>();
     /**
      * The listener table used to register EventListeners by event.
      */
-    protected ArrayList[] listeners = new ArrayList[EVENT_COUNT];
+    protected ArrayList<EventListener>[] listeners = new ArrayList[EVENT_COUNT];
     /**
      * Collection of EventListener objects registered to receive bullet hit
      * events.
      */
-    protected ArrayList bulletHitListeners = new ArrayList();
+    protected ArrayList<EventListener> bulletHitListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive bullet hit
      * bullet events.
      */
-    protected ArrayList bulletHitBulletListeners = new ArrayList();
+    protected ArrayList<EventListener> bulletHitBulletListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive bullet missed
      * events.
      */
-    protected ArrayList bulletMissedListeners = new ArrayList();
+    protected ArrayList<EventListener> bulletMissedListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive custom
      * events.
      */
-    protected ArrayList customEventListeners = new ArrayList();
+    protected ArrayList<EventListener> customEventListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive death
      * events.
      */
-    protected ArrayList deathListeners = new ArrayList();
+    protected ArrayList<EventListener> deathListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive hit by bullet
      * events.
      */
-    protected ArrayList hitByBulletListeners = new ArrayList();
+    protected ArrayList<EventListener> hitByBulletListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive hit robot
      * events.
      */
-    protected ArrayList hitRobotListeners = new ArrayList();
+    protected ArrayList<EventListener> hitRobotListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive hit wall
      * events.
      */
-    protected ArrayList hitWallListeners = new ArrayList();
+    protected ArrayList<EventListener> hitWallListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive robot death
      * events.
      */
-    protected ArrayList robotDeathListeners = new ArrayList();
+    protected ArrayList<EventListener> robotDeathListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive scanned robot
      * events.
      */
-    protected ArrayList scannedRobotListeners = new ArrayList();
+    protected ArrayList<EventListener> scannedRobotListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive skipped turn
      * events.
      */
-    protected ArrayList skippedTurnListeners = new ArrayList();
+    protected ArrayList<EventListener> skippedTurnListeners = new ArrayList<EventListener>();
     /**
      * Collection of EventListener objects registered to receive win
      * events.
      */
-    protected ArrayList winListeners = new ArrayList();
+    protected ArrayList<EventListener> winListeners = new ArrayList<EventListener>();
 
 }
