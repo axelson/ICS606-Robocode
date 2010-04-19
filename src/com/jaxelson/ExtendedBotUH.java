@@ -3,6 +3,7 @@ package com.jaxelson;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
+import robocode.Rules;
 import robocode.ScannedRobotEvent;
 import robocode.TeamRobot;
 import robocode.util.Utils;
@@ -215,5 +216,45 @@ public class ExtendedBotUH extends TeamRobot {
 
 		setTurnGunRightRadians(Utils.normalRelativeAngle(theta - getGunHeadingRadians()));
 		fire(bulletPower);
+	}
+	
+	public void linearTargetingExact(EnemyBot target) {
+		final double FIREPOWER = 2;
+	    final double ROBOT_WIDTH = 16,ROBOT_HEIGHT = 16;
+	    // Variables prefixed with e- refer to enemy, b- refer to bullet and r- refer to robot
+	    final double eAbsBearing = getHeadingRadians() + target.getBearingRadians();
+	    final double rX = getX(), rY = getY(),
+	        bV = Rules.getBulletSpeed(FIREPOWER);
+	    final double eX = rX + target.getDistance()*Math.sin(eAbsBearing),
+	        eY = rY + target.getDistance()*Math.cos(eAbsBearing),
+	        eV = target.getVelocity(),
+	        eHd = target.getHeadingRadians();
+	    // These constants make calculating the quadratic coefficients below easier
+	    final double A = (eX - rX)/bV;
+	    final double B = eV/bV*Math.sin(eHd);
+	    final double C = (eY - rY)/bV;
+	    final double D = eV/bV*Math.cos(eHd);
+	    // Quadratic coefficients: a*(1/t)^2 + b*(1/t) + c = 0
+	    final double a = A*A + C*C;
+	    final double b = 2*(A*B + C*D);
+	    final double c = (B*B + D*D - 1);
+	    final double discrim = b*b - 4*a*c;
+	    if (discrim >= 0) {
+	        // Reciprocal of quadratic formula
+	        final double t1 = 2*a/(-b - Math.sqrt(discrim));
+	        final double t2 = 2*a/(-b + Math.sqrt(discrim));
+	        final double t = Math.min(t1, t2) >= 0 ? Math.min(t1, t2) : Math.max(t1, t2);
+	        // Assume enemy stops at walls
+	        final double endX = BotUtility.limit(
+	            eX + eV*t*Math.sin(eHd),
+	            ROBOT_WIDTH/2, getBattleFieldWidth() - ROBOT_WIDTH/2);
+	        final double endY = BotUtility.limit(
+	            eY + eV*t*Math.cos(eHd),
+	            ROBOT_HEIGHT/2, getBattleFieldHeight() - ROBOT_HEIGHT/2);
+	        setTurnGunRightRadians(Utils.normalRelativeAngle(
+	            Math.atan2(endX - rX, endY - rY)
+	            - getGunHeadingRadians()));
+	        setFire(FIREPOWER);
+	    }
 	}
 }
