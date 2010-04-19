@@ -180,15 +180,14 @@ public class ExtendedBotUH extends TeamRobot {
         this.setFire(firePower);
 	}
 	
-	public void linearTargeting(ScannedRobotEvent e) {
+	public void linearTargeting(EnemyBot target) {
 		double bulletPower = Math.min(3.0,getEnergy());
 		double myX = getX();
 		double myY = getY();
-		double absoluteBearing = getHeadingRadians() + e.getBearingRadians();
-		double enemyX = getX() + e.getDistance() * Math.sin(absoluteBearing);
-		double enemyY = getY() + e.getDistance() * Math.cos(absoluteBearing);
-		double enemyHeading = e.getHeadingRadians();
-		double enemyVelocity = e.getVelocity();
+		double enemyX = target.getX();
+		double enemyY = target.getY();
+		double enemyHeading = target.getHeadingRadians();
+		double enemyVelocity = target.getVelocity();
 
 
 		double deltaTime = 0;
@@ -199,14 +198,15 @@ public class ExtendedBotUH extends TeamRobot {
 		      Point2D.Double.distance(myX, myY, predictedX, predictedY)){		
 			predictedX += Math.sin(enemyHeading) * enemyVelocity;	
 			predictedY += Math.cos(enemyHeading) * enemyVelocity;
-			if(	predictedX < 18.0 
-				|| predictedY < 18.0
-				|| predictedX > battleFieldWidth - 18.0
-				|| predictedY > battleFieldHeight - 18.0){
-				predictedX = Math.min(Math.max(18.0, predictedX), 
-		                    battleFieldWidth - 18.0);	
-				predictedY = Math.min(Math.max(18.0, predictedY), 
-		                    battleFieldHeight - 18.0);
+			double halfBotWidth = BotUtility.botWidth/2;
+			if(	predictedX < halfBotWidth 
+				|| predictedY < halfBotWidth
+				|| predictedX > battleFieldWidth - halfBotWidth
+				|| predictedY > battleFieldHeight - halfBotWidth){
+				predictedX = Math.min(Math.max(halfBotWidth, predictedX), 
+		                    battleFieldWidth - halfBotWidth);	
+				predictedY = Math.min(Math.max(halfBotWidth, predictedY), 
+		                    battleFieldHeight - halfBotWidth);
 				break;
 			}
 		}
