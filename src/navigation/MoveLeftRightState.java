@@ -12,6 +12,7 @@ import com.jaxelson.EnemyBot;
 public class MoveLeftRightState
         extends State {
 
+	EnemyBot _target;
     // CONSTRUCTORS
 
     /**
@@ -77,6 +78,8 @@ public class MoveLeftRightState
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
+        
+        robot.setTurnRadarLeftRadians(90);
     }
 
     /**
@@ -86,6 +89,7 @@ public class MoveLeftRightState
     public void execute() {
 //        robot.setTurnRightRadians(targetBearing);
 //        robot.setAhead(100);
+    	state=4;
     	switch(state) {
     	case 0:
 //    		System.out.println("Case 0");
@@ -117,6 +121,9 @@ public class MoveLeftRightState
 //    		System.out.println("distance to left wall: "+ robot.getDistanceToLeftWall());
     		if(robot.getDistanceToLeftWall() == 0) state = 0;
     		break;
+    	case 4:
+//    		robot.setTurnRadarLeftRadians(90);
+    		break;
     	default:
 //    		System.out.println("Default");
     	}
@@ -142,13 +149,18 @@ public class MoveLeftRightState
     public void onScannedRobot(ScannedRobotEvent event) {
         targetBearing = event.getBearingRadians();
         targetAcquired = true;
-        EnemyBot target = new EnemyBot(event, robot);
+        if(_target == null) {
+        	_target = new EnemyBot(event, robot);
+        } else {
+        	_target.update(event);
+        }
 //        target.printBot();
         
         robot.narrowRadarLock(event);
         
-        robot.turnGunTo(target);
-        robot.setFire(1.0);
+//        robot.headOnTargeting(_target, 1.0);
+//        robot.linearTargetingExact(_target);
+        robot.circularTargeting(_target);
     	
     }
 
