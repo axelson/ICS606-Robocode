@@ -213,8 +213,6 @@ public class ExtendedBotUH extends TeamRobot {
 		double theta = Utils.normalAbsoluteAngle(Math.atan2(
 		    predictedX - getX(), predictedY - getY()));
 
-		setTurnRadarRightRadians(
-		    Utils.normalRelativeAngle(absoluteBearing - getRadarHeadingRadians()));
 		setTurnGunRightRadians(Utils.normalRelativeAngle(theta - getGunHeadingRadians()));
 		fire(bulletPower);
 	}
