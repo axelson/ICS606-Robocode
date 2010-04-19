@@ -17,7 +17,7 @@ public class Chris01Bot01 extends ExtendedBot {
 	final int MAX_NO_ENEMIES = 10;
 	
 	 //ArrayList<EnemyBot> enemies = new ArrayList<EnemyBot>();
-	 Hashtable<String,EnemyBot> enemies = new Hashtable<String,EnemyBot>();
+	 Hashtable<String,EnemyBot> _enemies = new Hashtable<String,EnemyBot>();
 	 
 	 int state = 0;
 	 
@@ -49,13 +49,12 @@ public class Chris01Bot01 extends ExtendedBot {
 	 * onScannedRobot: What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if(isNewEnemy(e))
-		{
+		if(_enemies.containsKey(e.getName())) {
+			updateEnemies(e, _enemies);
+		} else {
 			EnemyBot temp = new EnemyBot(e, this);
-			enemies.put(e.getName(),temp);
+			_enemies.put(e.getName(),temp);
 		}
-		else
-			updateEnemy(e);
 	}
 
 	/**
@@ -72,47 +71,21 @@ public class Chris01Bot01 extends ExtendedBot {
 	}
 	
 	public void onPaint(Graphics2D g) {
-		for(EnemyBot enemy : enemies.values()) {
-			paintTrackingRectangle(enemy,g);
-		}
-	}
-	
-	public void paintTrackingRectangle(EnemyBot robot, Graphics2D g) {
-		// Set the paint color to a red half transparent color
+		 // Set the paint color to a red half transparent color
 	     g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
 	 
-	     int x = (int)robot.getLocation().x;
-	     int y = (int)robot.getLocation().y;
-	     
-	     // Draw a line from our robot to the scanned robot
-	     g.drawLine(x, y, (int)getX(), (int)getY());
-	 
-	     // Draw a filled square on top of the scanned robot that covers it
-	     g.fillRect(x - 20, y - 20, 40, 40);
-	}
-	
-	public void updateEnemy(ScannedRobotEvent e) {
-		for(int i = 0; i < enemies.size(); i++)
-			if(enemies.get(i).getName() == e.getName())
-			{
-				enemies.get(i).update(e);
-				break;
-			}
-	}
-	
-	public Boolean isNewEnemy(ScannedRobotEvent e) {
-		int noEnemies = enemies.size();
-		String eName = e.getName();
-		if(noEnemies > MAX_NO_ENEMIES)
-			return false;
-		else
-		{
-			for(int i = 0; i < noEnemies; i++)
-				if(enemies.get(i).getName() == eName)
-					return false;
-			return true;
+		for(EnemyBot enemy : _enemies.values()) {
+			enemy.paintTrackingRectangle(this,g);
 		}
 	}
 	
-	
+	public void updateEnemies(ScannedRobotEvent e, Hashtable<String, EnemyBot> enemies) {
+		String enemyName = e.getName();
+		
+		if(_enemies.containsKey(enemyName)) {
+			enemies.put(enemyName, new EnemyBot(e, this));
+		} else {
+			enemies.get(enemyName).update(e);
+		}
+	}
 }
