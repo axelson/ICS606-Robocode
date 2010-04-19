@@ -5,27 +5,31 @@ import robocode.ScannedRobotEvent;
 import com.jaxelson.ExtendedPoint2D;
 
 public class EnemyBot {
-	private String name;
-	private double bearing;
-	private double bearingRadians;
-	private double distance;
-	private double energy;
-	private double heading;
-	private double headingRadians;
-	private double velocity;
-	private long time;
-	private int priority;
+	private String _name;
+	private double _bearing;
+	private double _bearingRadians;
+	private double _distance;
+	private double _energy;
+	private double _heading;
+	private double _headingRadians;
+	private double _oldHeading;
+	private double _oldHeadingRadians;
+	private double _velocity;
+	private long _time;
+	private int _priority;
 	
-	private ExtendedPoint2D location;
+	private ExtendedPoint2D _location;
 	/** The robot that created this EnemyBot */
-	private ExtendedBot robot;
+	private ExtendedBot _robot;
 
-	public EnemyBot(ScannedRobotEvent e, ExtendedBot theRobot) {
-		this.setRobot(theRobot);
+	public EnemyBot(ScannedRobotEvent e, ExtendedBot robot) {
+		this.setRobot(robot);
     	this.update(e);
 	}
 
 	public void update(ScannedRobotEvent e) {
+		savePreviousValues();
+		
 		this.setName(e.getName());
     	this.setBearing(e.getBearing());
     	this.setBearingRadians(e.getBearingRadians());
@@ -37,12 +41,20 @@ public class EnemyBot {
     	this.setTime(e.getTime());
     	this.setPriority(e.getPriority());
     	
-		double angle = robot.getHeadingRadians() + e.getBearingRadians();
-		ExtendedPoint2D enemyLocation = new ExtendedPoint2D((robot.getX() + Math.sin(angle) * e.getDistance()),
-				(robot.getY() + Math.cos(angle) * e.getDistance()));
+		double angle = _robot.getHeadingRadians() + e.getBearingRadians();
+		ExtendedPoint2D enemyLocation = new ExtendedPoint2D((_robot.getX() + Math.sin(angle) * e.getDistance()),
+				(_robot.getY() + Math.cos(angle) * e.getDistance()));
     	this.setLocation(enemyLocation);
 	}
 	
+	/**
+	 * Saves previous values from last scan
+	 */
+	private void savePreviousValues() {
+		setOldHeading(_heading);
+		setOldHeadingRadians(_headingRadians);
+	}
+
 	/**
 	 * Returns time since this robot was last seen
 	 * @param currentTime This is only required until I can figure out a workaround
@@ -51,7 +63,7 @@ public class EnemyBot {
 	public long timeSinceSeen() {
 		//Doesn't compile
 		//System.out.println(StatusEvent.getStatus().getTime());
-		return robot.getTime() - this.getTime();
+		return _robot.getTime() - this.getTime();
 	}
 	
 	public void printBot() {
@@ -87,11 +99,11 @@ public class EnemyBot {
 	}
 	
 	public double getX() {
-		return location.getX();
+		return _location.getX();
 	}
 	
 	public double getY() {
-		return location.getY();
+		return _location.getY();
 	}
 	
 	/***************************/
@@ -99,105 +111,135 @@ public class EnemyBot {
 	/***************************/
 
 	public String getName() {
-		return name;
+		return _name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this._name = name;
 	}
 
 	public void setBearing(double bearing) {
-		this.bearing = bearing;
+		this._bearing = bearing;
 	}
 
 	public double getBearing() {
-		return bearing;
+		return _bearing;
+	}
+	
+	/**
+	 * @return the _oldHeading
+	 */
+	public double getOldHeading() {
+		return _oldHeading;
 	}
 
+	/**
+	 * @param oldHeading the _oldHeading to set
+	 */
+	public void setOldHeading(double oldHeading) {
+		_oldHeading = oldHeading;
+	}
+
+
 	public void setBearingRadians(double bearingRadians) {
-		this.bearingRadians = bearingRadians;
+		this._bearingRadians = bearingRadians;
 	}
 
 	public double getBearingRadians() {
-		return bearingRadians;
+		return _bearingRadians;
+	}
+	
+	/**
+	 * @return the _oldHeadingRadians
+	 */
+	public double getOldHeadingRadians() {
+		return _oldHeadingRadians;
 	}
 
+	/**
+	 * @param oldHeadingRadians the _oldHeadingRadians to set
+	 */
+	public void setOldHeadingRadians(double oldHeadingRadians) {
+		_oldHeadingRadians = oldHeadingRadians;
+	}
+
+
 	public void setDistance(double distance) {
-		this.distance = distance;
+		this._distance = distance;
 	}
 
 	public double getDistance() {
-		return distance;
+		return _distance;
 	}
 
 	public void setEnergy(double energy) {
-		this.energy = energy;
+		this._energy = energy;
 	}
 
 	public double getEnergy() {
-		return energy;
+		return _energy;
 	}
 
 	public void setHeading(double heading) {
-		this.heading = heading;
+		this._heading = heading;
 	}
 
 	public double getHeading() {
-		return heading;
+		return _heading;
 	}
 
 	public void setHeadingRadians(double headingRadians) {
-		this.headingRadians = headingRadians;
+		this._headingRadians = headingRadians;
 	}
 
 	public double getHeadingRadians() {
-		return headingRadians;
+		return _headingRadians;
 	}
 
 	public void setVelocity(double velocity) {
-		this.velocity = velocity;
+		this._velocity = velocity;
 	}
 
 	public double getVelocity() {
-		return velocity;
+		return _velocity;
 	}
 
 	public void setTime(long time) {
-		this.time = time;
+		this._time = time;
 	}
 
 	public long getTime() {
-		return time;
+		return _time;
 	}
 
 	public void setPriority(int priority) {
-		this.priority = priority;
+		this._priority = priority;
 	}
 
 	public int getPriority() {
-		return priority;
+		return _priority;
 	}
 	
 	public void setLocation(ExtendedPoint2D location) {
-		this.location = location;
+		this._location = location;
 	}
 	
 	public ExtendedPoint2D getLocation() {
-		return location;
+		return _location;
 	}
 
 	/**
 	 * @return the robot
 	 */
 	public ExtendedBot getRobot() {
-		return robot;
+		return _robot;
 	}
 
 	/**
 	 * @param robot the robot to set
 	 */
 	public void setRobot(ExtendedBot robot) {
-		this.robot = robot;
+		this._robot = robot;
 	}
 
 }
