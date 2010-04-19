@@ -1,8 +1,9 @@
 package com.jaxelson;
 
-import navigation.ExtendedBot;
+import java.awt.Graphics2D;
+
+import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
-import com.jaxelson.ExtendedPoint2D;
 
 public class EnemyBot {
 	private String _name;
@@ -20,13 +21,17 @@ public class EnemyBot {
 	
 	private ExtendedPoint2D _location;
 	/** The robot that created this EnemyBot */
-	private ExtendedBot _robot;
+	private AdvancedRobot _robot;
 
-	public EnemyBot(ScannedRobotEvent e, ExtendedBot robot) {
+	public EnemyBot(ScannedRobotEvent e, AdvancedRobot robot) {
 		this.setRobot(robot);
     	this.update(e);
 	}
 
+	/**
+	 * Update the information about this enemy
+	 * @param e ScannedRobotEvent information to use to update
+	 */
 	public void update(ScannedRobotEvent e) {
 		savePreviousValues();
 		
@@ -231,15 +236,26 @@ public class EnemyBot {
 	/**
 	 * @return the robot
 	 */
-	public ExtendedBot getRobot() {
+	public AdvancedRobot getRobot() {
 		return _robot;
 	}
 
 	/**
 	 * @param robot the robot to set
 	 */
-	public void setRobot(ExtendedBot robot) {
+	public void setRobot(AdvancedRobot robot) {
 		this._robot = robot;
+	}
+
+	public void paintTrackingRectangle(AdvancedRobot robot, Graphics2D g) {
+	     int x = (int)getX();
+	     int y = (int)getY();
+	     
+	     // Draw a line from our robot to the scanned robot
+	     g.drawLine(x, y, (int)robot.getX(), (int)robot.getY());
+	 
+	     // Draw a filled square on top of the scanned robot that covers it
+	     g.fillRect(x - 20, y - 20, 40, 40);
 	}
 
 }
