@@ -17,6 +17,7 @@ public class EnemyBot {
 	private int priority;
 	
 	private ExtendedPoint2D location;
+	/** The robot that created this EnemyBot */
 	private ExtendedBot robot;
 
 	public EnemyBot(ScannedRobotEvent e, ExtendedBot theRobot) {
@@ -25,9 +26,6 @@ public class EnemyBot {
 	}
 
 	public void update(ScannedRobotEvent e) {
-		double angle = Math.toRadians((robot.getHeading() + e.getBearing())% 360);
-		ExtendedPoint2D tempPoint = new ExtendedPoint2D((int)(robot.getX() + Math.sin(angle) * e.getDistance()),
-				(int)(robot.getY() + Math.cos(angle) * e.getDistance()));
 		this.setName(e.getName());
     	this.setBearing(e.getBearing());
     	this.setBearingRadians(e.getBearingRadians());
@@ -38,9 +36,11 @@ public class EnemyBot {
     	this.setVelocity(e.getVelocity());
     	this.setTime(e.getTime());
     	this.setPriority(e.getPriority());
-    	this.setLocation(tempPoint);
     	
-   
+		double angle = robot.getHeadingRadians() + e.getBearingRadians();
+		ExtendedPoint2D enemyLocation = new ExtendedPoint2D((robot.getX() + Math.sin(angle) * e.getDistance()),
+				(robot.getY() + Math.cos(angle) * e.getDistance()));
+    	this.setLocation(enemyLocation);
 	}
 	
 	/**
@@ -48,12 +48,12 @@ public class EnemyBot {
 	 * @param currentTime This is only required until I can figure out a workaround
 	 * @return the time since this robot was last seen
 	 */
-	public long timeSinceSeen(long currentTime) {
+	public long timeSinceSeen() {
 		//Doesn't compile
 		//System.out.println(StatusEvent.getStatus().getTime());
-		return currentTime - this.getTime();
+		return robot.getTime() - this.getTime();
 	}
-
+	
 	public void printBot() {
 		System.out.println("Name: "+ this.getName());
 		System.out.println("Bearing: "+ this.getBearing());
@@ -86,7 +86,17 @@ public class EnemyBot {
 		return string.toString();
 	}
 	
-	// Getters and Setters
+	public double getX() {
+		return location.getX();
+	}
+	
+	public double getY() {
+		return location.getY();
+	}
+	
+	/***************************/
+	/* Getters and Setters     */
+	/***************************/
 
 	public String getName() {
 		return name;

@@ -66,7 +66,7 @@ public class JasonStarterBot extends ExtendedBot {
         	case 3:
 //        		System.out.println("Target: "+ target.toString());
         		System.out.println("My bot time:"+ getTime());
-        		System.out.println("Last seen time: "+ target.timeSinceSeen(this.getTime()));
+        		System.out.println("Last seen time: "+ target.timeSinceSeen());
         		System.out.println();
         		//setTurnGunRightRadians(3);
         	}
