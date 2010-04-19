@@ -1,0 +1,8 @@
+#Battle Properties
+#Sun Apr 18 18:09:26 HST 2010
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battleField.width=1000
+robocode.battle.selectedRobots=navigation.NavigationStateExample*,sample.Walls
+robocode.battle.rules.inactivityTime=450
+robocode.battleField.height=1000
