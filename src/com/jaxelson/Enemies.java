@@ -45,6 +45,14 @@ public class Enemies {
 		}
 	}
 	
+	public EnemyBot get(ScannedRobotEvent e) {
+		return get(e.getName());
+	}
+	
+	public EnemyBot get(String enemyName) {
+		return _enemies.get(enemyName);
+	}
+	
 	public void remove(RobotDeathEvent e) {
 		_enemies.remove(e.getName());
 	}
