@@ -206,7 +206,7 @@ public class WaveSurfing
 
     
     public void onPaint(Graphics2D g) {
-    	System.out.println("Now Painting");
+    	if(_debug >= 1) System.out.println("Now Painting");
         // Set the paint color to red
         g.setColor(java.awt.Color.RED);
         
