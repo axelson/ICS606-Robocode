@@ -288,7 +288,8 @@ public class ExtendedBotUH extends TeamRobot {
 	}
 	
 	public void circularTargeting(EnemyBot target) {
-		circularTargeting(target, 1.0);
+		final double defaultFirepower = 1.0;
+		circularTargeting(target, defaultFirepower);
 	}
 	
 	public void circularTargeting(EnemyBot target, double firePower) {
