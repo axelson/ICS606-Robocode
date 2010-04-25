@@ -300,30 +300,4 @@ public class ExtendedBotUH extends TeamRobot {
 		    theta - getGunHeadingRadians()));
 		fire(bulletPower);
 	}
-
-	/**
-	 * Updates records of enemies
-	 * @param e ScannedRobotEvent info about a robot
-	 * @param enemies list of all known enemies
-	 */
-	public void updateEnemies(ScannedRobotEvent e, Hashtable<String, EnemyBot> enemies) {
-		String enemyName = e.getName();
-		
-		if(enemies.containsKey(enemyName)) {
-			enemies.get(enemyName).update(e);
-		} else {
-			enemies.put(enemyName, new EnemyBot(e, this));
-		}
-	}
-
-	/**
-	 * Paint all enemies on the battlefield
-	 * @param g GraphicsObject
-	 * @param enemies All known enemies
-	 */
-	public void paintEnemies(Graphics2D g, Hashtable<String, EnemyBot> enemies) {
-		for(EnemyBot enemy : enemies.values()) {
-			enemy.paintTrackingRectangle(this,g);
-		}
-	}
 }

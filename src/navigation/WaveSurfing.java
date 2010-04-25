@@ -10,6 +10,7 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 import com.jaxelson.BotUtility;
+import com.jaxelson.Enemies;
 import com.jaxelson.EnemyBot;
 import com.jaxelson.ExtendedPoint2D;
 
@@ -36,6 +37,8 @@ public class WaveSurfing
 	public ArrayList<Double> _surfAbsBearings;
 
 	public static double _oppEnergy = 100.0;
+	
+	private Enemies _enemies = new Enemies(robot);
 	
 	/** This is a rectangle that represents an 800x600 battle field,
 	    * used for a simple, iterative WallSmoothing method (by PEZ).
@@ -193,6 +196,10 @@ public class WaveSurfing
         	wave.drawWave(g);
         }
         
+    }
+    
+    public void onRobotDeath(RobotDeathEvent e) {
+        _enemies.remove(e);
     }
     
     /**

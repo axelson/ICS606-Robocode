@@ -2,7 +2,6 @@ package com.jaxelson;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Hashtable;
 
 import navigation.ExtendedBot;
 import robocode.HitByBulletEvent;
@@ -15,7 +14,7 @@ public class Chris01Bot01 extends ExtendedBot {
 	 * run: Chris01's default behavior
 	 */
 	
-	Hashtable<String,EnemyBot> _enemies = new Hashtable<String,EnemyBot>();
+	Enemies _enemies = new Enemies(this);
 	 
 	int state = 0;
 	 
@@ -47,7 +46,7 @@ public class Chris01Bot01 extends ExtendedBot {
 	 * onScannedRobot: What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-		updateEnemies(e, _enemies);
+		_enemies.update(e);
 	}
 
 	/**
@@ -67,6 +66,6 @@ public class Chris01Bot01 extends ExtendedBot {
 		 // Set the paint color to a red half transparent color
 	     g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
 	 
-		paintEnemies(g, _enemies);
+		_enemies.paintAll(g);
 	}
 }
