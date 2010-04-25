@@ -8,9 +8,25 @@ import robocode.TeamRobot;
 import robocode.util.Utils;
 
 public class ExtendedBotUH extends TeamRobot {
+	/** Time to fire gun */
+	protected long _fireTime = 0;
+	
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
 	
+	/**
+	 * Fire gun if it is ready to be fired
+	 */
+	public void doGun() {
+		if (_fireTime == getTime() && getGunTurnRemaining() == 0) {
+	        setFire(2);
+	    }
+	}
+	
+	public void execute() {
+		super.execute();
+		doGun();
+	}
 	
 	public void drawCircleAroundBot(Graphics2D g, Double radius) {
     	double x = getX();
@@ -199,9 +215,8 @@ public class ExtendedBotUH extends TeamRobot {
 	// Targeting
 	
 	public void headOnTargeting(EnemyBot target, double firePower) {
-		//TODO This fires too early
 		this.turnGunTo(target);
-        this.setFire(firePower);
+		this._fireTime = getTime() + 1;
 	}
 	
 	public void linearTargeting(EnemyBot target) {
