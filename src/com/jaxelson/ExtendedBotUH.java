@@ -288,8 +288,12 @@ public class ExtendedBotUH extends TeamRobot {
 	}
 	
 	public void circularTargeting(EnemyBot target) {
+		circularTargeting(target, 1.0);
+	}
+	
+	public void circularTargeting(EnemyBot target, double firePower) {
 		double oldEnemyHeading = target.getOldHeadingRadians();
-		final double bulletPower = Math.min(3.0,getEnergy());
+		final double bulletPower = Math.min(firePower,getEnergy());
 		double myX = getX();
 		double myY = getY();
 		double absoluteBearing = getHeadingRadians() + target.getBearingRadians();
