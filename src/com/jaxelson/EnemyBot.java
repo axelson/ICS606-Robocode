@@ -6,6 +6,7 @@ import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 
 public class EnemyBot {
+	// Bot Info
 	private String _name;
 	private double _bearing;
 	private double _bearingRadians;
@@ -20,8 +21,11 @@ public class EnemyBot {
 	private int _priority;
 	
 	private ExtendedPoint2D _location;
+	
 	/** The robot that created this EnemyBot */
 	private AdvancedRobot _robot;
+	
+	// Misc Info
 
 	public EnemyBot(ScannedRobotEvent e, AdvancedRobot robot) {
 		this.setRobot(robot);
