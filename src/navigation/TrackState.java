@@ -127,7 +127,8 @@ public class TrackState
     /**
      * The energy of the bot when this state was chosen
      */
-    private double energy;
+    @SuppressWarnings("unused")
+	private double energy;
     /**
      * The total energy lost from bullet hits while this state has been
      * in use

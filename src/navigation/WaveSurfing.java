@@ -277,16 +277,19 @@ public class WaveSurfing
     // Ordinarily I would use accessor methods exclusively to access instance
     // variables, but in the interest of speed I have allowed direct access.
 
-    private boolean targetAcquired = false;
+    @SuppressWarnings("unused")
+	private boolean targetAcquired = false;
     
     /**
      * Last known bearing to the target bot
      */
-    private double targetBearing;
+    @SuppressWarnings("unused")
+	private double targetBearing;
     /**
      * The energy of the bot when this state was chosen
      */
-    private double energy;
+    @SuppressWarnings("unused")
+	private double energy;
     /**
      * The total energy lost from bullet hits while this state has been
      * in use
