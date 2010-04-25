@@ -26,6 +26,7 @@ public class EnemyBot {
 	private AdvancedRobot _robot;
 	
 	// Misc Info
+	public int _numUpdates;
 
 	public EnemyBot(ScannedRobotEvent e, AdvancedRobot robot) {
 		this.setRobot(robot);
@@ -37,6 +38,7 @@ public class EnemyBot {
 	 * @param e ScannedRobotEvent information to use to update
 	 */
 	public void update(ScannedRobotEvent e) {
+		_numUpdates++;
 		savePreviousValues();
 		
 		this.setName(e.getName());
@@ -249,6 +251,10 @@ public class EnemyBot {
 	 */
 	public void setRobot(AdvancedRobot robot) {
 		this._robot = robot;
+	}
+	
+	public int getNumUpdates() {
+		return _numUpdates;
 	}
 
 	public void paintTrackingRectangle(AdvancedRobot robot, Graphics2D g) {
