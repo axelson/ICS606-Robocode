@@ -183,7 +183,12 @@ public class ExtendedBotUH extends TeamRobot {
 	}
 	
 	public void linearTargeting(EnemyBot target) {
-		double bulletPower = Math.min(3.0,getEnergy());
+		linearTargeting(target, 1.0);
+	}
+		
+	public void linearTargeting(EnemyBot target, double firePower) {
+//		double bulletPower = Math.min(3.0,getEnergy());
+		double bulletPower = firePower;
 		double myX = getX();
 		double myY = getY();
 		double enemyX = target.getX();
