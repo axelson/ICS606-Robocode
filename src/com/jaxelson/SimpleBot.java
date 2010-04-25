@@ -2,7 +2,6 @@ package com.jaxelson;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Arrays;
 
 import navigation.ExtendedBot;
 import robocode.HitByBulletEvent;
