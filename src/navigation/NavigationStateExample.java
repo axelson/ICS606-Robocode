@@ -22,10 +22,22 @@ public class NavigationStateExample extends ExtendedBot {
             navigation.addState(new WaveSurfing(this));
             navigation.addState(new MoveLeftRightState(this));
             addCommandListener(navigation);
-            enable();
-
-            // Set turret to move independent of body
+            
+            StateManager radar = new StateManager(this);
+//            radar.addState(new MeleeRadarState(this));
+            radar.addState(new SpinningRadarState(this));
+            radar.addState(new NarrowRadarLockState(this));
+            addCommandListener(radar);
+            
+//            StateManager gun = new StateManager(this);
+//            gun.addState(new MeleeRadarState(this));
+//            addCommandListener(radar);
+            
             setAdjustGunForRobotTurn(true);
+            setAdjustRadarForGunTurn(true);
+            setAdjustRadarForRobotTurn(true);
+            
+            enable();
 
             // Main bot execution loop
 		    while(true) {
