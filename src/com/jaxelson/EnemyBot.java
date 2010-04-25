@@ -4,8 +4,14 @@ import java.awt.Graphics2D;
 
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
+import java.io.Serializable;
 
-public class EnemyBot {
+public class EnemyBot implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6633270333555835298L;
+	
 	private String _name;
 	private double _bearing;
 	private double _bearingRadians;

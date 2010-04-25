@@ -1,8 +1,9 @@
 package com.jaxelson;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
-public class ExtendedPoint2D extends Point2D.Double{
+public class ExtendedPoint2D extends Point2D.Double implements Serializable{
 
 	private static final long serialVersionUID = 74324L;
 	public ExtendedPoint2D(double x, double y) {
