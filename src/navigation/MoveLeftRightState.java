@@ -54,7 +54,7 @@ public class MoveLeftRightState
      * @return A boolean indicating whether this State should be used
      */
     public boolean isValid() {
-        return true;
+    	return (robot.getNumEnemies() > 1);
     }
 
     /**
