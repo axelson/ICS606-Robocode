@@ -1,6 +1,7 @@
 package navigation;
 
-import robocode.*;
+import robocode.HitByBulletEvent;
+import robocode.ScannedRobotEvent;
 
 /**
  * Simple state designed to be ineffective.
@@ -58,7 +59,7 @@ public class CannonFodderState
      */
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
-        robot.removeEventListener(ON_HIT_BY_BULLET, this);
+        robot.removeEventListener(ON_SCANNED_ROBOT, this);
         energy = 0;
         updateStatistics();
     }
@@ -99,7 +100,7 @@ public class CannonFodderState
      *              robot's sighting of another robot
      */
     public void onScannedRobot(ScannedRobotEvent event) {
-        targetBearing = event.getBearingRadians();        
+        targetBearing = event.getBearingRadians();
     }
 
     // PRIVATE METHODS
