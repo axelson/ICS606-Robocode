@@ -3,9 +3,11 @@ package navigation;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import robocode.AdvancedRobot;
 import robocode.HitByBulletEvent;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
@@ -39,6 +41,9 @@ public class WaveSurfing
 	public static double _oppEnergy = 100.0;
 	
 	private Enemies _enemies = new Enemies(robot);
+	static double _scanDir;
+	static Object sought;
+	static LinkedHashMap<String, Double> enemyHashMap;
 	
 	/** This is a rectangle that represents an 800x600 battle field,
 	    * used for a simple, iterative WallSmoothing method (by PEZ).
@@ -120,6 +125,7 @@ public class WaveSurfing
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
+        robot.addEventListener(ON_ROBOT_DEATH, this);
         robot.addEventListener(ON_PAINT, this);
         
         /** A collection of waves, to surf and gather stats on */
@@ -135,7 +141,12 @@ public class WaveSurfing
         robot.setAdjustGunForRobotTurn(true);
         robot.setAdjustRadarForGunTurn(true);
         
-        robot.setTurnRadarRightRadians(Math.PI*2);
+//        robot.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
+        
+        // Melee Radar setup
+        _scanDir = 1;
+    	enemyHashMap = new LinkedHashMap<String, Double>(5, 2, true);
+
     }
 
     /**
@@ -143,8 +154,16 @@ public class WaveSurfing
      * execute turn based instructions.
      */
     public void execute() {
-//    	robot.setTurnRadarRightRadians(Math.PI*2);
-//    	robot.setAhead(100);
+//    	if(robot.getRadarTurnRemainingRadians() == 0) {
+//    		System.out.println("Turning radar");
+//
+//        	robot.setTurnRadarRightRadians(Math.PI*2);
+//    	}
+
+        if(robot.getOthers() > 1) {
+        	robot.setTurnRadarRightRadians(_scanDir * Double.POSITIVE_INFINITY);
+        	robot.scan();
+        }
     }
 
     /**
@@ -200,6 +219,7 @@ public class WaveSurfing
     
     public void onRobotDeath(RobotDeathEvent e) {
         _enemies.remove(e);
+        sought = null;
     }
     
     /**
@@ -212,12 +232,28 @@ public class WaveSurfing
         targetBearing = event.getBearingRadians();
         targetAcquired = true;
         EnemyBot target = new EnemyBot(event, robot);
-//        target.printBot();
+//        target.printBot();firePower
+        String name = event.getName();
+        LinkedHashMap<String, Double> ehm = enemyHashMap;
         
-        robot.narrowRadarLock(event);
+//        robot.narrowRadarLock(target);
+        ehm.put(name, robot.getHeadingRadians() + event.getBearingRadians());
+
+        if(robot.getOthers() <= 1) {
+        	robot.narrowRadarLock(target);
+        } else if ((name == sought || sought == null) && ehm.size() == robot.getOthers()) {
+    	_scanDir = Utils.normalRelativeAngle(ehm.values().iterator().next()
+                - robot.getRadarHeadingRadians());
+            sought = ehm.keySet().iterator().next();
+        }
+
         
-        robot.turnGunTo(target);
-        robot.setFire(1.0);
+        robot.circularTargeting(target);
+//        robot.headOnTargeting(target, 3.0);
+//        robot.setFire(1.0);
+//        if(target.getEnergy() <= 10) {
+//        	robot.linearTargeting(target, 0.1);
+//        }
         
         
         _myLocation = new ExtendedPoint2D(robot.getX(), robot.getY());
