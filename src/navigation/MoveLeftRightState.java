@@ -156,7 +156,7 @@ public class MoveLeftRightState
         }
 //        target.printBot();
         
-        robot.narrowRadarLock(event);
+        robot.narrowRadarLock(_target);
         
 //        robot.headOnTargeting(_target, 1.0);
 //        robot.linearTargetingExact(_target);

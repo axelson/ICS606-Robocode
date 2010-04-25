@@ -83,20 +83,20 @@ public class ExtendedBotUH extends TeamRobot {
 		return turnGunTo(desiredAngle);
 	}
 
-	public void narrowRadarLock(ScannedRobotEvent event) {
-		narrowRadarLock(event, 1.9);
+	public void narrowRadarLock(EnemyBot target) {
+		narrowRadarLock(target, 1.9);
 	}
 	
 	/**
 	 * Executes a narrow radar lock<br>
 	 * http://robowiki.net/wiki/Radar#Narrow_lock
-	 * @param event scanned robot event (may be replaced by an enemy in the future)
+	 * @param target scanned robot event (may be replaced by an enemy in the future)
 	 * @param factor narrow lock factor (how "narrow" lock is), typical values 1.0, 1.9, 2.0
 	 */
-	public void narrowRadarLock(ScannedRobotEvent event, Double factor) {
+	public void narrowRadarLock(EnemyBot target, Double factor) {
 		double radarTurn =
 			// Absolute bearing to target
-			this.getHeadingRadians() + event.getBearingRadians()
+			this.getHeadingRadians() + target.getBearingRadians()
 			// Subtract current radar heading to get turn required
 			- this.getRadarHeadingRadians();
 
