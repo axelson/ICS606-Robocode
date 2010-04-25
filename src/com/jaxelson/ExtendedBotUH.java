@@ -334,6 +334,6 @@ public class ExtendedBotUH extends TeamRobot {
 
 		setTurnGunRightRadians(Utils.normalRelativeAngle(
 		    theta - getGunHeadingRadians()));
-		fire(bulletPower);
+		setFire(bulletPower);
 	}
 }
