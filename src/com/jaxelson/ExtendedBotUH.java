@@ -150,6 +150,16 @@ public class ExtendedBotUH extends TeamRobot {
 		}	
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isTeammate(String name) {
+		// Hack because of asterisk error
+		String realName = name.replace(" (", "* (");
+
+		return super.isTeammate(realName);
+	}
+	
 	//--- Math helper functions---//
 	public double calculateBearingToXYRadians(double sourceX, double sourceY,
 	    double sourceHeading, double targetX, double targetY) {
