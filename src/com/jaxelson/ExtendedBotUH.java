@@ -2,10 +2,8 @@ package com.jaxelson;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.util.Hashtable;
 
 import robocode.Rules;
-import robocode.ScannedRobotEvent;
 import robocode.TeamRobot;
 import robocode.util.Utils;
 
@@ -201,6 +199,7 @@ public class ExtendedBotUH extends TeamRobot {
 	// Targeting
 	
 	public void headOnTargeting(EnemyBot target, double firePower) {
+		//TODO This fires too early
 		this.turnGunTo(target);
         this.setFire(firePower);
 	}
