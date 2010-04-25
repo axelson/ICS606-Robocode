@@ -151,6 +151,16 @@ public class ExtendedBotUH extends TeamRobot {
 	}
 	
 	/**
+	 * Gets the number of enemies in the current round
+	 * @return number of enemies
+	 */
+	public int getNumEnemies() {
+		String[] teammates = this.getTeammates();
+		int numTeammates = (teammates != null) ? teammates.length : 0;
+		return this.getOthers() - numTeammates;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public boolean isTeammate(String name) {
