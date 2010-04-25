@@ -293,6 +293,9 @@ public class ExtendedBotUH extends TeamRobot {
 	}
 	
 	public void circularTargeting(EnemyBot target, double firePower) {
+		if(target.getNumUpdates() <= 1) {
+			System.out.println("circularTargeting: Error, no historical data on robot");
+		}
 		double oldEnemyHeading = target.getOldHeadingRadians();
 		final double bulletPower = Math.min(firePower,getEnergy());
 		double myX = getX();
