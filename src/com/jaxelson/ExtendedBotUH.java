@@ -7,10 +7,74 @@ import robocode.Rules;
 import robocode.TeamRobot;
 import robocode.util.Utils;
 
-public class ExtendedBotUH extends TeamRobot {
-	/** Time to fire gun */
-	protected long _fireTime = 0;
+class GunManager {
+	private ExtendedBotUH _robot;
 	
+	public int _debug = 0;
+	
+	/** Time to fire gun */
+	private long _fireTime = 0;
+	protected boolean _isCurrentlyAiming=false;
+	
+	protected double _firePower = 0;
+	
+	public GunManager(ExtendedBotUH robot) {
+		_robot = robot;
+	}
+	
+	public void setGunToFire(double firePower) {
+		if(isAiming()) {
+			return;
+		} else {
+			_firePower = firePower;
+			_isCurrentlyAiming = true;
+			_fireTime = _robot.getTime() + 1;
+		}
+	}
+	
+	/**
+	 * Fire gun if ready to fire
+	 * @return true if gun is ready to fires
+	 */
+	public boolean fireIfReady() {
+		if(readyToFire()) {
+			fireGun();
+			return true;
+		} else {
+			if(_debug >= 1) System.out.println("Not ready to fire (time "+ _robot.getTime() + "): "+ toString());
+			return false;
+		}
+	}
+
+	public String toString() {
+		return "fireTime: "+ _fireTime + " isAiming: "+ _isCurrentlyAiming + " firePower: "+ _firePower;
+	}
+
+	public boolean isAiming() {
+		return _isCurrentlyAiming;
+	}
+
+	private boolean readyToFire() {
+		boolean fireTimeOk = _fireTime <= _robot.getTime();
+		boolean gunDoneTurningOk = (_robot.getGunTurnRemaining() == 0);
+		boolean currentlyAimingOk = isAiming();
+		boolean gunHeatOk = (_robot.getGunHeat() == 0);
+		
+		boolean willFire = (fireTimeOk && gunDoneTurningOk && currentlyAimingOk && gunHeatOk); 
+		if(_debug >= 1) System.out.println("readyToFire: "+ willFire +" fireTime: "+ fireTimeOk +
+				" gunOk: "+ gunDoneTurningOk + " aimingOk: "+ currentlyAimingOk + "gunHeatOk: "+ gunHeatOk);
+		return willFire;
+	}
+		
+	private void fireGun() {
+		if(_debug >= 1) System.out.println("Fire!! gunheat: "+ _robot.getGunHeat());
+		_robot.setFire(_firePower);
+		_isCurrentlyAiming = false;
+	}
+}
+
+public class ExtendedBotUH extends TeamRobot {
+	protected GunManager gun = new GunManager(this);
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
 	
@@ -18,15 +82,13 @@ public class ExtendedBotUH extends TeamRobot {
 	 * Fire gun if it is ready to be fired
 	 */
 	public void doGun() {
-		if (_fireTime == getTime() && getGunTurnRemaining() == 0) {
-	        setFire(2);
-	    }
+		gun.fireIfReady();
 	}
 	
 	public void execute() {
 		super.execute();
 		doGun();
-	}
+	}	
 	
 	public void drawCircleAroundBot(Graphics2D g, Double radius) {
     	double x = getX();
@@ -216,7 +278,7 @@ public class ExtendedBotUH extends TeamRobot {
 	
 	public void headOnTargeting(EnemyBot target, double firePower) {
 		this.turnGunTo(target);
-		this._fireTime = getTime() + 1;
+		gun.setGunToFire(2.0);
 	}
 	
 	public void linearTargeting(EnemyBot target) {
