@@ -79,6 +79,7 @@ public class MoveLeftRightState
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
         
+        _debug = 0;
         state = 0;
     }
 
