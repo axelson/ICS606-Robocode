@@ -74,7 +74,7 @@ class GunManager {
 }
 
 public class ExtendedBotUH extends TeamRobot {
-	protected GunManager gun = new GunManager(this);
+	protected GunManager _gun = new GunManager(this);
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
 	
@@ -82,7 +82,7 @@ public class ExtendedBotUH extends TeamRobot {
 	 * Fire gun if it is ready to be fired
 	 */
 	public void doGun() {
-		gun.fireIfReady();
+		_gun.fireIfReady();
 	}
 	
 	public void execute() {
@@ -278,7 +278,7 @@ public class ExtendedBotUH extends TeamRobot {
 	
 	public void headOnTargeting(EnemyBot target, double firePower) {
 		this.turnGunTo(target);
-		gun.setGunToFire(2.0);
+		_gun.setGunToFire(2.0);
 	}
 	
 	public void linearTargeting(EnemyBot target) {
