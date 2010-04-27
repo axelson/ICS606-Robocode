@@ -75,7 +75,6 @@ class GunManager {
 
 public class ExtendedBotUH extends TeamRobot {
 	protected GunManager _gun = new GunManager(this);
-	protected Enemies _enemies = new Enemies(this);
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
 	
@@ -241,8 +240,7 @@ public class ExtendedBotUH extends TeamRobot {
 	 * {@inheritDoc}
 	 */
 	public boolean isTeammate(String name) {
-		// Hack because of asterisk error
-		String realName = name.replace(" (", "* (");
+		String realName = BotUtility.fixName(name);
 
 		return super.isTeammate(realName);
 	}

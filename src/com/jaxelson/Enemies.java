@@ -1,9 +1,7 @@
-/**
- * 
- */
 package com.jaxelson;
 
 import java.awt.Graphics2D;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import robocode.RobotDeathEvent;
@@ -14,8 +12,9 @@ import robocode.TeamRobot;
  * @author jason
  */
 public class Enemies {
-	private Hashtable<String,EnemyBot> _enemies = new Hashtable<String,EnemyBot>();
+	private Hashtable<String,EnemyBot> _enemyTable = new Hashtable<String,EnemyBot>();
 	private TeamRobot _robot;
+	private EnemyBot _target;
 	
 	/**
 	 * 
@@ -32,33 +31,68 @@ public class Enemies {
 		// Hack because of asterisk error
 		String enemyName = e.getName().replace(" (", "* (");
 		
+		EnemyBot enemyBot = new EnemyBot(e, _robot);
+		if(_target == null) {
+			_target = enemyBot;
+		}
+
 		// Don't track team-mates
 		if (_robot.isTeammate(enemyName)) {
 			return;
 		}
 		
 		// Update enemy database
-		if(_enemies.containsKey(enemyName)) {
-			_enemies.get(enemyName).update(e);
+		if(_enemyTable.containsKey(enemyName)) {
+			_enemyTable.get(enemyName).update(e);
 		} else {
-			_enemies.put(enemyName, new EnemyBot(e, _robot));
+			_enemyTable.put(enemyName, enemyBot);
+		}
+	}
+	
+	public void update(RobotDeathEvent e) {
+		// Hack because of asterisk error
+		String enemyName = e.getName().replace(" (", "* (");
+		System.out.println("Removing: "+ enemyName);
+		_enemyTable.remove(enemyName);
+		
+		if(_target.getName().equals(enemyName)) {
+			_target = pickRandomTarget();
+			if(_target != null) System.out.println("Target is now: "+ _target.getName());
+		}
+	}
+	
+	private EnemyBot pickRandomTarget() {
+		if(_enemyTable.size() >= 1) {
+			Enumeration<String> enemyNames = _enemyTable.keys();
+			EnemyBot target = _enemyTable.get(enemyNames.nextElement()); 
+			return target;
+		} else {
+			return null;
 		}
 	}
 	
 	public EnemyBot get(ScannedRobotEvent e) {
-		return get(e.getName());
+		return get(BotUtility.fixName(e.getName()));
 	}
 	
 	public EnemyBot get(String enemyName) {
-		return _enemies.get(enemyName);
+		return _enemyTable.get(enemyName);
 	}
 	
 	public void remove(RobotDeathEvent e) {
-		_enemies.remove(e.getName());
+		_enemyTable.remove(BotUtility.fixName(e.getName()));
+	}
+	
+	public void setTarget(EnemyBot target) {
+		_target = target;
+	}
+	
+	public EnemyBot getTarget() {
+		return _target;
 	}
 	
 	public int size() {
-		return _enemies.size();
+		return _enemyTable.size();
 	}
 	
 	/**
@@ -67,7 +101,7 @@ public class Enemies {
 	 * @param enemies All known enemies
 	 */
 	public void paintAll(Graphics2D g) {
-		for(EnemyBot enemy : _enemies.values()) {
+		for(EnemyBot enemy : _enemyTable.values()) {
 			enemy.paintTrackingRectangle(_robot,g);
 		}
 	}

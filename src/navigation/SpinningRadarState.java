@@ -12,7 +12,6 @@ import robocode.ScannedRobotEvent;
  */
 public class SpinningRadarState
         extends State {
-	EnemyBot _target = null;
     // CONSTRUCTORS
 
     /**
@@ -99,9 +98,8 @@ public class SpinningRadarState
     }
     
     public void onRobotDeath(RobotDeathEvent e) {
-    	if(e.getName().equals(_target.getName())) {
-    		_target = null;
-    	}
+    	System.out.println("A robot has died");
+    	_enemies.update(e);
     }
 
     /**
@@ -112,17 +110,10 @@ public class SpinningRadarState
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         targetBearing = e.getBearingRadians();
-        EnemyBot newTarget = new EnemyBot(e, robot); 
-        if(_target == null) {
-        	_target = new EnemyBot(e, robot);
-        } else {
-        	if(_target.getName().equals(e.getName())) {
-        		System.out.println("Tracking same target");
-        		_target.update(e);
-        	}
-        }
+        _enemies.update(e);
+        EnemyBot target = _enemies.getTarget();
         
-        robot.headOnTargeting(_target, 1.0);
+        robot.headOnTargeting(target, 1.0);
     }
 
     // PRIVATE METHODS
