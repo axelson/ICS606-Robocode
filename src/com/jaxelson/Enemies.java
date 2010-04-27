@@ -105,4 +105,11 @@ public class Enemies {
 			enemy.paintTrackingRectangle(_robot,g);
 		}
 	}
+	
+
+	public boolean isCurrentTarget(ScannedRobotEvent e) {
+		String targetName = getTarget().getName();
+		String enemyName = BotUtility.fixName(e.getName());
+		return (targetName.equals(enemyName));
+	}
 }
