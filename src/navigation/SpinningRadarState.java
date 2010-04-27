@@ -1,10 +1,10 @@
 package navigation;
 
-import com.jaxelson.EnemyBot;
-
 import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
+
+import com.jaxelson.EnemyBot;
 
 /**
  * Simple state designed to be ineffective.
@@ -52,7 +52,7 @@ public class SpinningRadarState
      * @return A boolean indicating whether this State should be used
      */
     public boolean isValid() {
-        return true;
+        return (robot.getNumEnemies() > 1);
     }
 
     /**
@@ -85,7 +85,7 @@ public class SpinningRadarState
      * execute turn based instructions.
      */
     public void execute() {
-    	robot.setTurnRadarLeftRadians(Double.POSITIVE_INFINITY);
+    	robot.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
     }
 
     /**
@@ -113,7 +113,7 @@ public class SpinningRadarState
         _enemies.update(e);
         EnemyBot target = _enemies.getTarget();
         
-        robot.headOnTargeting(target, 1.0);
+        robot.headOnTargeting(target, 3.0);
     }
 
     // PRIVATE METHODS
