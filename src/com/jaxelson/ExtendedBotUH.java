@@ -75,6 +75,7 @@ class GunManager {
 
 public class ExtendedBotUH extends TeamRobot {
 	protected GunManager _gun = new GunManager(this);
+	protected Enemies _enemies = new Enemies(this);
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
 	
