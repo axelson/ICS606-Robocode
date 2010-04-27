@@ -3,6 +3,7 @@ package navigation;
 import com.jaxelson.EnemyBot;
 
 import robocode.HitByBulletEvent;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
 /**
@@ -11,7 +12,7 @@ import robocode.ScannedRobotEvent;
  */
 public class SpinningRadarState
         extends State {
-
+	EnemyBot _target = null;
     // CONSTRUCTORS
 
     /**
@@ -62,6 +63,7 @@ public class SpinningRadarState
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
+        robot.removeEventListener(ON_ROBOT_DEATH, this);
         energy = 0;
         updateStatistics();
     }
@@ -76,6 +78,7 @@ public class SpinningRadarState
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
+        robot.addEventListener(ON_ROBOT_DEATH, this);
     }
 
     /**
@@ -94,6 +97,12 @@ public class SpinningRadarState
     public void onHitByBullet(HitByBulletEvent event) {
         damageTaken += BotMath.calculateDamage(event.getPower());
     }
+    
+    public void onRobotDeath(RobotDeathEvent e) {
+    	if(e.getName().equals(_target.getName())) {
+    		_target = null;
+    	}
+    }
 
     /**
      * This method will be called when your robot sees another robot.<br>
@@ -103,8 +112,17 @@ public class SpinningRadarState
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         targetBearing = e.getBearingRadians();
-        EnemyBot target = new EnemyBot(e, robot);
-        robot.headOnTargeting(target, 1.0);
+        EnemyBot newTarget = new EnemyBot(e, robot); 
+        if(_target == null) {
+        	_target = new EnemyBot(e, robot);
+        } else {
+        	if(_target.getName().equals(e.getName())) {
+        		System.out.println("Tracking same target");
+        		_target.update(e);
+        	}
+        }
+        
+        robot.headOnTargeting(_target, 1.0);
     }
 
     // PRIVATE METHODS
