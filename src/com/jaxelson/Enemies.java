@@ -6,21 +6,21 @@ package com.jaxelson;
 import java.awt.Graphics2D;
 import java.util.Hashtable;
 
-import navigation.ExtendedBot;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
+import robocode.TeamRobot;
 /**
  * Holds the information about all the enemies in the game
  * @author jason
  */
 public class Enemies {
 	private Hashtable<String,EnemyBot> _enemies = new Hashtable<String,EnemyBot>();
-	private ExtendedBot _robot;
+	private TeamRobot _robot;
 	
 	/**
 	 * 
 	 */
-	public Enemies(ExtendedBot robot) {
+	public Enemies(TeamRobot robot) {
 		_robot = robot;
 	}
 	/**
