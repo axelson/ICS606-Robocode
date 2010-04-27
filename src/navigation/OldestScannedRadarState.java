@@ -12,7 +12,7 @@ import robocode.util.Utils;
  * http://robowiki.net/wiki/Radar#Oldest_Scanned
  * @author Jason Axelson
  */
-public class MeleeRadarState
+public class OldestScannedRadarState
         extends State {
 
 	public int _debug = 0;
@@ -28,7 +28,7 @@ public class MeleeRadarState
      * @param robot The ExtendedRobot object used to provide data and execute
      *              commands
      */
-    public MeleeRadarState(ExtendedBot robot) {
+    public OldestScannedRadarState(ExtendedBot robot) {
         super(robot);
     }
 
@@ -52,7 +52,7 @@ public class MeleeRadarState
      * @return A String containing the name of this State object
      */
     public String getName() {
-        return "MeleeRadarState";
+        return "OldestScannedRadarState";
     }
 
     /**
