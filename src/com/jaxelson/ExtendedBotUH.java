@@ -277,7 +277,7 @@ public class ExtendedBotUH extends TeamRobot {
 	
 	public void headOnTargeting(EnemyBot target, double firePower) {
 		this.turnGunTo(target);
-		_gun.setGunToFire(2.0);
+		_gun.setGunToFire(firePower);
 	}
 	
 	public void linearTargeting(EnemyBot target) {
