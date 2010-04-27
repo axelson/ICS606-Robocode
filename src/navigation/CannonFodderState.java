@@ -4,19 +4,13 @@ import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
 
 /**
- * Simple state designed to be ineffective.
- * @author David McCoy
+ * @author Jason Axelson
  */
 public class CannonFodderState
         extends State {
 
     // CONSTRUCTORS
 
-    /**
-     * Creates a new CannonFodderState for the specified robot.
-     * @param robot The ExtendedRobot object used to provide data and execute
-     *              commands
-     */
     public CannonFodderState(ExtendedBot robot) {
         super(robot);
     }
