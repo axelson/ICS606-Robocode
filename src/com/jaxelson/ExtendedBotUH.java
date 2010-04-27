@@ -62,7 +62,9 @@ class GunManager {
 		
 		boolean willFire = (fireTimeOk && gunDoneTurningOk && currentlyAimingOk && gunHeatOk); 
 		if(_debug >= 1) System.out.println("readyToFire: "+ willFire +" fireTime: "+ fireTimeOk +
-				" gunOk: "+ gunDoneTurningOk + " aimingOk: "+ currentlyAimingOk + "gunHeatOk: "+ gunHeatOk);
+				" gunDoneTurningOk: "+ gunDoneTurningOk + " aimingOk: "+ currentlyAimingOk +
+				" gunHeatOk: "+ gunHeatOk);
+
 		return willFire;
 	}
 		
