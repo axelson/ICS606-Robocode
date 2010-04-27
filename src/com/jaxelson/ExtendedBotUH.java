@@ -56,7 +56,7 @@ class GunManager {
 
 	private boolean readyToFire() {
 		boolean fireTimeOk = _fireTime <= _robot.getTime();
-		boolean gunDoneTurningOk = (_robot.getGunTurnRemaining() == 0);
+		boolean gunDoneTurningOk = (_robot.getGunTurnRemainingRadians() <= 0.03);
 		boolean currentlyAimingOk = isAiming();
 		boolean gunHeatOk = (_robot.getGunHeat() == 0);
 		
