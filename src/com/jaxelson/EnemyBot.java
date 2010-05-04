@@ -137,7 +137,7 @@ public class EnemyBot implements Serializable{
 	}
 
 	public double getBearing() {
-		return _bearing;
+		return _robot. angleTo(_location);
 	}
 	
 	/**

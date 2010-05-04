@@ -77,7 +77,6 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 			System.out.println(this.getTeammates()[1]);
 */
 			if(!this.isTeammate(enemyName)) {
-				updateEnemies(e, _enemies);
 				if(leader) {
 					try {
 						broadcastMessage(_enemies.get(e.getName()));
