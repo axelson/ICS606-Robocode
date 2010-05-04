@@ -21,7 +21,6 @@ public class EnemyBot implements Serializable{
 	private double _oldHeadingRadians;
 	private double _velocity;
 	private long _time;
-	private int _priority;
 	
 	private ExtendedPoint2D _location;
 	
@@ -53,7 +52,6 @@ public class EnemyBot implements Serializable{
     	this.setHeadingRadians(e.getHeadingRadians());
     	this.setVelocity(e.getVelocity());
     	this.setTime(e.getTime());
-    	this.setPriority(e.getPriority());
     	
 		double angle = _robot.getHeadingRadians() + e.getBearingRadians();
 		ExtendedPoint2D enemyLocation = new ExtendedPoint2D((_robot.getX() + Math.sin(angle) * e.getDistance()),
@@ -90,7 +88,6 @@ public class EnemyBot implements Serializable{
 		System.out.println("Heading (radians)"+ this.getHeadingRadians());
 		System.out.println("Velocity: "+ this.getVelocity());
 		System.out.println("Time: "+ this.getTime());
-		System.out.println("Priority: "+ this.getPriority());
 		System.out.println("Location: " + this.getLocation());
 	}
 
@@ -106,7 +103,6 @@ public class EnemyBot implements Serializable{
 		string.append(" Heading (radians)"+ this.getHeadingRadians());
 		string.append(" Velocity: "+ this.getVelocity());
 		string.append(" Time: "+ this.getTime());
-		string.append(" Priority: "+ this.getPriority());
 		string.append(" Location: " + this.getLocation());
 		
 		return string.toString();
@@ -226,14 +222,6 @@ public class EnemyBot implements Serializable{
 		return _time;
 	}
 
-	public void setPriority(int priority) {
-		this._priority = priority;
-	}
-
-	public int getPriority() {
-		return _priority;
-	}
-	
 	public void setLocation(ExtendedPoint2D location) {
 		this._location = location;
 	}
