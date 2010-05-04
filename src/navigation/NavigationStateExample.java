@@ -20,12 +20,13 @@ public class NavigationStateExample extends ExtendedBot {
 //            navigation.addState(new CannonFodderState(this));
 //            navigation.addState(new TrackState(this));
             navigation.addState(new WaveSurfing(this));
-            navigation.addState(new MoveLeftRightState(this));
+//            navigation.addState(new MoveLeftRightState(this));
+            navigation.addState(new MinimumRiskMovementState(this));
             addCommandListener(navigation);
             
             StateManager radar = new StateManager(this);
-//            radar.addState(new MeleeRadarState(this));
-            radar.addState(new SpinningRadarState(this));
+            radar.addState(new OldestScannedRadarState(this));
+//            radar.addState(new SpinningRadarState(this));
             radar.addState(new NarrowRadarLockState(this));
             addCommandListener(radar);
             
