@@ -51,7 +51,9 @@ public class EnemyBot implements Serializable{
 		_numUpdates++;
 		savePreviousValues();
 		
-		this.setName(e.getName());
+		String enemyName = BotUtility.fixName(e.getName());
+		
+		this.setName(enemyName);
     	this.setBearing(e.getBearing());
     	this.setBearingRadians(e.getBearingRadians());
     	this.setDistance(e.getDistance());
@@ -145,8 +147,10 @@ public class EnemyBot implements Serializable{
 		this._bearing = bearing;
 	}
 
+	// This function returns the angle in radians
 	public double getBearing() {
-		return _bearing;
+		ExtendedPoint2D temp = new ExtendedPoint2D(_robot.getX(),_robot.getY());
+		return temp.angleTo(_location);
 	}
 	
 	/**
