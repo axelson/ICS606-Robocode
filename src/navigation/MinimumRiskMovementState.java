@@ -1,7 +1,13 @@
 package navigation;
 
+import java.util.ArrayList;
+
 import robocode.HitByBulletEvent;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
+
+import com.jaxelson.EnemyBot;
+import com.jaxelson.ExtendedPoint2D;
 
 /**
  * @author Jason Axelson
@@ -9,6 +15,7 @@ import robocode.ScannedRobotEvent;
 public class MinimumRiskMovementState
         extends State {
 
+    ArrayList<GravPoint> _gravpoints = new ArrayList<GravPoint>();
     // CONSTRUCTORS
 
     public MinimumRiskMovementState(ExtendedBot robot) {
@@ -44,7 +51,8 @@ public class MinimumRiskMovementState
      * @return A boolean indicating whether this State should be used
      */
     public boolean isValid() {
-        return (robot.getNumEnemies() > 1);
+//        return (robot.getNumEnemies() > 1);
+    	return true;
     }
 
     /**
@@ -77,7 +85,7 @@ public class MinimumRiskMovementState
      * execute turn based instructions.
      */
     public void execute() {
-        // Do absolutely nothing
+    	antiGravMove();
     }
 
     /**
@@ -88,6 +96,10 @@ public class MinimumRiskMovementState
     public void onHitByBullet(HitByBulletEvent event) {
         damageTaken += BotMath.calculateDamage(event.getPower());
     }
+    
+    public void onRobotDeath(RobotDeathEvent e) {
+    	_enemies.update(e);
+    }
 
     /**
      * This method will be called when your robot sees another robot.<br>
@@ -95,8 +107,10 @@ public class MinimumRiskMovementState
      * @param event A ScannedRobotEvent object containing the details of your
      *              robot's sighting of another robot
      */
-    public void onScannedRobot(ScannedRobotEvent event) {
-        targetBearing = event.getBearingRadians();
+    public void onScannedRobot(ScannedRobotEvent e) {
+        targetBearing = e.getBearingRadians();
+        
+        _enemies.update(e);
     }
 
     // PRIVATE METHODS
@@ -110,13 +124,56 @@ public class MinimumRiskMovementState
                           (robot.getTime() - startTime),
                           robot);
     }
+    
+    //TODO Finish anti gravity movement    
+    void antiGravMove() {
+    	System.out.println("Moving!");
+        double xforce = 0;
+        double yforce = 0;
+        double force;
+        double ang;
+        ExtendedPoint2D loc = robot.getLocation();
+        
+        for(EnemyBot enemy: _enemies.getEnemies()) {
+        	GravPoint p = enemy.getGravPoint();
+        	System.out.println("antiGrav: enemypoint: "+ p + " strength: "+ p.power);
+        	System.out.println("xforce: "+ xforce + " yforce: "+ yforce);
+            //Calculate the total force from this point on us
+            force = p.power/Math.pow(loc.distance(p),2);
+            robot.getLocation();
+            //Find the bearing from the point to us
+//            ang = normaliseBearing(Math.PI/2 - Math.atan2(yloc - p.y, xloc - p.x));
+            
+            ang = loc.angleTo(p);
+
+            //Add the components of this force to the total force in their 
+            //respective directions
+            xforce += Math.sin(ang) * force;
+            yforce += Math.cos(ang) * force;
+        }
+        
+        System.out.println("after bots: xforce: "+ xforce + " yforce: "+ yforce);
+        
+        /**The following four lines add wall avoidance.  They will only 
+        affect us if the bot is close to the walls due to the
+        force from the walls decreasing at a power 3.**/
+        xforce += 5000/Math.pow(loc.distance(robot.getBattleFieldWidth(), loc.y), 3);
+        xforce -= 5000/Math.pow(loc.distance(0, loc.y), 3);
+        yforce += 5000/Math.pow(loc.distance(loc.x, robot.getBattleFieldHeight()), 3);
+        yforce -= 5000/Math.pow(loc.distance(loc.x, 0), 3);
+        
+        System.out.println("after walls: xforce: "+ xforce + " yforce: "+ yforce);
+        
+        //Move in the direction of our resolved force.
+        robot.moveToward(loc.x-xforce,loc.y-yforce);
+    }
 
     // INSTANCE VARIABLES
 
     // Ordinarily I would use accessor methods exclusively to access instance
     // variables, but in the interest of speed I have allowed direct access.
 
-    /**
+	/**
      * Last known bearing to the target bot
      */
     @SuppressWarnings("unused")
