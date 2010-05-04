@@ -264,6 +264,15 @@ public class ExtendedBotUH extends TeamRobot {
 		int numTeammates = (teammates != null) ? teammates.length : 0;
 		return this.getOthers() - numTeammates;
 	}
+	
+	/**
+	 * Get the current location of the robot
+	 * @return the current location
+	 */
+	public ExtendedPoint2D getLocation() {
+		ExtendedPoint2D loc = new ExtendedPoint2D(this.getX(), this.getY());
+		return loc;
+	}
 
 	/**
 	 * {@inheritDoc}
