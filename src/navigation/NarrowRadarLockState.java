@@ -90,7 +90,9 @@ public class NarrowRadarLockState
      */
     public void execute() {
     	if(_debug >= 1) System.out.println("NarrowRadarLockState executing");
-        // Do absolutely nothing
+    	if(robot.getRadarTurnRemainingRadians() < 0.05) {
+    		robot.setTurnRadarRightRadians(Math.PI);
+    	}
     }
 
     /**
