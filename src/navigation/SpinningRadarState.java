@@ -113,7 +113,7 @@ public class SpinningRadarState
         _enemies.update(e);
         EnemyBot target = _enemies.getTarget();
         
-        robot.headOnTargeting(target, 3.0);
+        robot.linearTargeting(target, 3.0);
     }
 
     // PRIVATE METHODS
