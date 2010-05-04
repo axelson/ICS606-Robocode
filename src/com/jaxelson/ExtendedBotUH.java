@@ -76,6 +76,7 @@ class GunManager {
 }
 
 public class ExtendedBotUH extends TeamRobot {
+	public int _debug = 0;
 	protected GunManager _gun = new GunManager(this);
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
@@ -158,8 +159,8 @@ public class ExtendedBotUH extends TeamRobot {
 		
 		// Calculate turn needed to face direction
 		ExtendedPoint2D loc = getLocation();
-		System.out.println("loc: "+ loc);
-		System.out.println("dest: "+ dest);
+		if(_debug >= 1) System.out.println("moveTo loc: "+ loc);
+		if(_debug >= 1) System.out.println("moveTo dest: "+ dest);
 		double turnRequired = BotUtility.absoluteBearing(loc, dest);
 		System.out.println("turnRequired: "+ turnRequired);
 		

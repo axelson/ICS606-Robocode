@@ -126,7 +126,6 @@ public class MinimumRiskMovementState
     
     //TODO Finish anti gravity movement    
     void antiGravMove() {
-    	System.out.println("Moving!");
         double xforce = 0;
         double yforce = 0;
         double force;
@@ -135,13 +134,12 @@ public class MinimumRiskMovementState
         
         for(EnemyBot enemy: _enemies.getEnemies()) {
         	GravPoint p = enemy.getGravPoint();
-        	System.out.println("antiGrav: enemypoint: "+ p + " strength: "+ p.power);
-        	System.out.println("xforce: "+ xforce + " yforce: "+ yforce);
-            //Calculate the total force from this point on us
+        	if(_debug >= 1) System.out.println("antiGrav: enemypoint: "+ p + " strength: "+ p.power);
+        	if(_debug >= 2) System.out.println("xforce: "+ xforce + " yforce: "+ yforce);
+
+        	//Calculate the total force from this point on us
             force = p.power/Math.pow(loc.distance(p),2);
             robot.getLocation();
-            //Find the bearing from the point to us
-//            ang = normaliseBearing(Math.PI/2 - Math.atan2(yloc - p.y, xloc - p.x));
             
             ang = loc.angleTo(p);
 
@@ -151,17 +149,17 @@ public class MinimumRiskMovementState
             yforce += Math.cos(ang) * force;
         }
         
-        System.out.println("after bots: xforce: "+ xforce + " yforce: "+ yforce);
+        if(_debug >= 2) System.out.println("after bots: xforce: "+ xforce + " yforce: "+ yforce);
         
-        /**The following four lines add wall avoidance.  They will only 
+        /* The following four lines add wall avoidance.  They will only 
         affect us if the bot is close to the walls due to the
-        force from the walls decreasing at a power 3.**/
+        force from the walls decreasing at a power 3.*/
         xforce += 5000/Math.pow(loc.distance(robot.getBattleFieldWidth(), loc.y), 3);
         xforce -= 5000/Math.pow(loc.distance(0, loc.y), 3);
         yforce += 5000/Math.pow(loc.distance(loc.x, robot.getBattleFieldHeight()), 3);
         yforce -= 5000/Math.pow(loc.distance(loc.x, 0), 3);
         
-        System.out.println("after walls: xforce: "+ xforce + " yforce: "+ yforce);
+        if(_debug >= 2) System.out.println("after walls: xforce: "+ xforce + " yforce: "+ yforce);
         
         //Move in the direction of our resolved force.
         robot.moveToward(loc.x-xforce,loc.y-yforce);
