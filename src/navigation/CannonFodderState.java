@@ -1,7 +1,10 @@
 package navigation;
 
 import robocode.HitByBulletEvent;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
+
+import com.jaxelson.Enemies;
 
 /**
  * @author Jason Axelson
@@ -9,6 +12,8 @@ import robocode.ScannedRobotEvent;
 public class CannonFodderState
         extends State {
 
+	Enemies _enemies = new Enemies(robot);
+	
     // CONSTRUCTORS
 
     public CannonFodderState(ExtendedBot robot) {
@@ -54,6 +59,7 @@ public class CannonFodderState
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
+        robot.removeEventListener(ON_ROBOT_DEATH, this);
         energy = 0;
         updateStatistics();
     }
@@ -68,6 +74,7 @@ public class CannonFodderState
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
+        robot.addEventListener(ON_ROBOT_DEATH, this);
     }
 
     /**
@@ -83,8 +90,12 @@ public class CannonFodderState
      * @param event A HitByBulletEvent object containing the details of your
      *              robot being hit by a bullet
      */
-    public void onHitByBullet(HitByBulletEvent event) {
-        damageTaken += BotMath.calculateDamage(event.getPower());
+    public void onHitByBullet(HitByBulletEvent e) {
+        damageTaken += BotMath.calculateDamage(e.getPower());
+    }
+    
+    public void onRobotDeath(RobotDeathEvent e) {
+    	_enemies.update(e);
     }
 
     /**
@@ -93,8 +104,9 @@ public class CannonFodderState
      * @param event A ScannedRobotEvent object containing the details of your
      *              robot's sighting of another robot
      */
-    public void onScannedRobot(ScannedRobotEvent event) {
-        targetBearing = event.getBearingRadians();
+    public void onScannedRobot(ScannedRobotEvent e) {
+        targetBearing = e.getBearingRadians();
+        _enemies.update(e);
     }
 
     // PRIVATE METHODS
