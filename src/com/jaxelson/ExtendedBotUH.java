@@ -109,7 +109,7 @@ public class ExtendedBotUH extends TeamRobot {
     	return botLeftEdge;
     }
     /**
-     * Turns to the desired angle
+     * Turns to the desired absolute angle
      * @param desiredAngle the desired angle in radians
      * @return how far is needed to turn
      */
@@ -132,8 +132,6 @@ public class ExtendedBotUH extends TeamRobot {
 	 * @param y y-coordinate to move to
 	 */
 	public void moveTo(ExtendedPoint2D dest) {
-		//TODO Finish this function
-		System.out.println("BROKEN");
 		
 		// Calculate turn needed to face direction
 		ExtendedPoint2D loc = getLocation();
