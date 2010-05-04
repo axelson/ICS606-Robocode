@@ -134,9 +134,12 @@ public class MinimumRiskMovementState
         
         for(EnemyBot enemy: _enemies.getEnemies()) {
         	GravPoint p = enemy.getGravPoint();
+        	if(enemy.getEnergy() < 50) {
+        		p.power /= 2;
+        	}
         	if(_debug >= 1) System.out.println("antiGrav: enemypoint: "+ p + " strength: "+ p.power);
         	if(_debug >= 2) System.out.println("xforce: "+ xforce + " yforce: "+ yforce);
-
+        	
         	//Calculate the total force from this point on us
             force = p.power/Math.pow(loc.distance(p),2);
             robot.getLocation();
