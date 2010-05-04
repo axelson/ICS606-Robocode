@@ -136,6 +136,15 @@ public class ExtendedBotUH extends TeamRobot {
 		return Math.abs(turnDistanceRad);
 	}
 	
+	public void moveToward(double x, double y) {
+		moveToward(new ExtendedPoint2D(x, y));
+	}
+	
+	public void moveToward(ExtendedPoint2D dest) {
+		turnTo(dest);
+		setAhead(Double.POSITIVE_INFINITY);
+	}
+	
 	public void moveTo(double x, double y) {
 		moveTo(new ExtendedPoint2D(x, y));
 	}
