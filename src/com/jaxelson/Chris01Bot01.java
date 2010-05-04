@@ -8,6 +8,7 @@ import java.io.Serializable;
 import navigation.ExtendedBot;
 import robocode.HitByBulletEvent;
 import robocode.MessageEvent;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
 
@@ -20,11 +21,13 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 	 */
 	
 	Enemies _enemies = new Enemies(this);
-	 
+	Boolean target = false;
+	EnemyBot temp;
+	
 	int state = 0;
 	Boolean leader = false;
 	long fireTime = 0;
-	 
+	
 	public void run() {
 		//setColors(Color.red,Color.blue,Color.green);
 		
@@ -50,11 +53,8 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 			if(leader) {
 				quickestScan(0, true);
 			}
-			else {
-				if(fireTime == getTime() && getGunTurnRemaining() == 0) {
-					setFire(0.1);
-				}
-				fireTime = getTime() + 1;
+			else if(target){
+			linearTargeting(temp,3);
 			}
 			execute();
 			
@@ -67,9 +67,9 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 	public void onScannedRobot(ScannedRobotEvent e) {
 		_enemies.update(e);
 		
-			String enemyName = e.getName().replace(" ", "* ");
+			String enemyName = BotUtility.fixName(e.getName());
+			System.out.println("****\n" + enemyName + "\n****");
 /*
-			System.out.println(enemyName);
 			System.out.println("TEAM MATES:");
 			System.out.println(this.getTeammates()[0]);
 			System.out.println(this.getTeammates()[1]);
@@ -77,9 +77,9 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 			if(!this.isTeammate(enemyName)) {
 				if(leader) {
 					try {
-						broadcastMessage(_enemies.get(e.getName()));
+						broadcastMessage(_enemies.get(enemyName));
 						System.out.println("SENT MESSAGE:");
-						System.out.println(_enemies.get(e.getName()));
+						System.out.println(_enemies.get(enemyName));
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -97,13 +97,19 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 
 	}
 	
+	public void onRobotDeath(RobotDeathEvent e)
+	{
+		_enemies.update(e);
+	}
+	
 	public void onMessageReceived(MessageEvent e)
 	{
+		target = true;
+		System.out.println(e);
 		if(!leader) {
-			EnemyBot temp = (EnemyBot)e.getMessage();
-			System.out.println(e.getMessage());
-			System.out.println("(" + temp.getX() + "," + temp.getY() + ")");
-			turnGunToXY(temp.getX(),temp.getY(),0.1);
+			temp = (EnemyBot)e.getMessage();
+			temp.setRobot(this);
+			System.out.println(temp);
 		}
 	}
 	
