@@ -6,8 +6,11 @@ import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 import java.io.Serializable;
 
+import navigation.GravPoint;
+
 public class EnemyBot implements Serializable{
 	private static final long serialVersionUID = -6633270333555835298L;
+	private static final double DEFAULT_STRENGTH = 100;
 	
 	// Bot Info
 	private String _name;
@@ -21,6 +24,11 @@ public class EnemyBot implements Serializable{
 	private double _oldHeadingRadians;
 	private double _velocity;
 	private long _time;
+	
+	/**
+	 * How much this robot is to be avoided, chiefly used in anti-gravity movement
+	 */
+	private double _strength = DEFAULT_STRENGTH; 
 	
 	private ExtendedPoint2D _location;
 	
@@ -107,6 +115,15 @@ public class EnemyBot implements Serializable{
 		
 		return string.toString();
 	}
+
+	public GravPoint getGravPoint() {
+		GravPoint p = new GravPoint(_location.x, _location.y, getStrength());
+		return p;
+	}
+	
+	/***************************/
+	/* Getters and Setters     */
+	/***************************/
 	
 	public double getX() {
 		return _location.getX();
@@ -115,10 +132,6 @@ public class EnemyBot implements Serializable{
 	public double getY() {
 		return _location.getY();
 	}
-	
-	/***************************/
-	/* Getters and Setters     */
-	/***************************/
 
 	public String getName() {
 		return _name;
@@ -244,6 +257,20 @@ public class EnemyBot implements Serializable{
 		this._robot = robot;
 	}
 	
+	/**
+	 * @param _strength the _strength to set
+	 */
+	public void setStrength(double _strength) {
+		this._strength = _strength;
+	}
+
+	/**
+	 * @return the _strength
+	 */
+	public double getStrength() {
+		return _strength;
+	}
+
 	public int getNumUpdates() {
 		return _numUpdates;
 	}
