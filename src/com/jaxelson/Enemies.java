@@ -1,6 +1,7 @@
 package com.jaxelson;
 
 import java.awt.Graphics2D;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -22,6 +23,11 @@ public class Enemies {
 	public Enemies(TeamRobot robot) {
 		_robot = robot;
 	}
+	
+	public Collection<EnemyBot> getEnemies() {
+		return _enemyTable.values();
+	}
+	
 	/**
 	 * Updates records of enemies
 	 * @param e ScannedRobotEvent info about a robot
