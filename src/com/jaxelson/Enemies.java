@@ -5,22 +5,22 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import navigation.ExtendedBot;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
-import robocode.TeamRobot;
 /**
  * Holds the information about all the enemies in the game
  * @author jason
  */
 public class Enemies {
 	private Hashtable<String,EnemyBot> _enemyTable = new Hashtable<String,EnemyBot>();
-	private TeamRobot _robot;
+	private ExtendedBot _robot;
 	private EnemyBot _target;
 	
 	/**
 	 * 
 	 */
-	public Enemies(TeamRobot robot) {
+	public Enemies(ExtendedBot robot) {
 		_robot = robot;
 	}
 	

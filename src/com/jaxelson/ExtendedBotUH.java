@@ -91,7 +91,7 @@ public class ExtendedBotUH extends TeamRobot {
 	public void execute() {
 		super.execute();
 		doGun();
-	}	
+	}
 	
 	public void drawCircleAroundBot(Graphics2D g, Double radius) {
     	double x = getX();

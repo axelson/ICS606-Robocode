@@ -1,12 +1,12 @@
 package com.jaxelson;
 
 import java.awt.Graphics2D;
-
-import robocode.AdvancedRobot;
-import robocode.ScannedRobotEvent;
 import java.io.Serializable;
 
+import navigation.ExtendedBot;
 import navigation.GravPoint;
+import robocode.AdvancedRobot;
+import robocode.ScannedRobotEvent;
 
 public class EnemyBot implements Serializable{
 	private static final long serialVersionUID = -6633270333555835298L;
@@ -14,7 +14,6 @@ public class EnemyBot implements Serializable{
 	
 	// Bot Info
 	private String _name;
-	private double _distance;
 	private double _energy;
 	private double _heading;
 	private double _headingRadians;
@@ -31,12 +30,12 @@ public class EnemyBot implements Serializable{
 	private ExtendedPoint2D _location;
 	
 	/** The robot that created this EnemyBot */
-	private AdvancedRobot _robot;
+	private ExtendedBot _robot;
 	
 	// Misc Info
 	public int _numUpdates;
 
-	public EnemyBot(ScannedRobotEvent e, AdvancedRobot robot) {
+	public EnemyBot(ScannedRobotEvent e, ExtendedBot robot) {
 		this.setRobot(robot);
     	this.update(e);
 	}
@@ -52,7 +51,6 @@ public class EnemyBot implements Serializable{
 		String enemyName = BotUtility.fixName(e.getName());
 		
 		this.setName(enemyName);
-    	this.setDistance(e.getDistance());
     	this.setEnergy(e.getEnergy());
     	this.setHeading(e.getHeading());
     	this.setHeadingRadians(e.getHeadingRadians());
@@ -178,13 +176,8 @@ public class EnemyBot implements Serializable{
 		_oldHeadingRadians = oldHeadingRadians;
 	}
 
-
-	public void setDistance(double distance) {
-		this._distance = distance;
-	}
-
 	public double getDistance() {
-		return _distance;
+		return _robot.getLocation().distance(_location);
 	}
 
 	public void setEnergy(double energy) {
@@ -245,7 +238,7 @@ public class EnemyBot implements Serializable{
 	/**
 	 * @param robot the robot to set
 	 */
-	public void setRobot(AdvancedRobot robot) {
+	public void setRobot(ExtendedBot robot) {
 		this._robot = robot;
 	}
 	
