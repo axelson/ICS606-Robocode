@@ -46,6 +46,9 @@ public class BotUtility {
 	
 	public static String fixName(String name) {
 		// Hack because of asterisk error
+		if(name.contains("*")) {
+			return name;
+		}
 		String fixedName = name.replace(" (", "* (");
 		return fixedName;
 	}
