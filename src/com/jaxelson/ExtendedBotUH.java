@@ -122,6 +122,35 @@ public class ExtendedBotUH extends TeamRobot {
 		return Math.abs(turnDistanceRad);
 	}
 	
+	public void moveTo(double x, double y) {
+		moveTo(new ExtendedPoint2D(x, y));
+	}
+	
+	/**
+	 * Moves to a point
+	 * @param x x-coordinate to move to
+	 * @param y y-coordinate to move to
+	 */
+	public void moveTo(ExtendedPoint2D dest) {
+		//TODO Finish this function
+		System.out.println("BROKEN");
+		
+		// Calculate turn needed to face direction
+		ExtendedPoint2D loc = getLocation();
+		System.out.println("loc: "+ loc);
+		System.out.println("dest: "+ dest);
+		double turnRequired = BotUtility.absoluteBearing(loc, dest);
+		System.out.println("turnRequired: "+ turnRequired);
+		
+		// Start turning in the requisite direction
+//		this.setTurnRightRadians(turnRequired);
+		this.turnTo(turnRequired);
+		
+		// Move ahead to the desired point
+		double distance = loc.distance(dest);
+		this.setAhead(distance);
+	}
+	
 	/**
 	 * Turns radar to the desired angle
 	 * @param desiredAngle
