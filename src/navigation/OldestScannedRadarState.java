@@ -2,6 +2,8 @@ package navigation;
 
 import java.util.LinkedHashMap;
 
+import com.jaxelson.EnemyBot;
+
 import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
@@ -68,7 +70,7 @@ public class OldestScannedRadarState
     }
 
     /**
-     * This method will be called to indicate the CommandListener should free
+     * This method will be called to indicate ttargethe CommandListener should free
      * all resources and cease execution.
      */
     public void disable() {
@@ -138,6 +140,9 @@ public class OldestScannedRadarState
         			- robot.getRadarHeadingRadians());
         	sought = ehm.keySet().iterator().next();
         }
+        
+        EnemyBot target = new EnemyBot(e, robot);
+        robot.linearTargeting(target);
     }
 
     // PRIVATE METHODS
