@@ -23,22 +23,19 @@ public class SimpleBot extends ExtendedBot {
 		
 		setColors(Color.white,Color.white,Color.white);
 
-		
-		// Robocode order
-		// Battle view (re)painted
-		// All robots execute code until the take action (paused)
-		// Time updated (by 1)
-		// All bullets move and check for collision (includes firing bullets)
-		// All robots move
-		// All robots perform scans (and collect team messages)
-		// All robots are resumed to take new action
-		// Each robot processes its event queue
-	
 		do
 		{
-			quickestScan(0, true);
+//			quickestScan(0, true);
+			switch (state) {
+			case 0:
+				moveTo(20, 20);
+				state++;
+				break;
+
+			default:
+				break;
+			}
 			execute();
-			
 		} while(true);
 	}
 
