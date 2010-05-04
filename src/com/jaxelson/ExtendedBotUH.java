@@ -108,6 +108,20 @@ public class ExtendedBotUH extends TeamRobot {
     	double botLeftEdge = getX() - BotUtility.botWidth/2;
     	return botLeftEdge;
     }
+    
+
+    /**
+     * Turns to face desired point
+     * @param dest point to turn to
+     */
+	public void turnTo(ExtendedPoint2D dest) {
+		// Calculate turn needed to face direction
+		ExtendedPoint2D myLoc = getLocation();
+		double turnRequired = BotUtility.absoluteBearing(myLoc, dest);
+
+		this.turnTo(turnRequired);
+	}
+    
     /**
      * Turns to the desired absolute angle
      * @param desiredAngle the desired angle in radians
