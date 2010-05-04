@@ -51,8 +51,7 @@ public class MinimumRiskMovementState
      * @return A boolean indicating whether this State should be used
      */
     public boolean isValid() {
-//        return (robot.getNumEnemies() > 1);
-    	return true;
+        return (robot.getNumEnemies() > 1);
     }
 
     /**
