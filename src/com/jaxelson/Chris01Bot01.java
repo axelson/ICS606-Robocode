@@ -3,14 +3,12 @@ package com.jaxelson;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.io.Serializable;
 
 import navigation.ExtendedBot;
 import robocode.HitByBulletEvent;
 import robocode.MessageEvent;
 import robocode.ScannedRobotEvent;
-
-import java.io.Serializable;
 
 
 public class Chris01Bot01 extends ExtendedBot implements Serializable {

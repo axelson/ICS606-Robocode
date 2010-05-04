@@ -1,9 +1,10 @@
 package navigation;
 
-import com.jaxelson.EnemyBot;
-
 import robocode.HitByBulletEvent;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
+
+import com.jaxelson.EnemyBot;
 
 /**
  * Simple state designed to be ineffective.
@@ -11,7 +12,6 @@ import robocode.ScannedRobotEvent;
  */
 public class SpinningRadarState
         extends State {
-
     // CONSTRUCTORS
 
     /**
@@ -52,7 +52,7 @@ public class SpinningRadarState
      * @return A boolean indicating whether this State should be used
      */
     public boolean isValid() {
-        return true;
+        return (robot.getNumEnemies() > 1);
     }
 
     /**
@@ -62,6 +62,7 @@ public class SpinningRadarState
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
+        robot.removeEventListener(ON_ROBOT_DEATH, this);
         energy = 0;
         updateStatistics();
     }
@@ -76,6 +77,7 @@ public class SpinningRadarState
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
+        robot.addEventListener(ON_ROBOT_DEATH, this);
     }
 
     /**
@@ -83,7 +85,7 @@ public class SpinningRadarState
      * execute turn based instructions.
      */
     public void execute() {
-    	robot.setTurnRadarLeftRadians(Double.POSITIVE_INFINITY);
+    	robot.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
     }
 
     /**
@@ -94,6 +96,11 @@ public class SpinningRadarState
     public void onHitByBullet(HitByBulletEvent event) {
         damageTaken += BotMath.calculateDamage(event.getPower());
     }
+    
+    public void onRobotDeath(RobotDeathEvent e) {
+    	System.out.println("A robot has died");
+    	_enemies.update(e);
+    }
 
     /**
      * This method will be called when your robot sees another robot.<br>
@@ -103,8 +110,10 @@ public class SpinningRadarState
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         targetBearing = e.getBearingRadians();
-        EnemyBot target = new EnemyBot(e, robot);
-        robot.headOnTargeting(target, 1.0);
+        _enemies.update(e);
+        EnemyBot target = _enemies.getTarget();
+        
+        robot.headOnTargeting(target, 3.0);
     }
 
     // PRIVATE METHODS

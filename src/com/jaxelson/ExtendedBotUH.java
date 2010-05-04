@@ -7,10 +7,90 @@ import robocode.Rules;
 import robocode.TeamRobot;
 import robocode.util.Utils;
 
+class GunManager {
+	private ExtendedBotUH _robot;
+	
+	public int _debug = 0;
+	
+	/** Time to fire gun */
+	private long _fireTime = 0;
+	protected boolean _isCurrentlyAiming=false;
+	
+	protected double _firePower = 0;
+	
+	public GunManager(ExtendedBotUH robot) {
+		_robot = robot;
+	}
+	
+	public void setGunToFire(double firePower) {
+		if(isAiming()) {
+			return;
+		} else {
+			_firePower = firePower;
+			_isCurrentlyAiming = true;
+			_fireTime = _robot.getTime() + 1;
+		}
+	}
+	
+	/**
+	 * Fire gun if ready to fire
+	 * @return true if gun is ready to fires
+	 */
+	public boolean fireIfReady() {
+		if(readyToFire()) {
+			fireGun();
+			return true;
+		} else {
+			if(_debug >= 1) System.out.println("Not ready to fire (time "+ _robot.getTime() + "): "+ toString());
+			return false;
+		}
+	}
+
+	public String toString() {
+		return "fireTime: "+ _fireTime + " isAiming: "+ _isCurrentlyAiming + " firePower: "+ _firePower;
+	}
+
+	public boolean isAiming() {
+		return _isCurrentlyAiming;
+	}
+
+	private boolean readyToFire() {
+		boolean fireTimeOk = _fireTime <= _robot.getTime();
+		boolean gunDoneTurningOk = (_robot.getGunTurnRemainingRadians() <= 0.03);
+		boolean currentlyAimingOk = isAiming();
+		boolean gunHeatOk = (_robot.getGunHeat() == 0);
+		
+		boolean willFire = (fireTimeOk && gunDoneTurningOk && currentlyAimingOk && gunHeatOk); 
+		if(_debug >= 1) System.out.println("readyToFire: "+ willFire +" fireTime: "+ fireTimeOk +
+				" gunDoneTurningOk: "+ gunDoneTurningOk + " aimingOk: "+ currentlyAimingOk +
+				" gunHeatOk: "+ gunHeatOk);
+
+		return willFire;
+	}
+		
+	private void fireGun() {
+		if(_debug >= 1) System.out.println("Fire!! gunheat: "+ _robot.getGunHeat());
+		_robot.setFire(_firePower);
+		_isCurrentlyAiming = false;
+	}
+}
+
 public class ExtendedBotUH extends TeamRobot {
+	protected GunManager _gun = new GunManager(this);
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
 	
+	/**
+	 * Fire gun if it is ready to be fired
+	 */
+	public void doGun() {
+		_gun.fireIfReady();
+	}
+	
+	public void execute() {
+		super.execute();
+		doGun();
+	}	
 	
 	public void drawCircleAroundBot(Graphics2D g, Double radius) {
     	double x = getX();
@@ -29,7 +109,7 @@ public class ExtendedBotUH extends TeamRobot {
     	return botLeftEdge;
     }
     /**
-     * Turns to the desired angle
+     * Turns to the desired absolute angle
      * @param desiredAngle the desired angle in radians
      * @return how far is needed to turn
      */
@@ -40,6 +120,33 @@ public class ExtendedBotUH extends TeamRobot {
 		this.setTurnLeftRadians(turnDistanceRad);
 		
 		return Math.abs(turnDistanceRad);
+	}
+	
+	public void moveTo(double x, double y) {
+		moveTo(new ExtendedPoint2D(x, y));
+	}
+	
+	/**
+	 * Moves to a point
+	 * @param x x-coordinate to move to
+	 * @param y y-coordinate to move to
+	 */
+	public void moveTo(ExtendedPoint2D dest) {
+		
+		// Calculate turn needed to face direction
+		ExtendedPoint2D loc = getLocation();
+		System.out.println("loc: "+ loc);
+		System.out.println("dest: "+ dest);
+		double turnRequired = BotUtility.absoluteBearing(loc, dest);
+		System.out.println("turnRequired: "+ turnRequired);
+		
+		// Start turning in the requisite direction
+//		this.setTurnRightRadians(turnRequired);
+		this.turnTo(turnRequired);
+		
+		// Move ahead to the desired point
+		double distance = loc.distance(dest);
+		this.setAhead(distance);
 	}
 	
 	/**
@@ -157,13 +264,21 @@ public class ExtendedBotUH extends TeamRobot {
 		int numTeammates = (teammates != null) ? teammates.length : 0;
 		return this.getOthers() - numTeammates;
 	}
+	
+	/**
+	 * Get the current location of the robot
+	 * @return the current location
+	 */
+	public ExtendedPoint2D getLocation() {
+		ExtendedPoint2D loc = new ExtendedPoint2D(this.getX(), this.getY());
+		return loc;
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean isTeammate(String name) {
-		// Hack because of asterisk error
-		String realName = name.replace(" (", "* (");
+		String realName = BotUtility.fixName(name);
 
 		return super.isTeammate(realName);
 	}
@@ -199,9 +314,8 @@ public class ExtendedBotUH extends TeamRobot {
 	// Targeting
 	
 	public void headOnTargeting(EnemyBot target, double firePower) {
-		//TODO This fires too early
 		this.turnGunTo(target);
-        this.setFire(firePower);
+		_gun.setGunToFire(firePower);
 	}
 	
 	public void linearTargeting(EnemyBot target) {

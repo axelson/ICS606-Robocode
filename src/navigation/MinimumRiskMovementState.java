@@ -1,34 +1,17 @@
 package navigation;
 
-import java.util.LinkedHashMap;
-
 import robocode.HitByBulletEvent;
-import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
-import robocode.util.Utils;
 
 /**
- * Melee Radar based on wiki code
- * http://robowiki.net/wiki/Radar#Oldest_Scanned
  * @author Jason Axelson
  */
-public class MeleeRadarState
+public class MinimumRiskMovementState
         extends State {
 
-	public int _debug = 0;
-	
-	static LinkedHashMap<String, Double> enemyHashMap;
-	static double scanDir;
-	static Object sought;
-	
     // CONSTRUCTORS
 
-    /**
-     * Creates a new CannonFodderState for the specified robot.
-     * @param robot The ExtendedRobot object used to provide data and execute
-     *              commands
-     */
-    public MeleeRadarState(ExtendedBot robot) {
+    public MinimumRiskMovementState(ExtendedBot robot) {
         super(robot);
     }
 
@@ -52,19 +35,16 @@ public class MeleeRadarState
      * @return A String containing the name of this State object
      */
     public String getName() {
-        return "MeleeRadarState";
+        return "MinimumRiskMovementState";
     }
 
     /**
-     * State is only valid if there are multiple enemies
-     * @return true if there are multiple enemies
+     * Returns whether the this state is valid (may be used under the
+     * current circumstances).
+     * @return A boolean indicating whether this State should be used
      */
     public boolean isValid() {
-        if(robot.getNumEnemies() > 1) {
-        	return true;
-        } else {
-        	return false;
-        }
+        return (robot.getNumEnemies() > 1);
     }
 
     /**
@@ -90,9 +70,6 @@ public class MeleeRadarState
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
         robot.addEventListener(ON_ROBOT_DEATH, this);
-        
-        scanDir = 1;
-        enemyHashMap = new LinkedHashMap<String, Double>(5, 2, true);
     }
 
     /**
@@ -100,9 +77,7 @@ public class MeleeRadarState
      * execute turn based instructions.
      */
     public void execute() {
-    	if(_debug >= 1) System.out.println("MeleeRadarState executing");
-    	robot.setTurnRadarRightRadians(scanDir * Double.POSITIVE_INFINITY);
-        robot.scan();
+        // Do absolutely nothing
     }
 
     /**
@@ -113,11 +88,6 @@ public class MeleeRadarState
     public void onHitByBullet(HitByBulletEvent event) {
         damageTaken += BotMath.calculateDamage(event.getPower());
     }
-    
-    public void onRobotDeath(RobotDeathEvent e) {
-    	enemyHashMap.remove(e.getName());
-        sought = null;
-    }
 
     /**
      * This method will be called when your robot sees another robot.<br>
@@ -125,19 +95,8 @@ public class MeleeRadarState
      * @param event A ScannedRobotEvent object containing the details of your
      *              robot's sighting of another robot
      */
-    public void onScannedRobot(ScannedRobotEvent e) {
-        targetBearing = e.getBearingRadians();
-        
-        String name = e.getName();
-        LinkedHashMap<String, Double> ehm = enemyHashMap;
-
-        ehm.put(name, robot.getHeadingRadians() + e.getBearingRadians());
-
-        if ((name == sought || sought == null) && ehm.size() == robot.getOthers()) {
-        	scanDir = Utils.normalRelativeAngle(ehm.values().iterator().next()
-        			- robot.getRadarHeadingRadians());
-        	sought = ehm.keySet().iterator().next();
-        }
+    public void onScannedRobot(ScannedRobotEvent event) {
+        targetBearing = event.getBearingRadians();
     }
 
     // PRIVATE METHODS

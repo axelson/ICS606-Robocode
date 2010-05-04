@@ -129,7 +129,7 @@ public class EnemyBot implements Serializable{
 	}
 
 	public void setName(String name) {
-		this._name = name;
+		this._name = BotUtility.fixName(name);
 	}
 
 	public void setBearing(double bearing) {

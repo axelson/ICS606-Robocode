@@ -17,6 +17,8 @@ import robocode.AdvancedRobot;
 import robocode.RobocodeFileOutputStream;
 
 public class BotUtility {	
+	public static final int botWidth = 36;
+
 	/**
 	 * Returns the amount of damage inflicted by a bullet using the specified
 	 * power (not factoring in the life of the target).<br>
@@ -41,8 +43,12 @@ public class BotUtility {
 		Shape circle = new Ellipse2D.Double(x, y, diameter, diameter);
         g.draw(circle);
     }
-
-	public static final int botWidth = 36;
+	
+	public static String fixName(String name) {
+		// Hack because of asterisk error
+		String fixedName = name.replace(" (", "* (");
+		return fixedName;
+	}
 
 	/**
 	 * Projects from a location a distance at an angle
