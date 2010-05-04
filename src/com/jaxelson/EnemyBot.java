@@ -10,7 +10,7 @@ import navigation.GravPoint;
 
 public class EnemyBot implements Serializable{
 	private static final long serialVersionUID = -6633270333555835298L;
-	private static final double DEFAULT_STRENGTH = 100;
+	private static final double DEFAULT_STRENGTH = 20;
 	
 	// Bot Info
 	private String _name;
