@@ -28,43 +28,16 @@ public class ExtendedPoint2D extends Point2D.Double implements Serializable{
 	}
 	
 	public double bearingTo(Point2D location, AdvancedRobot robot) {
-//		double absoluteAngle = angleTo(location);
-		double absoluteAngle = angleToGood(location);
+		double absoluteAngle = angleTo(location);
 		double bearing = absoluteAngle - robot.getHeadingRadians();
 		System.out.println("Plain: "+ bearing);
-//		return bearing + Math.PI;
 		return (bearing > 0) ? bearing - Math.PI : bearing + Math.PI;
-//		Utils.
-//		return Utils.normalAbsoluteAngle(bearing);
-	}
-	
-	public double angleToGood(Point2D location) {
-		ExtendedPoint2D loc = (ExtendedPoint2D) location;
-		return Utils.normalAbsoluteAngle(Math.atan2(loc.x - x,
-				loc.y - y));
 	}
 	
 	public double angleTo(Point2D location) {
-		double ox = location.getX();
-		double oy = location.getY();
-		double rx = ox - x;
-		final double ry = oy - y;
-		System.out.println("location: "+ location + " x: "+ x + " y: "+ y);
-		double relativeAngle = Math.atan2(rx, ry);
-		System.out.println("relative: "+ relativeAngle);
-		return relativeAngle;
-//		if((rx>0) && (ry>0)) { 		//Upper Right
-//			return relativeAngle;
-//		} else if((rx>0) && (ry<0)) { //Lower Right
-//			return relativeAngle + Math.PI/4;
-//		} else if((rx<0) && (ry<0)) { // Lower Left
-//			return relativeAngle + Math.PI/2;
-//		} else if((rx<0) && (ry>0)) { // Upper Left
-//			return relativeAngle + Math.PI*3/4;
-//		} else {
-//			System.out.println("AngleTo: Error, returning 0");
-//			return 0;
-//		}
+		ExtendedPoint2D loc = (ExtendedPoint2D) location;
+		return Utils.normalAbsoluteAngle(Math.atan2(loc.x - x,
+				loc.y - y));
 	}
 	
 	public double angleTo(double x, double y) {
