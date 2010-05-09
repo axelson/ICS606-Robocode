@@ -3,6 +3,9 @@ package com.jaxelson;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 
+import robocode.AdvancedRobot;
+import robocode.util.Utils;
+
 public class ExtendedPoint2D extends Point2D.Double implements Serializable{
 
 	private static final long serialVersionUID = 74324L;

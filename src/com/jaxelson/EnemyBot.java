@@ -7,10 +7,11 @@ import navigation.ExtendedBot;
 import navigation.GravPoint;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
+import robocode.util.Utils;
 
 public class EnemyBot implements Serializable{
 	private static final long serialVersionUID = -6633270333555835298L;
-	private static final double DEFAULT_STRENGTH = 20;
+	private static final double DEFAULT_STRENGTH = 50;
 	
 	// Bot Info
 	private String _name;
@@ -27,6 +28,7 @@ public class EnemyBot implements Serializable{
 	 */
 	private double _strength = DEFAULT_STRENGTH; 
 	
+	/** Location of this EnemyBot */
 	private ExtendedPoint2D _location;
 	
 	/** The robot that created this EnemyBot */

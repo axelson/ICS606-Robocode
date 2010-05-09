@@ -1,5 +1,7 @@
 package navigation;
 
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import robocode.HitByBulletEvent;
@@ -16,6 +18,10 @@ public class MinimumRiskMovementState
         extends State {
 
     ArrayList<GravPoint> _gravpoints = new ArrayList<GravPoint>();
+    /** Current x-force pushing on robot */
+    double _xforce = 0;
+    /** Current y-force pushing on robot */
+    double _yforce = 0;
     // CONSTRUCTORS
 
     public MinimumRiskMovementState(ExtendedBot robot) {
@@ -62,6 +68,7 @@ public class MinimumRiskMovementState
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
         robot.removeEventListener(ON_ROBOT_DEATH, this);
+        robot.removeEventListener(ON_PAINT, this);
         energy = 0;
         updateStatistics();
     }
@@ -73,10 +80,12 @@ public class MinimumRiskMovementState
     public void enable() {
         startTime = robot.getTime();
         energy = robot.getEnergy();
+        _debug = 2;
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
         robot.addEventListener(ON_ROBOT_DEATH, this);
+        robot.addEventListener(ON_PAINT, this);
     }
 
     /**
@@ -124,21 +133,44 @@ public class MinimumRiskMovementState
                           robot);
     }
     
+    public void onPaint(Graphics2D g) {
+//    	if(_debug >= 1) System.out.println("Now Painting");
+        // Set the paint color to red
+        g.setColor(java.awt.Color.RED);
+        
+        for(GravPoint point: _gravpoints) {
+        	point.paint(g);
+        }
+        
+        ExtendedPoint2D loc = robot.getLocation();
+        double scalingFactor = 50000;
+		double xScaledForce = (loc.x + _xforce*scalingFactor);
+        double yScaledForce = (loc.y + _yforce*scalingFactor);
+        System.out.println("xScaled: "+ xScaledForce);
+        System.out.println("yScaled: "+ yScaledForce);
+        Line2D line = new Line2D.Double(loc.x, loc.y, xScaledForce, yScaledForce);
+        g.draw(line);
+    }
+    
     //TODO Finish anti gravity movement    
     void antiGravMove() {
-        double xforce = 0;
-        double yforce = 0;
         double force;
         double ang;
         ExtendedPoint2D loc = robot.getLocation();
         
+        //Reset
+        _xforce = 0;
+        _yforce = 0;
+        _gravpoints.clear();
+        
         for(EnemyBot enemy: _enemies.getEnemies()) {
         	GravPoint p = enemy.getGravPoint();
+        	_gravpoints.add(p);
         	if(enemy.getEnergy() < 50) {
-        		p.power /= 2;
+//        		p.power /= 2;
         	}
         	if(_debug >= 1) System.out.println("antiGrav: enemypoint: "+ p + " strength: "+ p.power);
-        	if(_debug >= 2) System.out.println("xforce: "+ xforce + " yforce: "+ yforce);
+        	if(_debug >= 2) System.out.println("xforce_: "+ _xforce + " yforce: "+ _yforce);
         	
         	//Calculate the total force from this point on us
             force = p.power/Math.pow(loc.distance(p),2);
@@ -148,24 +180,37 @@ public class MinimumRiskMovementState
 
             //Add the components of this force to the total force in their 
             //respective directions
-            xforce += Math.sin(ang) * force;
-            yforce += Math.cos(ang) * force;
+            _xforce -= Math.sin(ang) * force;
+            _yforce -= Math.cos(ang) * force;
         }
         
-        if(_debug >= 2) System.out.println("after bots: xforce: "+ xforce + " yforce: "+ yforce);
+        if(_debug >= 2) System.out.println("after bots: xforce: "+ _xforce + " yforce: "+ _yforce);
         
         /* The following four lines add wall avoidance.  They will only 
         affect us if the bot is close to the walls due to the
         force from the walls decreasing at a power 3.*/
-        xforce += 5000/Math.pow(loc.distance(robot.getBattleFieldWidth(), loc.y), 3);
-        xforce -= 5000/Math.pow(loc.distance(0, loc.y), 3);
-        yforce += 5000/Math.pow(loc.distance(loc.x, robot.getBattleFieldHeight()), 3);
-        yforce -= 5000/Math.pow(loc.distance(loc.x, 0), 3);
+        double wallScaleFactor = 10000;
+        double rightWallPower = wallScaleFactor/Math.pow(loc.distance(robot.getBattleFieldWidth(), loc.y), 3);
+        double leftWallPower = wallScaleFactor/Math.pow(loc.distance(0, loc.y), 3);
+        double topWallPower = wallScaleFactor/Math.pow(loc.distance(loc.x, robot.getBattleFieldHeight()), 3);
+        double bottomWallPower = wallScaleFactor/Math.pow(loc.distance(loc.x, 0), 3);
         
-        if(_debug >= 2) System.out.println("after walls: xforce: "+ xforce + " yforce: "+ yforce);
+        System.out.println("right "+ rightWallPower);
+        System.out.println("left "+ leftWallPower);
+        System.out.println("top "+ topWallPower);
+        System.out.println("bottom "+ bottomWallPower);
+        
+        _xforce += leftWallPower - rightWallPower;
+        _yforce += bottomWallPower - topWallPower;
+//        _xforce += wallScaleFactor/Math.pow(loc.distance(robot.getBattleFieldWidth(), loc.y), 3);
+//        _xforce -= wallScaleFactor/Math.pow(loc.distance(0, loc.y), 3);
+//        _yforce += wallScaleFactor/Math.pow(loc.distance(loc.x, robot.getBattleFieldHeight()), 3);
+//        _yforce -= wallScaleFactor/Math.pow(loc.distance(loc.x, 0), 3);
+        
+        if(_debug >= 2) System.out.println("after walls: xforce: "+ _xforce + " yforce: "+ _yforce +"\n\n");
         
         //Move in the direction of our resolved force.
-        robot.moveToward(loc.x-xforce,loc.y-yforce);
+        robot.moveToward(loc.x + _xforce,loc.y + _yforce);
     }
 
     // INSTANCE VARIABLES
