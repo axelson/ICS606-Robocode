@@ -228,9 +228,10 @@ public class ExtendedBotUH extends TeamRobot {
 //			this.getHeadingRadians() + target.getBearingRadians()
 //			// Subtract current radar heading to get turn required
 //			- this.getRadarHeadingRadians();
-		double absoluteBearing = target.getBearingRadians();
+//		double absoluteBearing = target.getAngle();
+		double absoluteBearing = this.getHeadingRadians() + target.getBearingRadians();
 		double radarTurn = absoluteBearing - this.getRadarHeadingRadians();
-
+		
 		this.setTurnRadarRightRadians(factor * Utils.normalRelativeAngle(radarTurn));
 	}
 	

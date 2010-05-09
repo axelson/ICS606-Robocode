@@ -27,13 +27,24 @@ public class ExtendedPoint2D extends Point2D.Double implements Serializable{
 		y = enemyY;
 	}
 	
+	/**
+	 * Get bearing from this point to given location
+	 * @param location to get bearing to
+	 * @param robot used to calculate heading
+	 * @return bearing to point from robot
+	 */
 	public double bearingTo(Point2D location, AdvancedRobot robot) {
 		double absoluteAngle = angleTo(location);
 		double bearing = absoluteAngle - robot.getHeadingRadians();
-		System.out.println("Plain: "+ bearing);
+
 		return (bearing > 0) ? bearing - Math.PI : bearing + Math.PI;
 	}
 	
+	/**
+	 * Gives absolute angle from this point to given location
+	 * @param location to get angle to
+	 * @return absolute angle
+	 */
 	public double angleTo(Point2D location) {
 		ExtendedPoint2D loc = (ExtendedPoint2D) location;
 		return Utils.normalAbsoluteAngle(Math.atan2(loc.x - x,

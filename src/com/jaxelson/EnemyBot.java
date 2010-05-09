@@ -7,7 +7,6 @@ import navigation.ExtendedBot;
 import navigation.GravPoint;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
-import robocode.util.Utils;
 
 public class EnemyBot implements Serializable{
 	private static final long serialVersionUID = -6633270333555835298L;
@@ -119,6 +118,20 @@ public class EnemyBot implements Serializable{
 		return p;
 	}
 	
+	/**
+	 * Returns the bearing in radians
+	 * @return bearing from robot to this enemy robot
+	 */
+	public double getBearingRadians() {
+		ExtendedPoint2D robotLoc = _robot.getLocation();
+		return _location.bearingTo(robotLoc, _robot);
+	}
+	
+	public double getAngle() {
+		ExtendedPoint2D robotLoc = _robot.getLocation();
+		return _location.angleTo(robotLoc);
+	}
+	
 	/***************************/
 	/* Getters and Setters     */
 	/***************************/
@@ -139,17 +152,6 @@ public class EnemyBot implements Serializable{
 		this._name = BotUtility.fixName(name);
 	}
 
-	// This function returns the angle in radians
-	public double getBearingRadians() {
-		ExtendedPoint2D robotLoc = new ExtendedPoint2D(_robot.getX(),_robot.getY());
-//		System.out.println("temp loc: "+ robotLoc);
-//		return temp.angleTo(_location);
-		System.out.println("Bearing1: "+ _location.angleTo(robotLoc));
-		System.out.println("Bearing2: "+ robotLoc.angleTo(_location));
-		System.out.println("Bearing3: "+ _location.bearingTo(robotLoc, _robot));
-		return _location.angleTo(robotLoc);
-	}
-	
 	/**
 	 * @return the _oldHeading
 	 */
