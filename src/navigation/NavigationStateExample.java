@@ -17,9 +17,9 @@ public class NavigationStateExample extends ExtendedBot {
         try {
             // Set up and enable the state manager
             StateManager navigation = new StateManager(this);
-//            navigation.addState(new CannonFodderState(this));
+            navigation.addState(new CannonFodderState(this));
 //            navigation.addState(new TrackState(this));
-            navigation.addState(new WaveSurfing(this));
+//            navigation.addState(new WaveSurfing(this));
 //            navigation.addState(new MoveLeftRightState(this));
             navigation.addState(new MinimumRiskMovementState(this));
             addCommandListener(navigation);

@@ -141,8 +141,13 @@ public class EnemyBot implements Serializable{
 
 	// This function returns the angle in radians
 	public double getBearingRadians() {
-		ExtendedPoint2D temp = new ExtendedPoint2D(_robot.getX(),_robot.getY());
-		return temp.angleTo(_location);
+		ExtendedPoint2D robotLoc = new ExtendedPoint2D(_robot.getX(),_robot.getY());
+//		System.out.println("temp loc: "+ robotLoc);
+//		return temp.angleTo(_location);
+		System.out.println("Bearing1: "+ _location.angleTo(robotLoc));
+		System.out.println("Bearing2: "+ robotLoc.angleTo(_location));
+		System.out.println("Bearing3: "+ _location.bearingTo(robotLoc, _robot));
+		return _location.angleTo(robotLoc);
 	}
 	
 	/**

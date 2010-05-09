@@ -81,6 +81,8 @@ public class NarrowRadarLockState
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
         
+        robot.setTurnRadarLeft(360);
+        
     	_debug = 0;
     }
 
@@ -90,8 +92,8 @@ public class NarrowRadarLockState
      */
     public void execute() {
     	if(_debug >= 1) System.out.println("NarrowRadarLockState executing");
-    	if(robot.getRadarTurnRemainingRadians() < 0.05) {
-    		robot.setTurnRadarRightRadians(Math.PI);
+    	if(robot.getRadarTurnRemainingRadians() < 0.01) {
+    		robot.setTurnRadarRightRadians(Math.PI*2);
     	}
     }
 
@@ -115,9 +117,13 @@ public class NarrowRadarLockState
     	_enemies.get(event);
         targetBearing = event.getBearingRadians();
         EnemyBot target = new EnemyBot(event, robot);
+        System.out.println("Real bearing"+ event.getBearingRadians());
+//        System.out.println("New bearing: "+ );
+//        System.out.println("Real loc: "+ robot.getLocation());
         robot.narrowRadarLock(target);
+        System.out.println();
         
-        robot.linearTargeting(target, 3.0);
+//        robot.linearTargeting(target, 3.0);
     }
 
     // PRIVATE METHODS
