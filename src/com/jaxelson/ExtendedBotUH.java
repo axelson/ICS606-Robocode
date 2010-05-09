@@ -223,15 +223,12 @@ public class ExtendedBotUH extends TeamRobot {
 	 * @param factor narrow lock factor (how "narrow" lock is), typical values 1.0, 1.9, 2.0
 	 */
 	public void narrowRadarLock(EnemyBot target, Double factor) {
-//		double radarTurn =
-//			// Absolute bearing to target
-//			this.getHeadingRadians() + target.getBearingRadians()
-//			// Subtract current radar heading to get turn required
-//			- this.getRadarHeadingRadians();
-//		double absoluteBearing = target.getAngle();
-		double absoluteBearing = this.getHeadingRadians() + target.getBearingRadians();
-		double radarTurn = absoluteBearing - this.getRadarHeadingRadians();
-		
+		double radarTurn =
+			// Absolute bearing to target
+			this.getHeadingRadians() + target.getBearingRadians()
+			// Subtract current radar heading to get turn required
+			- this.getRadarHeadingRadians();
+
 		this.setTurnRadarRightRadians(factor * Utils.normalRelativeAngle(radarTurn));
 	}
 	
