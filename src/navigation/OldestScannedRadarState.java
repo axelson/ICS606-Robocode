@@ -68,7 +68,7 @@ public class OldestScannedRadarState
     }
 
     /**
-     * This method will be called to indicate ttargethe CommandListener should free
+     * This method will be called to indicate the CommandListener should free
      * all resources and cease execution.
      */
     public void disable() {
