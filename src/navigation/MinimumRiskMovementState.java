@@ -160,7 +160,7 @@ public class MinimumRiskMovementState
         _yforce = 0;
         _gravpoints.clear();
         
-        for(BotInfo enemy: _enemies.getEnemies()) {
+        for(BotInfo enemy: _enemies.getEnemiesAsCollection()) {
         	GravPoint p = enemy.getGravPoint();
         	_gravpoints.add(p);
         	if(enemy.getEnergy() < 50) {

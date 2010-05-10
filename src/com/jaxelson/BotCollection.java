@@ -36,7 +36,7 @@ public class BotCollection {
 		_enemyTable = new Hashtable<String, BotInfo>(another._enemyTable);
 	}
 	
-	public Collection<BotInfo> getEnemies() {
+	public Collection<BotInfo> getEnemiesAsCollection() {
 		return _enemyTable.values();
 	}
 	
