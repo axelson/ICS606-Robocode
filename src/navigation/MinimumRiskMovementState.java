@@ -173,7 +173,7 @@ public class MinimumRiskMovementState
             force = p.power/Math.pow(loc.distance(p),2);
             robot.getLocation();
             
-            ang = loc.angleTo(p);
+            ang = loc.javaAngleTo(p);
 
             //Add the components of this force to the total force in their 
             //respective directions

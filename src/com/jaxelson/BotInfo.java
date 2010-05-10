@@ -127,6 +127,10 @@ public class BotInfo implements Serializable,Comparable<BotInfo> {
 		return _location.bearingTo(robotLoc, _robot);
 	}
 	
+	/**
+	 * Gives absolute angle to this bot
+	 * @return absolute angle to this bot
+	 */
 	public double getAngle() {
 		ExtendedPoint2D robotLoc = _robot.getLocation();
 		return _location.angleTo(robotLoc);

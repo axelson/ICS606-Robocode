@@ -41,13 +41,22 @@ public class ExtendedPoint2D extends Point2D.Double implements Serializable{
 	}
 	
 	/**
-	 * Gives absolute angle from this point to given location
-	 * @param location to get angle to
-	 * @return absolute angle
+	 * Gives robocode absolute angle from this point to given location
+	 * @param location to get robocode absolute angle to
+	 * @return robocode absolute angle
 	 */
 	public double angleTo(Point2D location) {
+		return toRobocodeCoord(javaAngleTo(location));
+	}
+	
+	/**
+	 * Gets java absolute angle to given location
+	 * @param location to get java angle to
+	 * @return absolute java angle
+	 */
+	public double javaAngleTo(Point2D location) {
 		ExtendedPoint2D loc = (ExtendedPoint2D) location;
-		return toRobocodeCoord(Utils.normalAbsoluteAngle(Math.atan2(loc.x - x, loc.y - y)));
+		return Utils.normalAbsoluteAngle(Math.atan2(loc.x - x, loc.y - y));
 	}
 	
 	/**
