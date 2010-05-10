@@ -22,7 +22,7 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 	
 	Enemies _enemies = new Enemies(this);
 	Boolean target = false;
-	EnemyBot temp;
+	BotInfo temp;
 	
 	int state = 0;
 	Boolean leader = false;
@@ -107,7 +107,7 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 		target = true;
 		System.out.println(e);
 		if(!leader) {
-			temp = (EnemyBot)e.getMessage();
+			temp = (BotInfo)e.getMessage();
 			temp.setRobot(this);
 			System.out.println(temp);
 		}

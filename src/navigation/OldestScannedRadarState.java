@@ -2,7 +2,7 @@ package navigation;
 
 import java.util.LinkedHashMap;
 
-import com.jaxelson.EnemyBot;
+import com.jaxelson.BotInfo;
 
 import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
@@ -140,7 +140,7 @@ public class OldestScannedRadarState
         }
         
 //        EnemyBot target = new EnemyBot(e, robot);
-        EnemyBot target = _enemies.pickByLowestEnergy();
+        BotInfo target = _enemies.pickByLowestEnergy();
         robot.linearTargeting(target, 1.0);
     }
 

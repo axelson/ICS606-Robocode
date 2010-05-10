@@ -12,7 +12,7 @@ import robocode.util.Utils;
 public class JasonStarterBot extends ExtendedBot {
 	private Integer debug = 1;
 	private Integer state = 0;
-	EnemyBot target;
+	BotInfo target;
 	
 	
 	public void run() {
@@ -88,7 +88,7 @@ public class JasonStarterBot extends ExtendedBot {
     }
  
     public void onScannedRobot(ScannedRobotEvent e) {
-    	target = new EnemyBot(e, this);
+    	target = new BotInfo(e, this);
 //  	System.out.println("Scanned bot: "+ target.toString());
 //    	target.printBot();
     	if(debug >= 2) {

@@ -1,6 +1,6 @@
 package navigation;
 
-import com.jaxelson.EnemyBot;
+import com.jaxelson.BotInfo;
 
 import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
@@ -114,7 +114,7 @@ public class NarrowRadarLockState
     public void onScannedRobot(ScannedRobotEvent event) {
     	_enemies.update(event);
     	_enemies.get(event);
-        EnemyBot target = new EnemyBot(event, robot);
+        BotInfo target = new BotInfo(event, robot);
         robot.narrowRadarLock(target, 2.0);
 
         if(robot.getEnergy() < 20) {

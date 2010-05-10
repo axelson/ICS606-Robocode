@@ -4,7 +4,7 @@ import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
-import com.jaxelson.EnemyBot;
+import com.jaxelson.BotInfo;
 
 /**
  * Simple state designed to be ineffective.
@@ -108,7 +108,7 @@ public class SpinningRadarState
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         _enemies.update(e);
-        EnemyBot target = _enemies.getTarget();
+        BotInfo target = _enemies.getTarget();
         
         robot.linearTargeting(target, 3.0);
     }

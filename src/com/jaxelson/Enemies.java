@@ -16,9 +16,9 @@ import robocode.ScannedRobotEvent;
  * @author jason
  */
 public class Enemies {
-	private Hashtable<String,EnemyBot> _enemyTable = new Hashtable<String,EnemyBot>();
+	private Hashtable<String,BotInfo> _enemyTable = new Hashtable<String,BotInfo>();
 	private ExtendedBot _robot;
-	private EnemyBot _target;
+	private BotInfo _target;
 	private int _debug = 0;
 	
 	/**
@@ -28,7 +28,7 @@ public class Enemies {
 		_robot = robot;
 	}
 	
-	public Collection<EnemyBot> getEnemies() {
+	public Collection<BotInfo> getEnemies() {
 		return _enemyTable.values();
 	}
 	
@@ -41,7 +41,7 @@ public class Enemies {
 		// Hack because of asterisk error
 		String enemyName = e.getName().replace(" (", "* (");
 		
-		EnemyBot enemyBot = new EnemyBot(e, _robot);
+		BotInfo enemyBot = new BotInfo(e, _robot);
 		if(_target == null) {
 			_target = enemyBot;
 		}
@@ -71,10 +71,10 @@ public class Enemies {
 		}
 	}
 	
-	public EnemyBot pickRandomTarget() {
+	public BotInfo pickRandomTarget() {
 		if(_enemyTable.size() >= 1) {
 			Enumeration<String> enemyNames = _enemyTable.keys();
-			EnemyBot target = _enemyTable.get(enemyNames.nextElement()); 
+			BotInfo target = _enemyTable.get(enemyNames.nextElement()); 
 			return target;
 		} else {
 			return null;
@@ -85,10 +85,10 @@ public class Enemies {
 	 * Chooses target with lowest energy
 	 * @return EnemyBot with lowest energy, or null if no known enemies
 	 */
-	public EnemyBot pickByLowestEnergy() {
-		List<EnemyBot> enemies = new ArrayList<EnemyBot>(_enemyTable.values());
+	public BotInfo pickByLowestEnergy() {
+		List<BotInfo> enemies = new ArrayList<BotInfo>(_enemyTable.values());
 		Collections.sort(enemies);
-		for(EnemyBot enemy : enemies) {
+		for(BotInfo enemy : enemies) {
 			if(_debug >= 1) System.out.println("Enemy "+ enemy.getName() + ": "+ enemy.getEnergy());
 		}
 		if(enemies.size() > 0) {
@@ -98,11 +98,11 @@ public class Enemies {
 		}
 	}
 
-	public EnemyBot get(ScannedRobotEvent e) {
+	public BotInfo get(ScannedRobotEvent e) {
 		return get(BotUtility.fixName(e.getName()));
 	}
 	
-	public EnemyBot get(String enemyName) {
+	public BotInfo get(String enemyName) {
 		return _enemyTable.get(enemyName);
 	}
 	
@@ -110,11 +110,11 @@ public class Enemies {
 		_enemyTable.remove(BotUtility.fixName(e.getName()));
 	}
 	
-	public void setTarget(EnemyBot target) {
+	public void setTarget(BotInfo target) {
 		_target = target;
 	}
 	
-	public EnemyBot getTarget() {
+	public BotInfo getTarget() {
 		return _target;
 	}
 	
@@ -128,7 +128,7 @@ public class Enemies {
 	 * @param enemies All known enemies
 	 */
 	public void paintAll(Graphics2D g) {
-		for(EnemyBot enemy : _enemyTable.values()) {
+		for(BotInfo enemy : _enemyTable.values()) {
 			enemy.paintTrackingRectangle(_robot,g);
 		}
 	}

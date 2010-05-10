@@ -8,7 +8,7 @@ import navigation.GravPoint;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 
-public class EnemyBot implements Serializable,Comparable<EnemyBot> {
+public class BotInfo implements Serializable,Comparable<BotInfo> {
 	private static final long serialVersionUID = -6633270333555835298L;
 	private static final double DEFAULT_STRENGTH = 50;
 	
@@ -36,7 +36,7 @@ public class EnemyBot implements Serializable,Comparable<EnemyBot> {
 	// Misc Info
 	public int _numUpdates;
 
-	public EnemyBot(ScannedRobotEvent e, ExtendedBot robot) {
+	public BotInfo(ScannedRobotEvent e, ExtendedBot robot) {
 		this.setRobot(robot);
     	this.update(e);
 	}
@@ -284,7 +284,7 @@ public class EnemyBot implements Serializable,Comparable<EnemyBot> {
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(EnemyBot o) {
+	public int compareTo(BotInfo o) {
 		if(this.getEnergy() < o.getEnergy()) {
 			return -1;
 		} else if(this.getEnergy() > o.getEnergy()) {

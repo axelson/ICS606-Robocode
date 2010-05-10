@@ -207,13 +207,13 @@ public class ExtendedBotUH extends TeamRobot {
 	 * @param target to face gun at
 	 * @return distance gun needs to travel
 	 */
-	public Double turnGunTo(EnemyBot target) {
+	public Double turnGunTo(BotInfo target) {
 		double targetBearing = target.getBearingRadians();
 		double desiredAngle = targetBearing + this.getHeadingRadians();
 		return turnGunTo(desiredAngle);
 	}
 
-	public void narrowRadarLock(EnemyBot target) {
+	public void narrowRadarLock(BotInfo target) {
 		narrowRadarLock(target, 1.9);
 	}
 	
@@ -223,7 +223,7 @@ public class ExtendedBotUH extends TeamRobot {
 	 * @param target scanned robot event (may be replaced by an enemy in the future)
 	 * @param factor narrow lock factor (how "narrow" lock is), typical values 1.0, 1.9, 2.0
 	 */
-	public void narrowRadarLock(EnemyBot target, Double factor) {
+	public void narrowRadarLock(BotInfo target, Double factor) {
 		double radarTurn =
 			// Absolute bearing to target
 			this.getHeadingRadians() + target.getBearingRadians()
@@ -348,16 +348,16 @@ public class ExtendedBotUH extends TeamRobot {
 	
 	// Targeting
 	
-	public void headOnTargeting(EnemyBot target, double firePower) {
+	public void headOnTargeting(BotInfo target, double firePower) {
 		this.turnGunTo(target);
 		_gun.setGunToFire(firePower);
 	}
 	
-	public void linearTargeting(EnemyBot target) {
+	public void linearTargeting(BotInfo target) {
 		linearTargeting(target, 1.0);
 	}
 		
-	public void linearTargeting(EnemyBot target, double firePower) {
+	public void linearTargeting(BotInfo target, double firePower) {
 //		double bulletPower = Math.min(3.0,getEnergy());
 		double bulletPower = firePower;
 		double myX = getX();
@@ -395,7 +395,7 @@ public class ExtendedBotUH extends TeamRobot {
 		fire(bulletPower);
 	}
 	
-	public void linearTargetingExact(EnemyBot target) {
+	public void linearTargetingExact(BotInfo target) {
 		final double FIREPOWER = 2;
 	    final double ROBOT_WIDTH = 16,ROBOT_HEIGHT = 16;
 	    // Variables prefixed with e- refer to enemy, b- refer to bullet and r- refer to robot
@@ -435,12 +435,12 @@ public class ExtendedBotUH extends TeamRobot {
 	    }
 	}
 	
-	public void circularTargeting(EnemyBot target) {
+	public void circularTargeting(BotInfo target) {
 		final double defaultFirepower = 1.0;
 		circularTargeting(target, defaultFirepower);
 	}
 	
-	public void circularTargeting(EnemyBot target, double firePower) {
+	public void circularTargeting(BotInfo target, double firePower) {
 		if(target.getNumUpdates() <= 1) {
 			System.out.println("circularTargeting: Error, no historical data on robot");
 		}

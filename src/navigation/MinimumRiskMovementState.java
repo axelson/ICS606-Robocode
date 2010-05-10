@@ -8,7 +8,7 @@ import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
-import com.jaxelson.EnemyBot;
+import com.jaxelson.BotInfo;
 import com.jaxelson.ExtendedPoint2D;
 
 /**
@@ -160,7 +160,7 @@ public class MinimumRiskMovementState
         _yforce = 0;
         _gravpoints.clear();
         
-        for(EnemyBot enemy: _enemies.getEnemies()) {
+        for(BotInfo enemy: _enemies.getEnemies()) {
         	GravPoint p = enemy.getGravPoint();
         	_gravpoints.add(p);
         	if(enemy.getEnergy() < 50) {

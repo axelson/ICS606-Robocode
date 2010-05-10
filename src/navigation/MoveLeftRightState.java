@@ -3,7 +3,7 @@ package navigation;
 import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
 
-import com.jaxelson.EnemyBot;
+import com.jaxelson.BotInfo;
 
 /**
  * Moves Lef and Right. Used for Debugging
@@ -12,7 +12,7 @@ import com.jaxelson.EnemyBot;
 public class MoveLeftRightState
         extends State {
 
-	EnemyBot _target;
+	BotInfo _target;
 	int _debug = 0;
     // CONSTRUCTORS
 
@@ -141,7 +141,7 @@ public class MoveLeftRightState
      */
     public void onScannedRobot(ScannedRobotEvent event) {
       if(_target == null) {
-        	_target = new EnemyBot(event, robot);
+        	_target = new BotInfo(event, robot);
         } else {
         	_target.update(event);
         }
