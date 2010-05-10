@@ -120,6 +120,22 @@ public class BotCollection {
 	    }
 	}
 	
+	/**
+	 * Removes bots from collection that exceed given range
+	 * @param absoluteAngle to look for bots in the direction of
+	 * @param offsetAngle angle (in degrees) to look for bots in. Split on both sides of absoluteAngle
+	 * @param range to filter robots that exceed the range
+	 */
+	public void filterBotsByAngle(double absoluteAngle, double offsetAngle) {
+		Collection<BotInfo> c = _enemyTable.values();
+	    for (Iterator<BotInfo> it = c.iterator(); it.hasNext(); ) {
+	    	double botAngle = it.next().getAngle();
+	        if (!BotUtility.inRange(absoluteAngle - offsetAngle, botAngle, absoluteAngle + offsetAngle)) {
+	            it.remove();
+	        }
+	    }
+	}
+	
 	public void printNames() {
 		System.out.print("Bots: ");
 		for(BotInfo bot: _enemyTable.values()) {

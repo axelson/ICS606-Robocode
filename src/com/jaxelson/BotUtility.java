@@ -77,6 +77,17 @@ public class BotUtility {
 	public static double limit(double min, double value, double max) {
 	    return Math.max(min, Math.min(value, max));
 	}
+	
+	/**
+	 * Returns true if value is within the range
+	 * @param min value of range
+	 * @param value to check
+	 * @param max value of range
+	 * @return true if value is within the range
+	 */
+	public static boolean inRange(double min, double value, double max) {
+		return ((value > min) && (value < max));
+	}
 
 	public static double absoluteBearing(ExtendedPoint2D source, ExtendedPoint2D target) {
 	    return Math.atan2(target.x - source.x, target.y - source.y);

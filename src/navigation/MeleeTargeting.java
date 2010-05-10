@@ -146,6 +146,11 @@ public class MeleeTargeting
         BotCollection closeEnemies = new BotCollection(_enemies);
     	closeEnemies.filterBotsByRange(targetingRange);
     	closeEnemies.paintAll(g);
+    	
+    	BotCollection mightHitEnemies = new BotCollection(_enemies);
+    	mightHitEnemies.filterBotsByAngle(robot.getGunHeadingRadians(), Math.PI/6);
+    	g.setColor(java.awt.Color.GREEN);
+    	mightHitEnemies.paintAll(g);
     }
 
     // PRIVATE METHODS
