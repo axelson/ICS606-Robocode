@@ -80,7 +80,7 @@ public class MinimumRiskMovementState
     public void enable() {
         startTime = robot.getTime();
         energy = robot.getEnergy();
-        _debug = 2;
+        _debug = 0;
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
@@ -134,7 +134,7 @@ public class MinimumRiskMovementState
     }
     
     public void onPaint(Graphics2D g) {
-//    	if(_debug >= 1) System.out.println("Now Painting");
+    	if(_debug >= 1) System.out.println("Now Painting");
         // Set the paint color to red
         g.setColor(java.awt.Color.RED);
         
@@ -146,13 +146,12 @@ public class MinimumRiskMovementState
         double scalingFactor = 50000;
 		double xScaledForce = (loc.x + _xforce*scalingFactor);
         double yScaledForce = (loc.y + _yforce*scalingFactor);
-        System.out.println("xScaled: "+ xScaledForce);
-        System.out.println("yScaled: "+ yScaledForce);
+        if(_debug >= 2) System.out.println("xScaled: "+ xScaledForce);
+        if(_debug >= 2) System.out.println("yScaled: "+ yScaledForce);
         Line2D line = new Line2D.Double(loc.x, loc.y, xScaledForce, yScaledForce);
         g.draw(line);
     }
     
-    //TODO Finish anti gravity movement    
     void antiGravMove() {
         double force;
         double ang;
@@ -195,17 +194,13 @@ public class MinimumRiskMovementState
         double topWallPower = wallScaleFactor/Math.pow(loc.distance(loc.x, robot.getBattleFieldHeight()), 3);
         double bottomWallPower = wallScaleFactor/Math.pow(loc.distance(loc.x, 0), 3);
         
-        System.out.println("right "+ rightWallPower);
-        System.out.println("left "+ leftWallPower);
-        System.out.println("top "+ topWallPower);
-        System.out.println("bottom "+ bottomWallPower);
+        if(_debug >= 2) System.out.println("right "+ rightWallPower);
+        if(_debug >= 2) System.out.println("left "+ leftWallPower);
+        if(_debug >= 2) System.out.println("top "+ topWallPower);
+        if(_debug >= 2) System.out.println("bottom "+ bottomWallPower);
         
         _xforce += leftWallPower - rightWallPower;
         _yforce += bottomWallPower - topWallPower;
-//        _xforce += wallScaleFactor/Math.pow(loc.distance(robot.getBattleFieldWidth(), loc.y), 3);
-//        _xforce -= wallScaleFactor/Math.pow(loc.distance(0, loc.y), 3);
-//        _yforce += wallScaleFactor/Math.pow(loc.distance(loc.x, robot.getBattleFieldHeight()), 3);
-//        _yforce -= wallScaleFactor/Math.pow(loc.distance(loc.x, 0), 3);
         
         if(_debug >= 2) System.out.println("after walls: xforce: "+ _xforce + " yforce: "+ _yforce +"\n\n");
         

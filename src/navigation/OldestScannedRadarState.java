@@ -142,7 +142,7 @@ public class OldestScannedRadarState
         }
         
         EnemyBot target = new EnemyBot(e, robot);
-        robot.linearTargeting(target);
+        robot.linearTargeting(target, 1.0);
     }
 
     // PRIVATE METHODS

@@ -66,7 +66,6 @@ public class NarrowRadarLockState
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
-        energy = 0;
         updateStatistics();
     }
 
@@ -76,7 +75,6 @@ public class NarrowRadarLockState
      */
     public void enable() {
         startTime = robot.getTime();
-        energy = robot.getEnergy();
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
@@ -116,11 +114,14 @@ public class NarrowRadarLockState
     public void onScannedRobot(ScannedRobotEvent event) {
     	_enemies.update(event);
     	_enemies.get(event);
-        targetBearing = event.getBearingRadians();
         EnemyBot target = new EnemyBot(event, robot);
         robot.narrowRadarLock(target, 2.0);
-        
-        robot.linearTargeting(target, 3.0);
+
+        if(robot.getEnergy() < 20) {
+        	robot.linearTargeting(target, 1.0);
+        } else {
+        	robot.linearTargeting(target, 3.0);
+        }
     }
 
     // PRIVATE METHODS
@@ -140,16 +141,6 @@ public class NarrowRadarLockState
     // Ordinarily I would use accessor methods exclusively to access instance
     // variables, but in the interest of speed I have allowed direct access.
 
-    /**
-     * Last known bearing to the target bot
-     */
-    @SuppressWarnings("unused")
-	private double targetBearing;
-    /**
-     * The energy of the bot when this state was chosen
-     */
-    @SuppressWarnings("unused")
-	private double energy;
     /**
      * The total energy lost from bullet hits while this state has been
      * in use
