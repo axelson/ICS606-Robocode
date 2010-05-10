@@ -83,7 +83,7 @@ public class Enemies {
 	
 	/**
 	 * Chooses target with lowest energy
-	 * @return EnemyBot with lowest energy, or null if no known enemies
+	 * @return BotInfo with lowest energy, or null if no known enemies
 	 */
 	public BotInfo pickByLowestEnergy() {
 		List<BotInfo> enemies = new ArrayList<BotInfo>(_enemyTable.values());

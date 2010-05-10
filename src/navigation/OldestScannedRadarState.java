@@ -139,7 +139,7 @@ public class OldestScannedRadarState
         	sought = ehm.keySet().iterator().next();
         }
         
-//        EnemyBot target = new EnemyBot(e, robot);
+//        BotInfo target = new BotInfo(e, robot);
         BotInfo target = _enemies.pickByLowestEnergy();
         robot.linearTargeting(target, 1.0);
     }

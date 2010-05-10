@@ -27,10 +27,10 @@ public class BotInfo implements Serializable,Comparable<BotInfo> {
 	 */
 	private double _strength = DEFAULT_STRENGTH; 
 	
-	/** Location of this EnemyBot */
+	/** Location of this BotInfo */
 	private ExtendedPoint2D _location;
 	
-	/** The robot that created this EnemyBot */
+	/** The robot that created this BotInfo */
 	private ExtendedBot _robot;
 	
 	// Misc Info
