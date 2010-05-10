@@ -62,7 +62,7 @@ public class Enemies {
 	public void update(RobotDeathEvent e) {
 		// Hack because of asterisk error
 		String enemyName = e.getName().replace(" (", "* (");
-		System.out.println("Removing: "+ enemyName);
+		if(_debug >= 1) System.out.println("Removing: "+ enemyName);
 		_enemyTable.remove(enemyName);
 		
 		if(_target.getName().equals(enemyName)) {

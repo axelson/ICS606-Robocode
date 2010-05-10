@@ -164,7 +164,7 @@ public class MinimumRiskMovementState
         	GravPoint p = enemy.getGravPoint();
         	_gravpoints.add(p);
         	if(enemy.getEnergy() < 50) {
-//        		p.power /= 2;
+        		p.power /= 2;
         	}
         	if(_debug >= 1) System.out.println("antiGrav: enemypoint: "+ p + " strength: "+ p.power);
         	if(_debug >= 2) System.out.println("xforce_: "+ _xforce + " yforce: "+ _yforce);

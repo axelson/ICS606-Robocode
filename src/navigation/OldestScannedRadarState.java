@@ -115,6 +115,7 @@ public class OldestScannedRadarState
     }
     
     public void onRobotDeath(RobotDeathEvent e) {
+    	_enemies.update(e);
     	enemyHashMap.remove(e.getName());
         sought = null;
     }
@@ -127,6 +128,7 @@ public class OldestScannedRadarState
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         String name = e.getName();
+        _enemies.update(e);
         LinkedHashMap<String, Double> ehm = enemyHashMap;
 
         ehm.put(name, robot.getHeadingRadians() + e.getBearingRadians());
@@ -137,7 +139,8 @@ public class OldestScannedRadarState
         	sought = ehm.keySet().iterator().next();
         }
         
-        EnemyBot target = new EnemyBot(e, robot);
+//        EnemyBot target = new EnemyBot(e, robot);
+        EnemyBot target = _enemies.pickByLowestEnergy();
         robot.linearTargeting(target, 1.0);
     }
 
