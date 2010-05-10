@@ -4,7 +4,7 @@ import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
-import com.jaxelson.Enemies;
+import com.jaxelson.BotCollection;
 
 /**
  * @author Jason Axelson
@@ -12,7 +12,7 @@ import com.jaxelson.Enemies;
 public class CannonFodderState
         extends State {
 
-	Enemies _enemies = new Enemies(robot);
+	BotCollection _enemies = new BotCollection(robot);
 	
     // CONSTRUCTORS
 

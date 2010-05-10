@@ -20,7 +20,7 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 	 * run: Chris01's default behavior
 	 */
 	
-	Enemies _enemies = new Enemies(this);
+	BotCollection _enemies = new BotCollection(this);
 	Boolean target = false;
 	BotInfo temp;
 	

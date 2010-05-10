@@ -14,7 +14,7 @@ public class SimpleBot extends ExtendedBot {
 	 * run: Chris01's default behavior
 	 */
 	
-	Enemies _enemies = new Enemies(this);
+	BotCollection _enemies = new BotCollection(this);
 	 
 	int state = 0;
 	 

@@ -15,7 +15,7 @@ import robocode.ScannedRobotEvent;
  * Holds the information about all the enemies in the game
  * @author jason
  */
-public class Enemies {
+public class BotCollection {
 	private Hashtable<String,BotInfo> _enemyTable = new Hashtable<String,BotInfo>();
 	private ExtendedBot _robot;
 	private BotInfo _target;
@@ -24,7 +24,7 @@ public class Enemies {
 	/**
 	 * 
 	 */
-	public Enemies(ExtendedBot robot) {
+	public BotCollection(ExtendedBot robot) {
 		_robot = robot;
 	}
 	

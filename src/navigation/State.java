@@ -1,6 +1,6 @@
 package navigation;
 
-import com.jaxelson.Enemies;
+import com.jaxelson.BotCollection;
 
 //import droid.data_types.NavigationStateStatistics;
 
@@ -13,7 +13,7 @@ public abstract class State
         implements CommandListener {
 
 	public int _debug = 0;
-	protected Enemies _enemies = null;
+	protected BotCollection _enemies = null;
     // CONSTRUCTORS
 
     /**
@@ -25,7 +25,7 @@ public abstract class State
      */
     public State(ExtendedBot robot) {
         this.robot = robot;
-        _enemies = new Enemies(robot);
+        _enemies = new BotCollection(robot);
     }
 
     // PUBLIC METHODS
