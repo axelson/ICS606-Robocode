@@ -1,9 +1,12 @@
 package com.jaxelson;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 
 import navigation.ExtendedBot;
 import robocode.RobotDeathEvent;
@@ -67,7 +70,7 @@ public class Enemies {
 		}
 	}
 	
-	private EnemyBot pickRandomTarget() {
+	public EnemyBot pickRandomTarget() {
 		if(_enemyTable.size() >= 1) {
 			Enumeration<String> enemyNames = _enemyTable.keys();
 			EnemyBot target = _enemyTable.get(enemyNames.nextElement()); 
@@ -77,6 +80,23 @@ public class Enemies {
 		}
 	}
 	
+	/**
+	 * Chooses target with lowest energy
+	 * @return EnemyBot with lowest energy
+	 */
+	public EnemyBot pickByLowestEnergy() {
+//		EnemyBot[] enemies = (EnemyBot[]) _enemyTable.values().toArray();
+//		Array.sort(enemies);
+		List<EnemyBot> list = new ArrayList<EnemyBot>(_enemyTable.values());
+		Collections.sort(list);
+		for(EnemyBot enemy : list) {
+			System.out.println("Enemy: "+ enemy.getEnergy());
+		}
+		System.out.println();
+//		return enemies.get(0);
+		return null;
+	}
+
 	public EnemyBot get(ScannedRobotEvent e) {
 		return get(BotUtility.fixName(e.getName()));
 	}

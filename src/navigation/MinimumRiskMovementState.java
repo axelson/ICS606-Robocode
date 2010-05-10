@@ -92,6 +92,8 @@ public class MinimumRiskMovementState
      */
     public void execute() {
     	antiGravMove();
+    	
+    	_enemies.pickByLowestEnergy();
     }
 
     /**
