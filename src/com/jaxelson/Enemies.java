@@ -19,6 +19,7 @@ public class Enemies {
 	private Hashtable<String,EnemyBot> _enemyTable = new Hashtable<String,EnemyBot>();
 	private ExtendedBot _robot;
 	private EnemyBot _target;
+	private int _debug = 0;
 	
 	/**
 	 * 
@@ -82,19 +83,19 @@ public class Enemies {
 	
 	/**
 	 * Chooses target with lowest energy
-	 * @return EnemyBot with lowest energy
+	 * @return EnemyBot with lowest energy, or null if no known enemies
 	 */
 	public EnemyBot pickByLowestEnergy() {
-//		EnemyBot[] enemies = (EnemyBot[]) _enemyTable.values().toArray();
-//		Array.sort(enemies);
-		List<EnemyBot> list = new ArrayList<EnemyBot>(_enemyTable.values());
-		Collections.sort(list);
-		for(EnemyBot enemy : list) {
-			System.out.println("Enemy: "+ enemy.getEnergy());
+		List<EnemyBot> enemies = new ArrayList<EnemyBot>(_enemyTable.values());
+		Collections.sort(enemies);
+		for(EnemyBot enemy : enemies) {
+			if(_debug >= 1) System.out.println("Enemy "+ enemy.getName() + ": "+ enemy.getEnergy());
 		}
-		System.out.println();
-//		return enemies.get(0);
-		return null;
+		if(enemies.size() > 0) {
+			return enemies.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	public EnemyBot get(ScannedRobotEvent e) {
