@@ -4,20 +4,20 @@ import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
+import com.jaxelson.BotCollection;
+import com.jaxelson.BotInfo;
+
 /**
- * Simple state designed to be ineffective.
- * @author David McCoy
+ * @author Jason Axelson
  */
-public class SpinningRadarState
+public class LinearTargetingState
         extends State {
+
+	BotCollection _enemies = new BotCollection(robot);
+	
     // CONSTRUCTORS
 
-    /**
-     * Creates a new CannonFodderState for the specified robot.
-     * @param robot The ExtendedRobot object used to provide data and execute
-     *              commands
-     */
-    public SpinningRadarState(ExtendedBot robot) {
+    public LinearTargetingState(ExtendedBot robot) {
         super(robot);
     }
 
@@ -41,7 +41,7 @@ public class SpinningRadarState
      * @return A String containing the name of this State object
      */
     public String getName() {
-        return "SpinningRadarState";
+        return "LinearTargetingState";
     }
 
     /**
@@ -81,7 +81,7 @@ public class SpinningRadarState
      * execute turn based instructions.
      */
     public void execute() {
-    	robot.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
+        // Do absolutely nothing
     }
 
     /**
@@ -89,12 +89,11 @@ public class SpinningRadarState
      * @param event A HitByBulletEvent object containing the details of your
      *              robot being hit by a bullet
      */
-    public void onHitByBullet(HitByBulletEvent event) {
-        damageTaken += BotMath.calculateDamage(event.getPower());
+    public void onHitByBullet(HitByBulletEvent e) {
+        damageTaken += BotMath.calculateDamage(e.getPower());
     }
     
     public void onRobotDeath(RobotDeathEvent e) {
-    	System.out.println("A robot has died");
     	_enemies.update(e);
     }
 
@@ -106,6 +105,15 @@ public class SpinningRadarState
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         _enemies.update(e);
+        
+    	_enemies.get(e);
+        BotInfo target = new BotInfo(e, robot);
+
+        if(robot.getEnergy() < 20) {
+        	robot.linearTargeting(target, 1.0);
+        } else {
+        	robot.linearTargeting(target, 3.0);
+        }
     }
 
     // PRIVATE METHODS

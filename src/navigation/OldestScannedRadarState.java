@@ -2,8 +2,6 @@ package navigation;
 
 import java.util.LinkedHashMap;
 
-import com.jaxelson.BotInfo;
-
 import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
@@ -138,10 +136,6 @@ public class OldestScannedRadarState
         			- robot.getRadarHeadingRadians());
         	sought = ehm.keySet().iterator().next();
         }
-        
-//        BotInfo target = new BotInfo(e, robot);
-        BotInfo target = _enemies.pickByLowestEnergy();
-        robot.linearTargeting(target, 1.0);
     }
 
     // PRIVATE METHODS

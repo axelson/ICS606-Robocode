@@ -116,12 +116,6 @@ public class NarrowRadarLockState
     	_enemies.get(event);
         BotInfo target = new BotInfo(event, robot);
         robot.narrowRadarLock(target, 2.0);
-
-        if(robot.getEnergy() < 20) {
-        	robot.linearTargeting(target, 1.0);
-        } else {
-        	robot.linearTargeting(target, 3.0);
-        }
     }
 
     // PRIVATE METHODS

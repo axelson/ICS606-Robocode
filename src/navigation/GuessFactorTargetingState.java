@@ -59,7 +59,7 @@ public class GuessFactorTargetingState
      * @return A boolean indicating whether this State should be used
      */
     public boolean isValid() {
-        return true;
+        return (robot.getNumEnemies() <= 1);
     }
 
     /**
@@ -93,7 +93,6 @@ public class GuessFactorTargetingState
      * execute turn based instructions.
      */
     public void execute() {
-    	robot.turnRadarRightRadians(Double.POSITIVE_INFINITY);
     }
 
     /**
@@ -137,7 +136,6 @@ public class GuessFactorTargetingState
 		if (robot.getEnergy() >= BULLET_POWER) {
 			robot.addCustomEvent(wave);
 		}
-		robot.setTurnRadarRightRadians(Utils.normalRelativeAngle(enemyAbsoluteBearing - robot.getRadarHeadingRadians()) * 2);
     }
 
     // PRIVATE METHODS
