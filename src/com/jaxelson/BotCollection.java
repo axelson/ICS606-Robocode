@@ -29,6 +29,13 @@ public class BotCollection {
 		_robot = robot;
 	}
 	
+	public BotCollection(BotCollection another) {
+		_robot = another._robot;
+		_target = another._target;
+		_debug = another._debug;
+		_enemyTable = new Hashtable<String, BotInfo>(another._enemyTable);
+	}
+	
 	public Collection<BotInfo> getEnemies() {
 		return _enemyTable.values();
 	}
@@ -111,6 +118,14 @@ public class BotCollection {
 	            it.remove();
 	        }
 	    }
+	}
+	
+	public void printNames() {
+		System.out.print("Bots: ");
+		for(BotInfo bot: _enemyTable.values()) {
+			System.out.print(bot.getName() + " ");
+		}
+		System.out.println();
 	}
 
 	public BotInfo get(ScannedRobotEvent e) {

@@ -1,5 +1,7 @@
 package navigation;
 
+import java.awt.Graphics2D;
+
 import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
@@ -14,6 +16,7 @@ public class MeleeTargeting
         extends State {
 
 	BotCollection _enemies = new BotCollection(robot);
+	double targetingRange = 300;
 	
     // CONSTRUCTORS
 
@@ -61,6 +64,7 @@ public class MeleeTargeting
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
         robot.removeEventListener(ON_ROBOT_DEATH, this);
+        robot.removeEventListener(ON_PAINT, this);
         updateStatistics();
     }
 
@@ -74,6 +78,7 @@ public class MeleeTargeting
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
         robot.addEventListener(ON_ROBOT_DEATH, this);
+        robot.addEventListener(ON_PAINT, this);
     }
 
     /**
@@ -106,16 +111,41 @@ public class MeleeTargeting
     public void onScannedRobot(ScannedRobotEvent e) {
         _enemies.update(e);
         
-    	_enemies.get(e);
-    	
-//    	BotCollection closeEnemies = _enemies
-        BotInfo target = new BotInfo(e, robot);
+    	BotCollection closeEnemies = new BotCollection(_enemies);
+    	closeEnemies.filterBotsByRange(targetingRange);
 
+    	// Choose target
+    	BotInfo target;
+    	if(closeEnemies.size() > 0) {
+    		target = closeEnemies.pickByLowestEnergy();
+    	} else {
+    		target = _enemies.pickByLowestEnergy();
+    	}
+
+    	// Choose firepower
+    	double firepower = 3;
         if(robot.getEnergy() < 20) {
-        	robot.linearTargeting(target, 1.0);
+        	firepower = 1.0;
+        } else if(target.getDistance() > 200) {
+        	firepower = 2.0;
         } else {
-        	robot.linearTargeting(target, 3.0);
+        	firepower = 3.0;
         }
+        robot.linearTargeting(target, firepower);
+    }
+    
+    public void onPaint(Graphics2D g) {
+    	if(_debug >= 1) System.out.println("Now Painting");
+        // Set the paint color to red
+        g.setColor(java.awt.Color.BLUE);
+
+    	// Draw range currently looking for enemies
+        robot.drawCircleAroundBot(g, targetingRange);
+        
+        // Draw nearby enemies
+        BotCollection closeEnemies = new BotCollection(_enemies);
+    	closeEnemies.filterBotsByRange(targetingRange);
+    	closeEnemies.paintAll(g);
     }
 
     // PRIVATE METHODS
