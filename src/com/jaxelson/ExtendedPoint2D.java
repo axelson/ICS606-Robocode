@@ -37,7 +37,7 @@ public class ExtendedPoint2D extends Point2D.Double implements Serializable{
 		double absoluteAngle = angleTo(location);
 		double bearing = absoluteAngle - robot.getHeadingRadians();
 
-		return (bearing > 0) ? bearing - Math.PI : bearing + Math.PI;
+		return bearing;
 	}
 	
 	/**
@@ -47,8 +47,23 @@ public class ExtendedPoint2D extends Point2D.Double implements Serializable{
 	 */
 	public double angleTo(Point2D location) {
 		ExtendedPoint2D loc = (ExtendedPoint2D) location;
-		return Utils.normalAbsoluteAngle(Math.atan2(loc.x - x,
-				loc.y - y));
+		return toRobocodeCoord(Utils.normalAbsoluteAngle(Math.atan2(loc.x - x, loc.y - y)));
+	}
+	
+	/**
+	 * Converts a java absolute angle to its robocode equivalent absolute angle
+	 * @param javaAngle in java format
+	 * @return angle in robocode format
+	 */
+	public double toRobocodeCoord(final double javaAngle) {
+		if((javaAngle > 0) && (javaAngle < Math.PI)) {
+			return javaAngle + Math.PI;
+		} else if((javaAngle >= Math.PI) && (javaAngle < Math.PI*2)) {
+			return javaAngle - Math.PI;
+		} else {
+			System.out.println("toRobocodeCoord: improper angle passed: "+ javaAngle);
+			return 0;
+		}
 	}
 	
 	public double angleTo(double x, double y) {
