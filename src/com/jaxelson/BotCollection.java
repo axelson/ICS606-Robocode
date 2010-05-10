@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
 import navigation.ExtendedBot;
@@ -96,6 +97,20 @@ public class BotCollection {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * Removes bots from collection that exceed given range
+	 * @param c collection to filter
+	 * @param range to filter robots that exceed the range
+	 */
+	public void filterBotsByRange(double range) {
+		Collection<BotInfo> c = _enemyTable.values();
+	    for (Iterator<BotInfo> it = c.iterator(); it.hasNext(); ) {
+	        if (it.next().getDistance() > range) {
+	            it.remove();
+	        }
+	    }
 	}
 
 	public BotInfo get(ScannedRobotEvent e) {
