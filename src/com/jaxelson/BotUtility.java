@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -51,6 +53,19 @@ public class BotUtility {
 		}
 		String fixedName = name.replace(" (", "* (");
 		return fixedName;
+	}
+	
+	/**
+	 * Removes bots from collection that exceed given range
+	 * @param c collection to filter
+	 * @param range to filter robots that exceed the range
+	 */
+	static void filterBotsByRange(Collection<BotInfo> c, double range) {
+	    for (Iterator<BotInfo> it = c.iterator(); it.hasNext(); ) {
+	        if (it.next().getDistance() > range) {
+	            it.remove();
+	        }
+	    }
 	}
 
 	/**
