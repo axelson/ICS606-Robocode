@@ -69,7 +69,6 @@ public class MinimumRiskMovementState
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
         robot.removeEventListener(ON_ROBOT_DEATH, this);
         robot.removeEventListener(ON_PAINT, this);
-        energy = 0;
         updateStatistics();
     }
 
@@ -79,7 +78,6 @@ public class MinimumRiskMovementState
      */
     public void enable() {
         startTime = robot.getTime();
-        energy = robot.getEnergy();
         _debug = 0;
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
@@ -116,8 +114,6 @@ public class MinimumRiskMovementState
      *              robot's sighting of another robot
      */
     public void onScannedRobot(ScannedRobotEvent e) {
-        targetBearing = e.getBearingRadians();
-        
         _enemies.update(e);
     }
 
@@ -213,16 +209,6 @@ public class MinimumRiskMovementState
     // Ordinarily I would use accessor methods exclusively to access instance
     // variables, but in the interest of speed I have allowed direct access.
 
-	/**
-     * Last known bearing to the target bot
-     */
-    @SuppressWarnings("unused")
-	private double targetBearing;
-    /**
-     * The energy of the bot when this state was chosen
-     */
-    @SuppressWarnings("unused")
-	private double energy;
     /**
      * The total energy lost from bullet hits while this state has been
      * in use
