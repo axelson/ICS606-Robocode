@@ -59,11 +59,12 @@ class GunManager {
 		boolean gunDoneTurningOk = (_robot.getGunTurnRemainingRadians() <= 0.03);
 		boolean currentlyAimingOk = isAiming();
 		boolean gunHeatOk = (_robot.getGunHeat() == 0);
+		boolean noTeammatesInPathOfFire = _robot.noTeammatesInPathOfFire(_robot.getGunHeadingRadians());
 		
-		boolean willFire = (fireTimeOk && gunDoneTurningOk && currentlyAimingOk && gunHeatOk); 
+		boolean willFire = (fireTimeOk && gunDoneTurningOk && currentlyAimingOk && gunHeatOk && noTeammatesInPathOfFire); 
 		if(_debug >= 1) System.out.println("readyToFire: "+ willFire +" fireTime: "+ fireTimeOk +
 				" gunDoneTurningOk: "+ gunDoneTurningOk + " aimingOk: "+ currentlyAimingOk +
-				" gunHeatOk: "+ gunHeatOk);
+				" gunHeatOk: "+ gunHeatOk +" noTeammatesInPathOfFire: "+ noTeammatesInPathOfFire);
 
 		return willFire;
 	}
@@ -332,6 +333,16 @@ public class ExtendedBotUH extends TeamRobot {
 	    } else {
 	        return trimmedAngle;
 	    }
+	}
+	
+	/**
+	 * Returns true if teammates are not in the path of fire
+	 * @param absoluteAngle
+	 * @return true if no teammates are in path of fire 
+	 */
+	public boolean noTeammatesInPathOfFire(double absoluteAngle) {
+		//TODO finish
+		return true;
 	}
 	
 	
