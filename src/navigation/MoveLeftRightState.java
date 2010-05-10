@@ -6,8 +6,8 @@ import robocode.ScannedRobotEvent;
 import com.jaxelson.EnemyBot;
 
 /**
- * Simple tracking state.
- * @author David McCoy
+ * Moves Lef and Right. Used for Debugging
+ * @author Jason Axelson
  */
 public class MoveLeftRightState
         extends State {
@@ -64,7 +64,6 @@ public class MoveLeftRightState
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
-        energy = 0;
         updateStatistics();
     }
 
@@ -74,7 +73,6 @@ public class MoveLeftRightState
      */
     public void enable() {
         startTime = robot.getTime();
-        energy = robot.getEnergy();
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
@@ -172,11 +170,6 @@ public class MoveLeftRightState
 
     private int state = 0;
     
-    /**
-     * The energy of the bot when this state was chosen
-     */
-    @SuppressWarnings("unused")
-	private double energy;
     /**
      * The total energy lost from bullet hits while this state has been
      * in use

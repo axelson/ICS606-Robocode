@@ -59,7 +59,6 @@ public class TrackState
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
-        energy = 0;
         updateStatistics();
     }
 
@@ -69,7 +68,6 @@ public class TrackState
      */
     public void enable() {
         startTime = robot.getTime();
-        energy = robot.getEnergy();
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
@@ -124,11 +122,6 @@ public class TrackState
      * Last known bearing to the target bot
      */
     private double targetBearing;
-    /**
-     * The energy of the bot when this state was chosen
-     */
-    @SuppressWarnings("unused")
-	private double energy;
     /**
      * The total energy lost from bullet hits while this state has been
      * in use

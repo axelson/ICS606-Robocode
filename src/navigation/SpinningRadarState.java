@@ -63,7 +63,6 @@ public class SpinningRadarState
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
         robot.removeEventListener(ON_ROBOT_DEATH, this);
-        energy = 0;
         updateStatistics();
     }
 
@@ -73,7 +72,6 @@ public class SpinningRadarState
      */
     public void enable() {
         startTime = robot.getTime();
-        energy = robot.getEnergy();
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
@@ -109,7 +107,6 @@ public class SpinningRadarState
      *              robot's sighting of another robot
      */
     public void onScannedRobot(ScannedRobotEvent e) {
-        targetBearing = e.getBearingRadians();
         _enemies.update(e);
         EnemyBot target = _enemies.getTarget();
         
@@ -133,16 +130,6 @@ public class SpinningRadarState
     // Ordinarily I would use accessor methods exclusively to access instance
     // variables, but in the interest of speed I have allowed direct access.
 
-    /**
-     * Last known bearing to the target bot
-     */
-    @SuppressWarnings("unused")
-	private double targetBearing;
-    /**
-     * The energy of the bot when this state was chosen
-     */
-    @SuppressWarnings("unused")
-	private double energy;
     /**
      * The total energy lost from bullet hits while this state has been
      * in use
