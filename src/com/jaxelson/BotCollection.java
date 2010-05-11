@@ -49,7 +49,7 @@ public class BotCollection implements Serializable {
 		_storesOnlyTeammates = storesOnlyTeammates;
 	}
 
-	public Collection<BotInfo> getEnemiesAsCollection() {
+	public Collection<BotInfo> getBotsAsCollection() {
 		return _botTable.values();
 	}
 

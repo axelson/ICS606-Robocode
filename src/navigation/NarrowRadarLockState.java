@@ -118,8 +118,11 @@ public class NarrowRadarLockState
     	_enemies.update(event);
     	robot._teammates.update(event);
     	_enemies.get(event);
+    	
         BotInfo target = new BotInfo(event, robot);
-        robot.narrowRadarLock(target, 2.0);
+        if(target.isEnemy()) {
+        	robot.narrowRadarLock(target, 2.0);
+        }
     }
     
     public void onRobotDeath(RobotDeathEvent e) {

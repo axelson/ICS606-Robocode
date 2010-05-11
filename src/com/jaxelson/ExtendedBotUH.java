@@ -23,7 +23,11 @@ class GunManager {
 	public GunManager(ExtendedBotUH robot) {
 		_robot = robot;
 	}
-	
+
+	/**
+	 * Set gun to fire once all conditions are met. Use this instead of setFire
+	 * @param firePower to fire at
+	 */
 	public void setGunToFire(double firePower) {
 		if(isAiming()) {
 			return;
@@ -283,14 +287,29 @@ public class ExtendedBotUH extends TeamRobot {
 		}	
 	}
 	
+	public void fireGunWhenReady(double firePower) {
+		_gun.setGunToFire(firePower);
+	}
+	
 	/**
 	 * Gets the number of enemies in the current round
 	 * @return number of enemies
 	 */
 	public int getNumEnemies() {
+		int numEnemies = this.getOthers() - this.getNumTeammates();
+		if(_debug >= 2) System.out.println("There are enemies: "+ numEnemies);
+		return numEnemies;
+	}
+	
+	/**
+	 * Gets the number of teammates in the current round
+	 * @return number of teammates
+	 */
+	public int getNumTeammates() {
 		String[] teammates = this.getTeammates();
-		int numTeammates = (teammates != null) ? teammates.length : 0;
-		return this.getOthers() - numTeammates;
+		int numTeammates = (teammates != null) ? teammates.length-1 : 0;
+		if(_debug >= 2) System.out.println("There are teammates: "+ numTeammates);
+		return numTeammates;
 	}
 	
 	/**
@@ -309,6 +328,15 @@ public class ExtendedBotUH extends TeamRobot {
 		String realName = BotUtility.fixName(name);
 
 		return super.isTeammate(realName);
+	}
+	
+	/**
+	 * Checks whether a given bot is an enemy
+	 * @param name of bot to check
+	 * @return true if given bot is an enemy
+	 */
+	public boolean isEnemy(String name) {
+		return !isTeammate(name);
 	}
 	
 	//--- Math helper functions---//
@@ -345,7 +373,10 @@ public class ExtendedBotUH extends TeamRobot {
 	 */
 	public boolean noTeammatesInPathOfFire(double absoluteAngle) {
 		//TODO finish
-		return true;
+		double dangerAngle = Math.toRadians(10); 
+		BotCollection teammatesInPathOfFire = new BotCollection(_teammates);
+		teammatesInPathOfFire.filterBotsByAngle(absoluteAngle, dangerAngle);
+		return (teammatesInPathOfFire.size() <= 0);
 	}
 	
 	

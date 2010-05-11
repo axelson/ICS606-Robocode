@@ -114,6 +114,7 @@ public class OldestScannedRadarState
     
     public void onRobotDeath(RobotDeathEvent e) {
     	_enemies.update(e);
+    	robot._teammates.update(e);
     	enemyHashMap.remove(e.getName());
         sought = null;
     }
@@ -127,6 +128,7 @@ public class OldestScannedRadarState
     public void onScannedRobot(ScannedRobotEvent e) {
         String name = e.getName();
         _enemies.update(e);
+        robot._teammates.update(e);
         LinkedHashMap<String, Double> ehm = enemyHashMap;
 
         ehm.put(name, robot.getHeadingRadians() + e.getBearingRadians());

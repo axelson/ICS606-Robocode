@@ -10,7 +10,8 @@ import robocode.ScannedRobotEvent;
 
 public class BotInfo implements Serializable,Comparable<BotInfo> {
 	private static final long serialVersionUID = -6633270333555835298L;
-	private static final double DEFAULT_STRENGTH = 50;
+	private static final double DEFAULT_ENEMY_STRENGTH = 50;
+	private static final double DEFAULT_TEAMMATE_STRENGTH = 25;
 	
 	// Bot Info
 	private String _name;
@@ -25,7 +26,7 @@ public class BotInfo implements Serializable,Comparable<BotInfo> {
 	/**
 	 * How much this robot is to be avoided, chiefly used in anti-gravity movement
 	 */
-	private double _strength = DEFAULT_STRENGTH; 
+	private double _strength = DEFAULT_ENEMY_STRENGTH;
 	
 	/** Location of this BotInfo */
 	private ExtendedPoint2D _location;
@@ -39,6 +40,11 @@ public class BotInfo implements Serializable,Comparable<BotInfo> {
 	public BotInfo(ScannedRobotEvent e, ExtendedBot robot) {
 		this.setRobot(robot);
     	this.update(e);
+    	if(this.isTeammate()) {
+    		this.setStrength(DEFAULT_TEAMMATE_STRENGTH);
+    	} else {
+    		this.setStrength(DEFAULT_ENEMY_STRENGTH);
+    	}
 	}
 
 	/**
@@ -296,5 +302,13 @@ public class BotInfo implements Serializable,Comparable<BotInfo> {
 		} else {
 			return 0;
 		}
+	}
+
+	public boolean isTeammate() {
+		return _robot.isTeammate(getName());
+	}
+
+	public boolean isEnemy() {
+		return _robot.isEnemy(getName());
 	}
 }

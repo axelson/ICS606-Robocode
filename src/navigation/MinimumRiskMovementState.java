@@ -148,6 +148,10 @@ public class MinimumRiskMovementState
         if(_debug >= 2) System.out.println("yScaled: "+ yScaledForce);
         Line2D line = new Line2D.Double(loc.x, loc.y, xScaledForce, yScaledForce);
         g.draw(line);
+        
+        // Paint teammates
+        g.setColor(java.awt.Color.YELLOW);
+        robot._teammates.paintAll(g);
     }
     
     void antiGravMove() {
@@ -160,13 +164,32 @@ public class MinimumRiskMovementState
         _yforce = 0;
         _gravpoints.clear();
         
-        for(BotInfo enemy: _enemies.getEnemiesAsCollection()) {
+        for(BotInfo enemy: _enemies.getBotsAsCollection()) {
         	GravPoint p = enemy.getGravPoint();
         	_gravpoints.add(p);
         	if(enemy.getEnergy() < 50) {
         		p.power /= 2;
         	}
         	if(_debug >= 1) System.out.println("antiGrav: enemypoint: "+ p + " strength: "+ p.power);
+        	if(_debug >= 2) System.out.println("xforce_: "+ _xforce + " yforce: "+ _yforce);
+        	
+        	//Calculate the total force from this point on us
+            force = p.power/Math.pow(loc.distance(p),2);
+            robot.getLocation();
+            
+            ang = loc.javaAngleTo(p);
+
+            //Add the components of this force to the total force in their 
+            //respective directions
+            _xforce -= Math.sin(ang) * force;
+            _yforce -= Math.cos(ang) * force;
+        }
+        
+        for(BotInfo teammate: robot._teammates.getBotsAsCollection()) {
+        	GravPoint p = teammate.getGravPoint();
+        	_gravpoints.add(p);
+
+        	if(_debug >= 1) System.out.println("antiGrav: teammatepoint: "+ p + " strength: "+ p.power);
         	if(_debug >= 2) System.out.println("xforce_: "+ _xforce + " yforce: "+ _yforce);
         	
         	//Calculate the total force from this point on us

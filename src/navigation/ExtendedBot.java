@@ -476,5 +476,4 @@ public class ExtendedBot extends ExtendedBotUH
      * events.
      */
     protected ArrayList<EventListener> paintListeners = new ArrayList<EventListener>();
-
 }

@@ -10,6 +10,7 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 import com.jaxelson.BotCollection;
+import com.jaxelson.BotInfo;
 
 /**
  * @author Jason Axelson
@@ -117,6 +118,11 @@ public class GuessFactorTargetingState
     public void onScannedRobot(ScannedRobotEvent e) {
         _enemies.update(e);
         
+        // Don't fire at teammates
+        BotInfo target = new BotInfo(e, robot);
+        if(target.isTeammate()) return;
+        
+        // Guess Factoring code
         double enemyAbsoluteBearing = robot.getHeadingRadians() + e.getBearingRadians();
 		double enemyDistance = e.getDistance();
 		double enemyVelocity = e.getVelocity();
@@ -132,7 +138,7 @@ public class GuessFactorTargetingState
 		lastEnemyVelocity = enemyVelocity;
 		wave.bearing = enemyAbsoluteBearing;
 		robot.setTurnGunRightRadians(Utils.normalRelativeAngle(enemyAbsoluteBearing - robot.getGunHeadingRadians() + wave.mostVisitedBearingOffset()));
-		robot.setFire(wave.bulletPower);
+		robot.fireGunWhenReady(wave.bulletPower);
 		if (robot.getEnergy() >= BULLET_POWER) {
 			robot.addCustomEvent(wave);
 		}

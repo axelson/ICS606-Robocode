@@ -110,6 +110,7 @@ public class MeleeTargeting
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         _enemies.update(e);
+        if(_enemies.size() <= 0) return;
         
     	BotCollection closeEnemies = new BotCollection(_enemies);
     	closeEnemies.filterBotsByRange(targetingRange);
@@ -126,7 +127,7 @@ public class MeleeTargeting
     	double firepower = 3;
         if(robot.getEnergy() < 20) {
         	firepower = 1.0;
-        } else if(target.getDistance() > 200) {
+        } else if(target.getDistance() > targetingRange) {
         	firepower = 2.0;
         } else {
         	firepower = 3.0;
