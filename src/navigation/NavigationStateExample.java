@@ -34,8 +34,8 @@ public class NavigationStateExample extends ExtendedBot {
             addCommandListener(radar);
             
             StateManager gun = new StateManager(this);
-//            gun.addState(new MeleeRadarState(this));
 //            gun.addState(new CannonFodderState(this));
+//            gun.addState(new MeleeRadarState(this));
             gun.addState(new GuessFactorTargetingState(this));
             gun.addState(new MeleeTargeting(this));
 //            gun.addState(new LinearTargetingState(this));

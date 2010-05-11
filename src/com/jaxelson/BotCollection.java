@@ -105,7 +105,7 @@ public class BotCollection {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Removes bots from collection that exceed given range
 	 * @param c collection to filter
