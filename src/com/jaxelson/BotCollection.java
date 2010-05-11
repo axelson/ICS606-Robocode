@@ -20,10 +20,11 @@ import robocode.ScannedRobotEvent;
 public class BotCollection implements Serializable {
 	private static final long serialVersionUID = -6523798889576108941L;
 
-	private Hashtable<String,BotInfo> _enemyTable = new Hashtable<String,BotInfo>();
+	private Hashtable<String,BotInfo> _botTable = new Hashtable<String,BotInfo>();
 	private ExtendedBot _robot;
 	private BotInfo _target;
 	private int _debug = 0;
+	private boolean _storesOnlyTeammates = false;
 	
 	/**
 	 * 
@@ -36,56 +37,70 @@ public class BotCollection implements Serializable {
 		_robot = another._robot;
 		_target = another._target;
 		_debug = another._debug;
-		_enemyTable = new Hashtable<String, BotInfo>(another._enemyTable);
-	}
-	
-	public Collection<BotInfo> getEnemiesAsCollection() {
-		return _enemyTable.values();
+		_botTable = new Hashtable<String, BotInfo>(another._botTable);
 	}
 	
 	/**
-	 * Updates records of enemies
+	 * @param extendedBot
+	 * @param storesOnlyTeammates if true this BotCollection will only store teammates
+	 */
+	public BotCollection(ExtendedBot robot, boolean storesOnlyTeammates) {
+		_robot = robot;
+		_storesOnlyTeammates = storesOnlyTeammates;
+	}
+
+	public Collection<BotInfo> getEnemiesAsCollection() {
+		return _botTable.values();
+	}
+
+	private boolean shouldTrack(BotInfo bot) {
+		String botName = bot.getName();
+		if(_storesOnlyTeammates) {
+			return _robot.isTeammate(botName);
+		} else {
+			return _robot.isEnemy(botName);
+		}
+	}
+	
+	/**
+	 * Updates records of stored bots
 	 * @param e ScannedRobotEvent info about a robot
-	 * @param enemies list of all known enemies
 	 */
 	public void update(ScannedRobotEvent e) {
-		// Hack because of asterisk error
-		String enemyName = e.getName().replace(" (", "* (");
+		String botName = BotUtility.fixName(e.getName());
 		
-		BotInfo enemyBot = new BotInfo(e, _robot);
+		BotInfo bot = new BotInfo(e, _robot);
 		if(_target == null) {
-			_target = enemyBot;
+			_target = bot;
 		}
 
-		// Don't track team-mates
-		if (_robot.isTeammate(enemyName)) {
+		if (!shouldTrack(bot)) {
 			return;
 		}
 		
-		// Update enemy database
-		if(_enemyTable.containsKey(enemyName)) {
-			_enemyTable.get(enemyName).update(e);
+		// Update robot database
+		if(_botTable.containsKey(botName)) {
+			_botTable.get(botName).update(e);
 		} else {
-			_enemyTable.put(enemyName, enemyBot);
+			_botTable.put(botName, bot);
 		}
 	}
 	
 	public void update(RobotDeathEvent e) {
-		// Hack because of asterisk error
-		String enemyName = e.getName().replace(" (", "* (");
-		if(_debug >= 1) System.out.println("Removing: "+ enemyName);
-		_enemyTable.remove(enemyName);
+		String botName = BotUtility.fixName(e.getName());
+		if(_debug >= 1) System.out.println("Removing: "+ botName);
+		_botTable.remove(botName);
 		
-		if(_target.getName().equals(enemyName)) {
+		if(_target.getName().equals(botName)) {
 			_target = pickRandomTarget();
 			if(_target != null) System.out.println("Target is now: "+ _target.getName());
 		}
 	}
 	
 	public BotInfo pickRandomTarget() {
-		if(_enemyTable.size() >= 1) {
-			Enumeration<String> enemyNames = _enemyTable.keys();
-			BotInfo target = _enemyTable.get(enemyNames.nextElement()); 
+		if(_botTable.size() >= 1) {
+			Enumeration<String> enemyNames = _botTable.keys();
+			BotInfo target = _botTable.get(enemyNames.nextElement()); 
 			return target;
 		} else {
 			return null;
@@ -97,7 +112,7 @@ public class BotCollection implements Serializable {
 	 * @return BotInfo with lowest energy, or null if no known enemies
 	 */
 	public BotInfo pickByLowestEnergy() {
-		List<BotInfo> enemies = new ArrayList<BotInfo>(_enemyTable.values());
+		List<BotInfo> enemies = new ArrayList<BotInfo>(_botTable.values());
 		Collections.sort(enemies);
 		for(BotInfo enemy : enemies) {
 			if(_debug >= 1) System.out.println("Enemy "+ enemy.getName() + ": "+ enemy.getEnergy());
@@ -115,7 +130,7 @@ public class BotCollection implements Serializable {
 	 * @param range to filter robots that exceed the range
 	 */
 	public void filterBotsByRange(double range) {
-		Collection<BotInfo> c = _enemyTable.values();
+		Collection<BotInfo> c = _botTable.values();
 	    for (Iterator<BotInfo> it = c.iterator(); it.hasNext(); ) {
 	        if (it.next().getDistance() > range) {
 	            it.remove();
@@ -130,7 +145,7 @@ public class BotCollection implements Serializable {
 	 * @param range to filter robots that exceed the range
 	 */
 	public void filterBotsByAngle(double absoluteAngle, double offsetAngle) {
-		Collection<BotInfo> c = _enemyTable.values();
+		Collection<BotInfo> c = _botTable.values();
 	    for (Iterator<BotInfo> it = c.iterator(); it.hasNext(); ) {
 	    	double botAngle = it.next().getAngle();
 	        if (!BotUtility.inRange(absoluteAngle - offsetAngle, botAngle, absoluteAngle + offsetAngle)) {
@@ -141,7 +156,7 @@ public class BotCollection implements Serializable {
 	
 	public void printNames() {
 		System.out.print("Bots: ");
-		for(BotInfo bot: _enemyTable.values()) {
+		for(BotInfo bot: _botTable.values()) {
 			System.out.print(bot.getName() + " ");
 		}
 		System.out.println();
@@ -152,11 +167,11 @@ public class BotCollection implements Serializable {
 	}
 	
 	public BotInfo get(String enemyName) {
-		return _enemyTable.get(enemyName);
+		return _botTable.get(enemyName);
 	}
 	
 	public void remove(RobotDeathEvent e) {
-		_enemyTable.remove(BotUtility.fixName(e.getName()));
+		_botTable.remove(BotUtility.fixName(e.getName()));
 	}
 	
 	public void setTarget(BotInfo target) {
@@ -168,7 +183,7 @@ public class BotCollection implements Serializable {
 	}
 	
 	public int size() {
-		return _enemyTable.size();
+		return _botTable.size();
 	}
 	
 	/**
@@ -177,7 +192,7 @@ public class BotCollection implements Serializable {
 	 * @param enemies All known enemies
 	 */
 	public void paintAll(Graphics2D g) {
-		for(BotInfo enemy : _enemyTable.values()) {
+		for(BotInfo enemy : _botTable.values()) {
 			enemy.paintTrackingRectangle(_robot,g);
 		}
 	}
