@@ -3,6 +3,8 @@ package com.jaxelson;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
+import navigation.ExtendedBot;
+
 import robocode.Rules;
 import robocode.TeamRobot;
 import robocode.util.Utils;
@@ -79,6 +81,7 @@ class GunManager {
 public class ExtendedBotUH extends TeamRobot {
 	public int _debug = 0;
 	protected GunManager _gun = new GunManager(this);
+	public BotCollection _teammates = new BotCollection((ExtendedBot) this, true);
 	public static final double DOUBLE_PI = (Math.PI * 2);
 	public static final double HALF_PI = (Math.PI / 2);
 	
