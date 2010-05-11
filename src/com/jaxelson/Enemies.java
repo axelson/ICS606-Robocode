@@ -1,6 +1,7 @@
 package com.jaxelson;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -12,7 +13,11 @@ import robocode.TeamRobot;
  * Holds the information about all the enemies in the game
  * @author jason
  */
-public class Enemies {
+public class Enemies implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7942923515335111981L;
 	private Hashtable<String,EnemyBot> _enemyTable = new Hashtable<String,EnemyBot>();
 	private TeamRobot _robot;
 	private EnemyBot _target;

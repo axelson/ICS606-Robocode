@@ -99,6 +99,7 @@ public class Chris01Bot01 extends ExtendedBot implements Serializable {
 	
 	public void onRobotDeath(RobotDeathEvent e)
 	{
+		
 		_enemies.update(e);
 	}
 	
