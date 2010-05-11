@@ -1,6 +1,7 @@
 package com.jaxelson;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +17,9 @@ import robocode.ScannedRobotEvent;
  * Holds the information about all the enemies in the game
  * @author jason
  */
-public class BotCollection {
+public class BotCollection implements Serializable {
+	private static final long serialVersionUID = -6523798889576108941L;
+
 	private Hashtable<String,BotInfo> _enemyTable = new Hashtable<String,BotInfo>();
 	private ExtendedBot _robot;
 	private BotInfo _target;
