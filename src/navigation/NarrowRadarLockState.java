@@ -3,6 +3,7 @@ package navigation;
 import com.jaxelson.BotInfo;
 
 import robocode.HitByBulletEvent;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
 /**
@@ -66,6 +67,7 @@ public class NarrowRadarLockState
     public void disable() {
         robot.removeEventListener(ON_HIT_BY_BULLET, this);
         robot.removeEventListener(ON_SCANNED_ROBOT, this);
+        robot.removeEventListener(ON_ROBOT_DEATH, this);
         updateStatistics();
     }
 
@@ -78,6 +80,7 @@ public class NarrowRadarLockState
         damageTaken = 0;
         robot.addEventListener(ON_HIT_BY_BULLET, this);
         robot.addEventListener(ON_SCANNED_ROBOT, this);
+        robot.addEventListener(ON_ROBOT_DEATH, this);
         
 //        robot.setTurnRadarLeft(360);
         
@@ -113,9 +116,15 @@ public class NarrowRadarLockState
      */
     public void onScannedRobot(ScannedRobotEvent event) {
     	_enemies.update(event);
+    	robot._teammates.update(event);
     	_enemies.get(event);
         BotInfo target = new BotInfo(event, robot);
         robot.narrowRadarLock(target, 2.0);
+    }
+    
+    public void onRobotDeath(RobotDeathEvent e) {
+    	_enemies.update(e);
+    	robot._teammates.update(e);
     }
 
     // PRIVATE METHODS
